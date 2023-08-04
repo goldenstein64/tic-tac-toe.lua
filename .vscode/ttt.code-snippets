@@ -1,0 +1,15 @@
+{
+	"ttt": {
+		"prefix": "--ttt",
+		"description": "add a comment that shows a tic-tac-toe board",
+		"body": [
+			"--[[",
+			"\t $1 | $2 | $3",
+			"\t---|---|---",
+			"\t $4 | $5 | $6",
+			"\t---|---|---",
+			"\t $7 | $8 | $0",
+			"]]"
+		]
+	}
+}

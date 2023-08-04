@@ -1,0 +1,23 @@
+local Mark = require("tic-tac-toe.board.Mark")
+
+describe("Mark()", function()
+	it("errors", function()
+		expect(function()
+			return Mark()
+		end).to.error()
+	end)
+end)
+
+describe("Mark:other", function()
+	it("works", function()
+		expect(Mark.O:other()).to.equal(Mark.X)
+		expect(Mark.X:other()).to.equal(Mark.O)
+	end)
+end)
+
+describe("tostring(Mark)", function()
+	it("works", function()
+		expect(tostring(Mark.O)).to.equal("O")
+		expect(tostring(Mark.X)).to.equal("X")
+	end)
+end)

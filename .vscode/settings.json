@@ -1,0 +1,19 @@
+{
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.workspace.library": [
+    "pkg",
+    "lua_modules/share/lua/5.1",
+    "$LUA_ENVS/say/library",
+    "$USERPROFILE/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/penlight/module/library",
+    "${3rd}/lfs/library"
+  ],
+  "Lua.workspace.ignoreDir": [
+    ".vscode",
+    "rockspec"
+  ],
+  "[lua]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "JohnnyMorganz.stylua"
+  },
+  "Lua.workspace.checkThirdParty": false
+}

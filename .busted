@@ -1,0 +1,8 @@
+return {
+	default = {
+		helper = "spec/helper/init.lua",
+		output = "plainTerminal",
+		pattern = "%.spec",
+		verbose = true,
+	},
+}

@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "spec"
+		}
+	],
+	"settings": {
+		"markiscodecoverage.searchCriteria": "luacov.report.out"
+	},
+	"extensions": {
+		"recommendations": [
+			"sumneko.lua",
+			"JohnnyMorganz.stylua"
+		]
+	}
+}

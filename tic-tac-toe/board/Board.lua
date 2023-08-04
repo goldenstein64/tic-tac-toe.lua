@@ -1,0 +1,148 @@
+local Object = require("classic")
+
+local Mark = require("tic-tac-toe.board.Mark")
+
+local BOARD_FORMAT = [[
+ %s | %s | %s
+---|---|---
+ %s | %s | %s
+---|---|---
+ %s | %s | %s]]
+
+---@class Board : Object
+---@field super Object
+---@overload fun(board: Board?): Board
+local Board = Object:extend()
+
+Board.__name = "Board"
+
+---@protected
+---@param board Board?
+function Board:new(board)
+	---@type { [number]: Mark? }
+	self.board = {}
+
+	if board then
+		for i = 1, 9 do
+			self.board[i] = board.board[i]
+		end
+	end
+end
+
+---@param pattern string
+---@return Board
+function Board.fromPattern(pattern)
+	local result = Board()
+	for i = 1, 9 do
+		local char = pattern:sub(i, i)
+		local mark = Mark[char]
+		result:setMark(i, mark)
+	end
+	return result
+end
+
+---@type number[][]
+Board.winPatterns = {
+	{ 1, 2, 3 },
+	{ 4, 5, 6 },
+	{ 7, 8, 9 },
+	{ 1, 4, 7 },
+	{ 2, 5, 8 },
+	{ 3, 6, 9 },
+	{ 1, 5, 9 },
+	{ 3, 5, 7 },
+}
+
+---attempt to mark the given position with the given mark. Errors if it is
+---unable to do so
+---@param position number
+---@param mark Mark?
+function Board:setMark(position, mark)
+	assert(self:canMark(position), "This space is already filled!")
+
+	self.board[position] = mark
+end
+
+---can this position on the board be marked?
+---@param position number
+---@return boolean
+function Board:canMark(position)
+	return self:isMarkedWith(position, nil)
+end
+
+---does this position on the board have this mark?
+---@param position number
+---@param mark Mark?
+---@return boolean
+function Board:isMarkedWith(position, mark)
+	return position >= 1 and position <= 9 and self.board[position] == mark
+end
+
+---did the player with this mark win?
+---@param mark Mark
+---@return boolean
+function Board:won(mark)
+	for _, pattern in ipairs(Board.winPatterns) do
+		local isWon = true
+		for _, position in ipairs(pattern) do
+			if self.board[position] ~= mark then
+				isWon = false
+				break
+			end
+		end
+
+		if isWon then
+			return true
+		end
+	end
+
+	return false
+end
+
+---are there no more places on the board to mark?
+---@return boolean
+function Board:full()
+	for i = 1, 9 do
+		local mark = self.board[i]
+		if mark == nil then
+			return false
+		end
+	end
+
+	return true
+end
+
+---are there any marks on the board?
+---@return boolean
+function Board:empty()
+	for i = 1, 9 do
+		local mark = self.board[i]
+		if mark ~= nil then
+			return false
+		end
+	end
+
+	return true
+end
+
+---can the game cannot be played for any longer?
+---@param lastMark Mark
+---@return boolean
+function Board:ended(lastMark)
+	return self:won(lastMark) or self:full()
+end
+
+---@return string
+function Board:__tostring()
+	-- luacov: disable
+	local strBoard = {}
+
+	for i = 1, 9 do
+		strBoard[i] = tostring(self.board[i] or " ")
+	end
+
+	return BOARD_FORMAT:format(table.unpack(strBoard))
+	-- luavoc: enable
+end
+
+return Board --[[@as Board]]
