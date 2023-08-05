@@ -6,16 +6,16 @@ local Mark = require("tic-tac-toe.board.Mark")
 local Board = require("tic-tac-toe.board.Board")
 local IO = require("tic-tac-toe.IO")
 
-local MockIO = require("spec.io.MockIO")
+---@class Player
+---@field getMove fun(board: Board, mark: Mark): integer
 
 ---@alias PlayerInput "H" | "C"
----@alias PlayerClass fun(board: Board, mark: Mark): Player
 
----@type { [PlayerInput]: PlayerClass }
+---@type { [PlayerInput]: Player }
 local playerMap = {}
 
-playerMap.H = Human --[[@as PlayerClass]]
-playerMap.C = Computer --[[@as PlayerClass]]
+playerMap.H = Human
+playerMap.C = Computer
 
 ---@class App : Object
 ---@field super Object
@@ -38,12 +38,12 @@ App.io = IO({
 App.allPlayers = { Mark.X, Mark.O }
 
 ---@param mark Mark
----@return PlayerClass?
+---@return Player?
 function App:promptPlayer(mark)
 	local chosen = self.io:prompt("msg.pickPlayer", mark)
-	local chosenClass = playerMap[chosen]
-	if chosenClass then
-		return chosenClass
+	local chosenPlayer = playerMap[chosen]
+	if chosenPlayer then
+		return chosenPlayer
 	else
 		self.io:print("err.invalidPlayer")
 		return nil
@@ -56,12 +56,12 @@ function App:choosePlayers(board)
 	local players = {} ---@type Player[]
 
 	for i, mark in ipairs(self.allPlayers) do
-		local chosenClass = self:promptPlayer(mark)
-		while not chosenClass do
-			chosenClass = self:promptPlayer(mark)
+		local chosenPlayer = self:promptPlayer(mark)
+		while not chosenPlayer do
+			chosenPlayer = self:promptPlayer(mark)
 		end
 
-		players[i] = chosenClass(board, mark)
+		players[i] = chosenPlayer
 	end
 
 	return players
@@ -80,7 +80,7 @@ function App:playGame()
 		currentMark = self.allPlayers[currentPos]
 		local currentPlayer = players[currentPos]
 
-		local position = currentPlayer:getMove()
+		local position = currentPlayer.getMove(board, currentMark)
 		board:setMark(position, currentMark)
 		self.io:print("msg.game", board)
 

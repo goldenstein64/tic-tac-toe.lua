@@ -1,11 +1,10 @@
-local IPlayer = require("tic-tac-toe.player.IPlayer")
 local Board = require("tic-tac-toe.board.Board")
 local Mark = require("tic-tac-toe.board.Mark")
 local Computer = require("tic-tac-toe.player.Computer")
 
 describe("Computer", function()
-	it("implements IPlayer", function()
-		expect(Computer.getMove).not_to.equal(IPlayer.getMove)
+	it("implements Player", function()
+		expect(Computer.getMove).to.be.a("function")
 	end)
 end)
 
@@ -19,9 +18,8 @@ describe("Computer:getMove", function()
 			 7 | 8 | 9
 		]]
 		local board = Board.fromPattern(",XX,OO,,,")
-		local computer = Computer(board, Mark.X)
 
-		local move = computer:getMove()
+		local move = Computer.getMove(board, Mark.X)
 
 		expect(move).to.equal(1)
 	end)
@@ -35,9 +33,8 @@ describe("Computer:getMove", function()
 			 7 | 8 | X
 		]]
 		local board = Board.fromPattern(",OO,XX,,X")
-		local computer = Computer(board, Mark.O)
 
-		local move = computer:getMove()
+		local move = Computer.getMove(board, Mark.O)
 
 		expect(move).to.equal(1)
 	end)
@@ -51,9 +48,8 @@ describe("Computer:getMove", function()
 			 7 | X | 9
 		]]
 		local board = Board.fromPattern("O,,O,X,X,")
-		local computer = Computer(board, Mark.X)
 
-		local move = computer:getMove()
+		local move = Computer.getMove(board, Mark.X)
 
 		expect(move).to.equal(7)
 	end)
@@ -67,9 +63,8 @@ describe("Computer:getMove", function()
 			 X | X | O
 		]]
 		local board = Board.fromPattern(",O,X,,XXO")
-		local computer = Computer(board, Mark.O)
 
-		local move = computer:getMove()
+		local move = Computer.getMove(board, Mark.O)
 
 		expect(move).to.equal(1)
 	end)
@@ -83,9 +78,8 @@ describe("Computer:getMove", function()
 			 7 | O | 9
 		]]
 		local board = Board.fromPattern(",X,O,X,O,")
-		local computer = Computer(board, Mark.X)
 
-		local move = computer:getMove()
+		local move = Computer.getMove(board, Mark.X)
 
 		expect(move).to.equal(3)
 	end)
@@ -99,9 +93,8 @@ describe("Computer:getMove", function()
 			 7 | O | 9
 		]]
 		local board = Board.fromPattern(",X,OXX,O,")
-		local computer = Computer(board, Mark.O)
 
-		local move = computer:getMove()
+		local move = Computer.getMove(board, Mark.O)
 
 		expect(move).to.equal(7)
 	end)
@@ -115,9 +108,8 @@ describe("Computer:getMove", function()
 			 O | X | 9
 		]]
 		local board = Board.fromPattern(",XXXOOOX,")
-		local computer = Computer(board, Mark.O)
 
-		local moves = computer:getMoves()
+		local moves = Computer.getMoves(board, Mark.O)
 
 		expect(moves).to.contain(1)
 		expect(moves).to.never.contain(9)

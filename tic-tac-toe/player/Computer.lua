@@ -1,16 +1,9 @@
-local IPlayer = require("tic-tac-toe.player.IPlayer")
-
 local Board = require("tic-tac-toe.board.Board")
 local Mark = require("tic-tac-toe.board.Mark")
 
 math.randomseed(os.time() / math.pi)
 
----@class Computer : Player
----@field super Player
----@overload fun(board: Board, mark: Mark): Computer
-local Computer = IPlayer:extend()
-
-Computer.__name = "Computer"
+local Computer = {}
 
 ---@param board Board
 ---@return integer[]
@@ -38,8 +31,6 @@ function Computer.resultOf(board, mark, action)
 	newBoard:setMark(action, mark)
 	return newBoard
 end
-
-Computer.Mark = Mark
 
 ---@param board Board
 ---@return number?
@@ -91,16 +82,19 @@ function Computer.judge(board, mark)
 	return value
 end
 
+---@param board Board
+---@param mark Mark
 ---@return number[]
-function Computer:getMoves()
-	local opponentMark = self.mark:other()
-	local moves = Computer.actions(self.board)
+---@nodiscard
+function Computer.getMoves(board, mark)
+	local opponentMark = mark:other()
+	local moves = Computer.actions(board)
 
-	local bestScore = Computer.controls[self.mark]
-	local reconcile = Computer.reconcilers[self.mark]
+	local bestScore = Computer.controls[mark]
+	local reconcile = Computer.reconcilers[mark]
 	local bestMoves = {}
 	for _, position in ipairs(moves) do
-		local nextBoard = Computer.resultOf(self.board, self.mark, position)
+		local nextBoard = Computer.resultOf(board, mark, position)
 		local nextScore = Computer.judge(nextBoard, opponentMark)
 		if nextScore == bestScore then
 			table.insert(bestMoves, position)
@@ -113,15 +107,18 @@ function Computer:getMoves()
 	return bestMoves
 end
 
+---@param board Board
+---@param mark Mark
 ---@return number
-function Computer:getMove()
-	if self.board:empty() then
+---@nodiscard
+function Computer.getMove(board, mark)
+	if board:empty() then
 		return math.random(9)
 	else
-		local moves = self:getMoves()
+		local moves = Computer.getMoves(board, mark)
 		assert(#moves > 0, "no moves to take!")
 		return moves[math.random(#moves)]
 	end
 end
 
-return Computer --[[@as Computer]]
+return Computer

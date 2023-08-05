@@ -64,7 +64,7 @@ describe("App:choosePlayers", function()
 		expect(players).to.be.a("table")
 
 		local playerX = players[1]
-		expect(playerX).to.be.an.instance.of(Human)
+		expect(playerX).to.equal(Human)
 
 		local playerO = players[2]
 		expect(playerO).to.be._nil()
@@ -83,10 +83,10 @@ describe("App:choosePlayers", function()
 		expect(players).to.be.a("table")
 
 		local playerX = players[1]
-		expect(playerX).to.be.an.instance.of(Computer)
+		expect(playerX).to.equal(Computer)
 
 		local playerO = players[2]
-		expect(playerO).to.be.an.instance.of(Human)
+		expect(playerO).to.equal(Human)
 	end)
 end)
 
