@@ -2,20 +2,23 @@ local Object = require("classic")
 
 ---@class Mark : Object
 ---@field super Object
----@field ascii string
----@overload fun(ascii: string): Mark
 local Mark = Object:extend()
+
+---@class Mark.Class
+---@overload fun(ascii: string): Mark
+local MarkClass = Mark --[[@as Mark.Class]]
 
 Mark.__name = "Mark"
 
 ---@protected
 ---@param ascii string
 function Mark:new(ascii)
+	Mark.super.new(self)
 	self.ascii = ascii
 end
 
-local X = Mark("X")
-local O = Mark("O")
+local X = MarkClass("X")
+local O = MarkClass("O")
 
 local other = {
 	[X] = O,
