@@ -50,9 +50,8 @@ function App:promptPlayer(mark)
 	end
 end
 
----@param board Board
 ---@return Player[]
-function App:choosePlayers(board)
+function App:choosePlayers()
 	local players = {} ---@type Player[]
 
 	for i, mark in ipairs(self.allPlayers) do
@@ -71,7 +70,7 @@ end
 function App:playGame()
 	local board = Board()
 
-	local players = self:choosePlayers(board)
+	local players = self:choosePlayers()
 	self.io:print("msg.game", board)
 
 	local currentPos = 1
@@ -101,7 +100,7 @@ end
 
 function App:run()
 	self.io:print("msg.greeting")
-	local winner = App:playGame()
+	local winner = self:playGame()
 	App:displayWinner(winner)
 end
 

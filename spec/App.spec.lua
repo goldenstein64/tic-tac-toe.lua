@@ -52,12 +52,11 @@ describe("App:choosePlayers", function()
 	end)
 
 	it("returns a list of players according to App.allPlayers", function()
-		local board = Board()
 		local app = App()
 		appIO:mockInput("H")
 
 		app.allPlayers = { Mark.X }
-		local players = app:choosePlayers(board)
+		local players = app:choosePlayers()
 
 		expect(appIO).to.print("msg.pickPlayer")
 
@@ -71,11 +70,10 @@ describe("App:choosePlayers", function()
 	end)
 
 	it("retries invalid inputs for each player", function()
-		local board = Board()
 		local app = App()
 		appIO:mockInput("@", "C", "@", "@", "H")
 
-		local players = app:choosePlayers(board)
+		local players = app:choosePlayers()
 
 		expect(appIO).to.print("msg.pickPlayer")
 		expect(appIO).to.print("err.invalidPlayer")
