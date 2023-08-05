@@ -9,7 +9,8 @@
   ],
   "Lua.workspace.ignoreDir": [
     ".vscode",
-    "rockspec"
+    "rockspec",
+    "lua_modules/lib/luarocks"
   ],
   "[lua]": {
     "editor.formatOnSave": true,
