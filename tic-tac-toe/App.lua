@@ -101,7 +101,7 @@ end
 function App:run()
 	self.io:print("msg.greeting")
 	local winner = self:playGame()
-	App:displayWinner(winner)
+	self:displayWinner(winner)
 end
 
 return App --[[@as App]]
