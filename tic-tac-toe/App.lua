@@ -83,7 +83,7 @@ function App:playGame(board, players)
 		self.io:print("msg.game", board)
 
 		currentPos = currentPos % #self.allPlayers + 1
-	until board:ended(currentMark)
+	until board:won(currentMark) or board:full()
 
 	return board:won(currentMark) and currentMark or nil
 end

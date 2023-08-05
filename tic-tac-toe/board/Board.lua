@@ -128,13 +128,6 @@ function Board:empty()
 	return true
 end
 
----can the game cannot be played for any longer?
----@param lastMark Mark
----@return boolean
-function Board:ended(lastMark)
-	return self:won(lastMark) or self:full()
-end
-
 ---@return string
 function Board:__tostring()
 	-- luacov: disable
