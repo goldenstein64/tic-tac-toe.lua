@@ -66,11 +66,10 @@ function App:choosePlayers()
 	return players
 end
 
+---@param board Board
+---@param players Player[]
 ---@return Mark?
-function App:playGame()
-	local board = Board()
-
-	local players = self:choosePlayers()
+function App:playGame(board, players)
 	self.io:print("msg.game", board)
 
 	local currentPos = 1
@@ -100,7 +99,7 @@ end
 
 function App:run()
 	self.io:print("msg.greeting")
-	local winner = self:playGame()
+	local winner = self:playGame(Board(), self:choosePlayers())
 	self:displayWinner(winner)
 end
 
