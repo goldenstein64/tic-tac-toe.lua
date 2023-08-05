@@ -11,8 +11,11 @@ local BOARD_FORMAT = [[
 
 ---@class Board : Object
 ---@field super Object
----@overload fun(board: Board?): Board
 local Board = Object:extend()
+
+---@class Board.Class
+---@overload fun(board: Board?): Board
+local BoardClass = Board --[[@as Board.Class]]
 
 Board.__name = "Board"
 
@@ -31,8 +34,8 @@ end
 
 ---@param pattern string
 ---@return Board
-function Board.fromPattern(pattern)
-	local result = Board()
+function BoardClass.fromPattern(pattern)
+	local result = BoardClass()
 	for i = 1, 9 do
 		local char = pattern:sub(i, i)
 		local mark = Mark[char]
@@ -42,7 +45,7 @@ function Board.fromPattern(pattern)
 end
 
 ---@type number[][]
-Board.winPatterns = {
+BoardClass.winPatterns = {
 	{ 1, 2, 3 },
 	{ 4, 5, 6 },
 	{ 7, 8, 9 },
@@ -82,7 +85,7 @@ end
 ---@param mark Mark
 ---@return boolean
 function Board:won(mark)
-	for _, pattern in ipairs(Board.winPatterns) do
+	for _, pattern in ipairs(BoardClass.winPatterns) do
 		local isWon = true
 		for _, position in ipairs(pattern) do
 			if self.board[position] ~= mark then
@@ -145,4 +148,4 @@ function Board:__tostring()
 	-- luavoc: enable
 end
 
-return Board --[[@as Board]]
+return BoardClass --[[@as Board.Class]]
