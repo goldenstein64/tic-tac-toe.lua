@@ -21,6 +21,8 @@ end
 Sets all mocked inputs for this object. Inputs are returned one-by-one each
 time `MockIO:prompt` is called.
 
+Mocking an input `"^C"` simulates a keyboard interrupt.
+
 Example:
 
 ```lua
@@ -51,7 +53,9 @@ function MockIO:prompt(message, ...)
 	table.insert(self.outputs, message)
 
 	assert(#self.inputs > 0, "input buffer exhausted!")
-	return table.remove(self.inputs, 1)
+	local input = table.remove(self.inputs, 1)
+	assert(input ~= "^C", "Keyboard interrupt!")
+	return input
 end
 
 ---@param message string
