@@ -9,6 +9,9 @@ local Human = require("tic-tac-toe.player.Human")
 local appIO = MockIO()
 App.io = appIO
 
+local humanIO = MockIO()
+Human.io = humanIO
+
 describe("App:promptPlayer", function()
 	after_each(function()
 		appIO:mockReset()
@@ -51,24 +54,6 @@ describe("App:choosePlayers", function()
 		appIO:mockReset()
 	end)
 
-	it("returns a list of players according to App.allPlayers", function()
-		local app = App()
-		appIO:mockInput("H")
-
-		app.allPlayers = { Mark.X }
-		local players = app:choosePlayers()
-
-		expect(appIO).to.print("msg.pickPlayer")
-
-		expect(players).to.be.a("table")
-
-		local playerX = players[1]
-		expect(playerX).to.equal(Human)
-
-		local playerO = players[2]
-		expect(playerO).to.be._nil()
-	end)
-
 	it("retries invalid inputs for each player", function()
 		local app = App()
 		appIO:mockInput("@", "C", "@", "@", "H")
@@ -79,12 +64,8 @@ describe("App:choosePlayers", function()
 		expect(appIO).to.print("err.invalidPlayer")
 
 		expect(players).to.be.a("table")
-
-		local playerX = players[1]
-		expect(playerX).to.equal(Computer)
-
-		local playerO = players[2]
-		expect(playerO).to.equal(Human)
+		expect(players[Mark.X]).to.equal(Computer)
+		expect(players[Mark.O]).to.equal(Human)
 	end)
 end)
 
@@ -111,5 +92,35 @@ describe("App:displayWinner", function()
 		app:displayWinner(Mark.O)
 
 		expect(appIO).to.print("msg.playerWon")
+	end)
+end)
+
+describe("App:playGame", function()
+	after_each(function()
+		humanIO:mockReset()
+	end)
+
+	it("can run a game of tic-tac-toe between humans", function()
+		local app = App()
+
+		-- a classic corner trap game
+		humanIO:mockInput("1", "2", "7", "4", "9", "5", "8")
+
+		local board = Board()
+		local winner = app:playGame(board, Mark.X, { [Mark.X] = Human, [Mark.O] = Human })
+
+		expect(winner).to.equal(Mark.X)
+		expect(humanIO).to.print("msg.pickMove")
+		expect(appIO).to.print("msg.game")
+	end)
+
+	it("can run a game of tic-tac-toe between computers", function()
+		local app = App()
+
+		expect(function()
+			app:playGame(Board(), Mark.X, { [Mark.X] = Computer, [Mark.O] = Computer })
+		end).not_to.throw()
+
+		expect(appIO).to.print("msg.game")
 	end)
 end)

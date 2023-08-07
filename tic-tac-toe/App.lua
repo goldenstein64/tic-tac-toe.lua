@@ -34,9 +34,6 @@ App.io = IO({
 	["err.invalidPlayer"] = "This does not match 'H' or 'C'!",
 })
 
----@type Mark[]
-App.allPlayers = { Mark.X, Mark.O }
-
 ---@param mark Mark
 ---@return Player?
 function App:promptPlayer(mark)
@@ -50,42 +47,36 @@ function App:promptPlayer(mark)
 	end
 end
 
----@return Player[]
+---@return { [Mark]: Player }
 function App:choosePlayers()
-	local players = {} ---@type Player[]
+	local players = {} ---@type { [Mark]: Player }
 
-	for i, mark in ipairs(self.allPlayers) do
-		local chosenPlayer = self:promptPlayer(mark)
-		while not chosenPlayer do
-			chosenPlayer = self:promptPlayer(mark)
-		end
-
-		players[i] = chosenPlayer
+	local mark = Mark.X
+	while not players[mark] do
+		players[mark] = self:promptPlayer(mark)
+		mark = players[mark] and mark:other() or mark
 	end
 
 	return players
 end
 
 ---@param board Board
----@param players Player[]
+---@param mark Mark
+---@param players { [Mark]: Player }
 ---@return Mark?
-function App:playGame(board, players)
-	self.io:print("msg.game", board)
-
-	local currentPos = 1
-	local currentMark ---@type Mark
-	repeat
-		currentMark = self.allPlayers[currentPos]
-		local currentPlayer = players[currentPos]
-
-		local position = currentPlayer.getMove(board, currentMark)
-		board:setMark(position, currentMark)
+function App:playGame(board, mark, players)
+	local otherMark = mark:other()
+	if board:won(otherMark) then
+		return otherMark
+	elseif board:full() then
+		return nil
+	else
+		local player = players[mark]
+		local move = player.getMove(board, mark)
+		board:setMark(move, mark)
 		self.io:print("msg.game", board)
-
-		currentPos = currentPos % #self.allPlayers + 1
-	until board:won(currentMark) or board:full()
-
-	return board:won(currentMark) and currentMark or nil
+		return self:playGame(board, otherMark, players)
+	end
 end
 
 ---@param winner Mark?
@@ -99,7 +90,7 @@ end
 
 function App:run()
 	self.io:print("msg.greeting")
-	local winner = self:playGame(Board(), self:choosePlayers())
+	local winner = self:playGame(Board(), Mark.X, self:choosePlayers())
 	self:displayWinner(winner)
 end
 
