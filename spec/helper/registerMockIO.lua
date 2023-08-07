@@ -1,3 +1,5 @@
+-- luacov: disable
+
 local luassert = require("luassert")
 local say = require("say")
 local Object = require("classic")

@@ -1,3 +1,5 @@
+-- luacov: disable
+
 local expect = require("bustez.expect")
 local luassert = require("luassert")
 local say = require("say")
