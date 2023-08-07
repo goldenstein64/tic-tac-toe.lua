@@ -109,10 +109,9 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",XXXOOOX,")
 
-		local moves = Computer.getMoves(board, Mark.O)
+		local move = Computer.getMove(board, Mark.O)
 
-		expect(moves).to.contain(1)
-		expect(moves).to.never.contain(9)
+		expect(move).to.equal(1)
 	end)
 end)
 
