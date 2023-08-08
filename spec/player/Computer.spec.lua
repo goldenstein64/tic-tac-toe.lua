@@ -176,10 +176,10 @@ describe("Computer.terminal", function()
 end)
 
 describe("Computer.resultOf #fuzz", function()
+	local marks = { Mark.X, Mark.O, nil }
+	local char = { "X", "O", "," }
 	for _ = 1, 50 do
 		::start::
-		local marks = { Mark.X, Mark.O, nil }
-		local char = { "X", "O", "," }
 		local patternList = {}
 		local expected = {}
 		local markPositions = {}
