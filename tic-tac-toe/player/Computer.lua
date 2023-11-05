@@ -5,68 +5,55 @@ math.randomseed(os.time() / math.pi)
 
 local Computer = {}
 
-local symmetryPriority = {
-	"rotate90",
-	"rotate180",
-	"diagonalDown",
-	"diagonalUp",
-	"horizontal",
-	"vertical",
+local equalities = {
+	[1] = { 1, 3 },
+	[2] = { 4, 6 },
+	[3] = { 7, 9 },
+	[4] = { 1, 7 },
+	[5] = { 2, 8 },
+	[6] = { 3, 9 },
+	[7] = { 2, 4 },
+	[8] = { 3, 7 },
+	[9] = { 6, 8 },
+	[10] = { 4, 8 },
+	[11] = { 1, 9 },
+	[12] = { 2, 6 },
 }
 
----@type number[][][]
 local symmetries = {
-	vertical = {
-		{ 1, 3 },
-		{ 4, 6 },
-		{ 7, 9 },
+	{ -- rotate 90
+		equalities = { 1, 2, 3, 7, 8, 9 },
+		image = { 1, 2, 5 },
 	},
-	horizontal = {
-		{ 1, 7 },
-		{ 2, 8 },
-		{ 3, 9 },
+	{ -- rotate 180
+		equalities = { 2, 5, 8, 11 },
+		image = { 1, 2, 3, 4, 5 },
 	},
-	diagonalUp = {
-		{ 2, 4 },
-		{ 3, 7 },
-		{ 6, 8 },
+	{ -- vertical
+		equalities = { 1, 2, 3 },
+		image = { 1, 2, 4, 5, 7, 8 },
 	},
-	diagonalDown = {
-		{ 1, 9 },
-		{ 2, 6 },
-		{ 4, 8 },
+	{ -- horizontal
+		equalities = { 4, 5, 6 },
+		image = { 1, 2, 3, 4, 5, 6 },
 	},
-	rotate180 = {
-		{ 1, 9 },
-		{ 2, 8 },
-		{ 3, 7 },
-		{ 4, 6 },
+	{ -- diagonal down
+		equalities = { 7, 8, 9 },
+		image = { 1, 2, 3, 4, 5, 7 },
 	},
-	rotate90 = {
-		{ 1, 3, 7, 9 },
-		{ 2, 4, 6, 8 },
+	{ -- diagonal up
+		equalities = { 10, 11, 12 },
+		image = { 1, 2, 3, 5, 6, 9 },
 	},
 }
 
-local symmetryImages = {
-	vertical = { 1, 2, 4, 5, 7, 8 },
-	horizontal = { 1, 2, 3, 4, 5, 6 },
-	diagonalUp = { 1, 2, 3, 4, 5, 7 },
-	diagonalDown = { 1, 2, 3, 5, 6, 9 },
-	rotate180 = { 1, 2, 3, 4, 5 },
-	rotate90 = { 1, 2, 5 },
-}
-
----@param board Board
----@param symmetry number[][]
+---@param equalSet { [number]: true? }
+---@param symmetry number[]
 ---@return boolean
-local function symmetryMatches(board, symmetry)
-	for _, matches in ipairs(symmetry) do
-		local firstMark = board.board[matches[1]]
-		for i = 2, #matches do
-			if firstMark ~= board.board[matches[i]] then
-				return false
-			end
+local function symmetryMatches(equalSet, symmetry)
+	for _, index in ipairs(symmetry) do
+		if not equalSet[index] then
+			return false
 		end
 	end
 
@@ -74,17 +61,43 @@ local function symmetryMatches(board, symmetry)
 end
 
 ---@param board Board
+---@param image integer[]
 ---@return integer[]
-local function filterMarkableActions(board, ...)
+local function filterImage(board, image)
 	local result = {}
 
-	for _, pos in ... do
+	for _, pos in ipairs(image) do
 		if board:canMark(pos) then
 			table.insert(result, pos)
 		end
 	end
 
 	return result
+end
+
+---@param board Board
+---@return { [integer]: true? }
+local function getEqualitySet(board)
+	local result = {}
+
+	local data = board.board
+
+	for i, equality in pairs(equalities) do
+		result[i] = data[equality[1]] == data[equality[2]]
+	end
+
+	return result
+end
+
+---@param board Board
+---@return integer[]?
+local function symmetricActions(board)
+	local equalitySet = getEqualitySet(board)
+	for _, symmetry in ipairs(symmetries) do
+		if symmetryMatches(equalitySet, symmetry.equalities) then
+			return filterImage(board, symmetry.image)
+		end
+	end
 end
 
 ---@param board Board
@@ -99,16 +112,6 @@ local function simpleActions(board)
 	end
 
 	return result
-end
-
----@param board Board
----@return integer[]?
-local function symmetricActions(board)
-	for _, symmetryName in ipairs(symmetryPriority) do
-		if symmetryMatches(board, symmetries[symmetryName]) then
-			return filterMarkableActions(board, ipairs(symmetryImages[symmetryName]))
-		end
-	end
 end
 
 ---@param board Board
