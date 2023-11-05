@@ -3,7 +3,6 @@
 local luassert = require("luassert")
 local say = require("say")
 local Object = require("classic")
-local expect = require("bustez.expect")
 
 local MockIO = require("spec.io.MockIO")
 
