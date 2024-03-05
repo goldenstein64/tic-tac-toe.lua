@@ -1,4 +1,6 @@
-_G.expect = require("bustez")()
+local bustez = require("bustez")
+bustez.register()
+_G.expect = bustez.expect
 
 require("spec.helper.registerMockIO")
 require("spec.helper.registerClass")

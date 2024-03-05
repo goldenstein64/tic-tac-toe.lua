@@ -150,14 +150,12 @@ describe("Board:setMark", function()
 		end).not_to.throw()
 	end)
 
-	for i = 1, 9 do
-		local itName = string.format("changes the state of the board at position %d", i)
-		it(itName, function()
+	it("changes the state of the board at each position", function()
+		for i = 1, 9 do
 			local b = board(",,,,,,,,,")
-
 			expect(b:canMark(i)).to.be._true()
 			b:setMark(i, Mark.X)
 			expect(b:canMark(i)).to.be._false()
-		end)
-	end
+		end
+	end)
 end)

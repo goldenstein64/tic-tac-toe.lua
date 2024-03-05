@@ -8,7 +8,14 @@
 		}
 	],
 	"settings": {
-		"markiscodecoverage.searchCriteria": "luacov.report.out"
+		"markiscodecoverage.searchCriteria": "luacov.report.out",
+		"busted-test-explorer.cwd": "${workspaceFolder}",
+		"busted-test-explorer.testfilepattern": "**/*.spec.lua",
+		"busted-test-explorer.executable": ".\\lua_modules\\bin\\busted.bat",
+		"busted-test-explorer.env": {
+			"LUA_PATH": "?/init.lua;?.lua;pkg/?/init.lua;pkg/?.lua;./lua_modules/share/lua/5.1/?/init.lua;./lua_modules/share/lua/5.1/?.lua;%LUA_PATH%",
+			"LUA_CPATH": "./lua_modules/lib/lua/5.1/?.dll;%LUA_CPATH%"
+		}
 	},
 	"extensions": {
 		"recommendations": [

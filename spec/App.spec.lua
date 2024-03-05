@@ -100,7 +100,7 @@ describe("App:playGame", function()
 		humanIO:mockReset()
 	end)
 
-	it("can run a game of tic-tac-toe between humans", function()
+	it("can run a game of tic~tac~toe between humans", function()
 		local app = App()
 
 		-- a classic corner trap game
@@ -114,7 +114,7 @@ describe("App:playGame", function()
 		expect(appIO).to.print("msg.game")
 	end)
 
-	it("can run a game of tic-tac-toe between computers", function()
+	it("can run a game of tic~tac~toe between computers", function()
 		local app = App()
 
 		expect(function()

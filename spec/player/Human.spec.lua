@@ -13,7 +13,7 @@ describe("Human", function()
 	end)
 end)
 
-describe("Human:getMove()", function()
+describe("Human:getMove", function()
 	after_each(function()
 		humanIO:mockReset()
 	end)
@@ -55,7 +55,7 @@ describe("Human:getMove()", function()
 		expect(move).to.equal(1)
 	end)
 
-	it("states that non-positions are invalid moves", function()
+	it("states that non~positions are invalid moves", function()
 		local board = Board.fromPattern(",,,,,,,,,")
 		humanIO:mockInput("@", "1")
 

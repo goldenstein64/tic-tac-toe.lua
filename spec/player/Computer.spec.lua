@@ -161,7 +161,7 @@ describe("Computer.terminal", function()
 		expect(value).to.equal(1)
 	end)
 
-	it("returns -1 for a board that player O won", function()
+	it("returns ~1 for a board that player O won", function()
 		--[[
 			O--
 			OXX
@@ -175,38 +175,31 @@ describe("Computer.terminal", function()
 	end)
 end)
 
-describe("Computer.resultOf #fuzz", function()
-	local marks = { Mark.X, Mark.O, nil }
-	local char = { "X", "O", "," }
-	for _ = 1, 50 do
-		::start::
-		local patternList = {}
-		local expected = {}
-		local markPositions = {}
-		for pos = 1, 9 do
-			local choice = math.random(3)
-			patternList[pos] = char[choice]
-			expected[pos] = marks[choice]
-			if choice == 3 then
-				table.insert(markPositions, pos)
-			end
-		end
-		if #markPositions == 0 then
-			goto start
-		end
+describe("Computer.resultOf", function()
+	it("gets calculated correctly", function()
+		local marks = { Mark.X, Mark.O, nil }
+		local char = { "X", "O", "," }
+		for _ = 1, 50 do
+			local patternList, expected, markPositions
+			repeat
+				patternList = {}
+				expected = {}
+				markPositions = {}
+				for pos = 1, 9 do
+					local choice = math.random(3)
+					patternList[pos] = char[choice]
+					expected[pos] = marks[choice]
+					if choice == 3 then
+						table.insert(markPositions, pos)
+					end
+				end
+			until #markPositions > 0
 
-		local pattern = table.concat(patternList)
-		local chosenPos = markPositions[math.random(#markPositions)]
-		local chosenMark = marks[math.random(2)]
-		expected[chosenPos] = chosenMark
-		local testName = string.format(
-			"returns a new board (%s) with the given mark (%s) applied to (%s)",
-			pattern,
-			chosenMark,
-			chosenPos
-		)
+			local pattern = table.concat(patternList)
+			local chosenPos = markPositions[math.random(#markPositions)]
+			local chosenMark = marks[math.random(2)]
+			expected[chosenPos] = chosenMark
 
-		it(testName, function()
 			local board = Board.fromPattern(pattern)
 
 			local newBoard = Computer.resultOf(board, chosenMark, chosenPos)
@@ -214,6 +207,6 @@ describe("Computer.resultOf #fuzz", function()
 			for i = 1, 9 do
 				expect(expected[i]).to.equal(newBoard.board[i])
 			end
-		end)
-	end
+		end
+	end)
 end)
