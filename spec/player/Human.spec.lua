@@ -38,6 +38,7 @@ describe("Human.getMove", function()
 		local move = Human.getMove(board, Mark.X)
 
 		-- 3 and 2 should get ignored
+		expect(humanIO).to.print("msg.pickMove")
 		expect(humanIO).to.never.print("err.NaN")
 		expect(humanIO).to.never.print("err.outOfRange")
 		expect(humanIO).to.print("err.occupied")
@@ -51,6 +52,7 @@ describe("Human.getMove", function()
 
 		local move = Human.getMove(board, Mark.X)
 
+		expect(humanIO).to.print("msg.pickMove")
 		expect(humanIO).to.never.print("err.NaN")
 		expect(humanIO).to.print("err.outOfRange")
 		expect(humanIO).to.never.print("err.occupied")
@@ -65,6 +67,7 @@ describe("Human.getMove", function()
 		local move = Human.getMove(board, Mark.X)
 
 		-- @ should get ignored
+		expect(humanIO).to.print("msg.pickMove")
 		expect(humanIO).to.print("err.NaN")
 		expect(humanIO).to.never.print("err.outOfRange")
 		expect(humanIO).to.never.print("err.occupied")
