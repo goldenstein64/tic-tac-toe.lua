@@ -66,6 +66,19 @@ describe("Computer.terminal", function()
 
 		expect(value).to.equal(-1)
 	end)
+
+	it("returns ~1 for a full board that O won", function()
+		--[[
+			XXO
+			XOX
+			OOX
+		]]
+		local board = Board.fromPattern("XXOXOXOOX")
+
+		local value = HardComputer.terminal(board)
+
+		expect(value).to.equal(-1)
+	end)
 end)
 
 describe("Computer.resultOf", function()
