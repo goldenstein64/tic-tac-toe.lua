@@ -13,7 +13,7 @@ describe("Human", function()
 	end)
 end)
 
-describe("Human:getMove", function()
+describe("Human.getMove", function()
 	after_each(function()
 		humanIO:mockReset()
 	end)
