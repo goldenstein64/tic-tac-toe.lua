@@ -91,7 +91,7 @@ describe("App:choosePlayers", function()
 		appIO:mockReset()
 	end)
 
-	it("retries invalid inputs for each player", function()
+	it("retries invalid inputs for players", function()
 		local app = App()
 		appIO:mockInput("@", "C", "H", "@", "@", "H")
 
