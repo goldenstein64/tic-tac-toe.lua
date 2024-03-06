@@ -1,6 +1,8 @@
 local Object = require("classic")
+local EasyComputer = require("tic-tac-toe.player.EasyComputer")
+local MediumComputer = require("tic-tac-toe.player.MediumComputer")
 
-local Computer = require("tic-tac-toe.player.Computer")
+local HardComputer = require("tic-tac-toe.player.HardComputer")
 local Human = require("tic-tac-toe.player.Human")
 local Mark = require("tic-tac-toe.board.Mark")
 local Board = require("tic-tac-toe.board.Board")
@@ -8,14 +10,6 @@ local IO = require("tic-tac-toe.IO")
 
 ---@class Player
 ---@field getMove fun(board: Board, mark: Mark): integer
-
----@alias PlayerInput "H" | "C"
-
----@type { [PlayerInput]: Player }
-local playerMap = {}
-
-playerMap.H = Human
-playerMap.C = Computer
 
 ---@class App : Object
 ---@field super Object
@@ -26,21 +20,34 @@ App.__name = "App"
 
 App.io = IO({
 	["msg.greeting"] = "This program runs a tic-tac-toe game.",
-	["msg.pickPlayer"] = "Will player %s be a human or computer [H/C]: ",
+	["msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
+	["msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
 	["msg.game"] = "%s\n",
 	["msg.playerWon"] = "Player %s won!",
 	["msg.tied"] = "There was a tie!",
 
-	["err.invalidPlayer"] = "This does not match 'H' or 'C'!",
+	["err.invalidPlayer"] = "This does not match 'H', 'C'!",
+	["err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
 })
 
 ---@param mark Mark
 ---@return Player?
 function App:promptPlayer(mark)
-	local chosen = self.io:prompt("msg.pickPlayer", mark)
-	local chosenPlayer = playerMap[chosen]
-	if chosenPlayer then
-		return chosenPlayer
+	local chosenPlayer = self.io:prompt("msg.pickPlayer", mark)
+	if chosenPlayer == "H" then
+		return Human
+	elseif chosenPlayer == "C" then
+		local chosenComputer = self.io:prompt("msg.pickComputer", mark)
+		if chosenComputer == "E" then
+			return EasyComputer
+		elseif chosenComputer == "M" then
+			return MediumComputer
+		elseif chosenComputer == "H" then
+			return HardComputer
+		else
+			self.io:print("err.invalidComputer")
+			return nil
+		end
 	else
 		self.io:print("err.invalidPlayer")
 		return nil

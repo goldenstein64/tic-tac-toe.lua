@@ -45,15 +45,15 @@ function BoardClass.fromPattern(pattern)
 end
 
 ---@type number[][]
-BoardClass.winPatterns = {
-	{ 1, 2, 3 },
-	{ 4, 5, 6 },
-	{ 7, 8, 9 },
-	{ 1, 4, 7 },
-	{ 2, 5, 8 },
-	{ 3, 6, 9 },
-	{ 1, 5, 9 },
-	{ 3, 5, 7 },
+BoardClass.WIN_PATTERNS = {
+	[1] = { 1, 2, 3 },
+	[2] = { 4, 5, 6 },
+	[3] = { 7, 8, 9 },
+	[4] = { 1, 4, 7 },
+	[5] = { 2, 5, 8 },
+	[6] = { 3, 6, 9 },
+	[7] = { 1, 5, 9 },
+	[8] = { 3, 5, 7 },
 }
 
 ---attempt to mark the given position with the given mark. Errors if it is
@@ -85,7 +85,7 @@ end
 ---@param mark Mark
 ---@return boolean
 function Board:won(mark)
-	for _, pattern in ipairs(BoardClass.winPatterns) do
+	for _, pattern in ipairs(BoardClass.WIN_PATTERNS) do
 		local isWon = true
 		for _, position in ipairs(pattern) do
 			if self.board[position] ~= mark then

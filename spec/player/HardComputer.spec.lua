@@ -1,14 +1,14 @@
 local Board = require("tic-tac-toe.board.Board")
 local Mark = require("tic-tac-toe.board.Mark")
-local Computer = require("tic-tac-toe.player.Computer")
+local HardComputer = require("tic-tac-toe.player.HardComputer")
 
-describe("Computer", function()
+describe("HardComputer", function()
 	it("implements Player", function()
-		expect(Computer.getMove).to.be.a("function")
+		expect(HardComputer.getMove).to.be.a("function")
 	end)
 end)
 
-describe("Computer:getMove", function()
+describe("HardComputer:getMove", function()
 	it("can detect winning moves for X", function()
 		--[[
 			 1 | X | X
@@ -19,7 +19,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",XX,OO,,,")
 
-		local move = Computer.getMove(board, Mark.X)
+		local move = HardComputer.getMove(board, Mark.X)
 
 		expect(move).to.equal(1)
 	end)
@@ -34,7 +34,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",OO,XX,,X")
 
-		local move = Computer.getMove(board, Mark.O)
+		local move = HardComputer.getMove(board, Mark.O)
 
 		expect(move).to.equal(1)
 	end)
@@ -49,7 +49,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern("O,,O,X,X,")
 
-		local move = Computer.getMove(board, Mark.X)
+		local move = HardComputer.getMove(board, Mark.X)
 
 		expect(move).to.equal(7)
 	end)
@@ -64,7 +64,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",O,X,,XXO")
 
-		local move = Computer.getMove(board, Mark.O)
+		local move = HardComputer.getMove(board, Mark.O)
 
 		expect(move).to.equal(1)
 	end)
@@ -79,7 +79,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",X,O,X,O,")
 
-		local move = Computer.getMove(board, Mark.X)
+		local move = HardComputer.getMove(board, Mark.X)
 
 		expect(move).to.equal(3)
 	end)
@@ -94,7 +94,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",X,OXX,O,")
 
-		local move = Computer.getMove(board, Mark.O)
+		local move = HardComputer.getMove(board, Mark.O)
 
 		expect(move).to.equal(7)
 	end)
@@ -109,7 +109,7 @@ describe("Computer:getMove", function()
 		]]
 		local board = Board.fromPattern(",XXXOOOX,")
 
-		local move = Computer.getMove(board, Mark.O)
+		local move = HardComputer.getMove(board, Mark.O)
 
 		expect(move).to.equal(1)
 	end)
@@ -126,7 +126,7 @@ describe("Computer.terminal", function()
 		]]
 		local board = Board.fromPattern("OXXXOOOXX")
 
-		local value = Computer.terminal(board)
+		local value = HardComputer.terminal(board)
 
 		expect(value).to.equal(0)
 	end)
@@ -141,7 +141,7 @@ describe("Computer.terminal", function()
 		]]
 		local board = Board.fromPattern("X,,XOOX,,")
 
-		local value = Computer.terminal(board)
+		local value = HardComputer.terminal(board)
 
 		expect(value).to.equal(1)
 	end)
@@ -156,7 +156,7 @@ describe("Computer.terminal", function()
 		]]
 		local board = Board.fromPattern("XXXXOOOXO")
 
-		local value = Computer.terminal(board)
+		local value = HardComputer.terminal(board)
 
 		expect(value).to.equal(1)
 	end)
@@ -169,7 +169,7 @@ describe("Computer.terminal", function()
 		]]
 		local board = Board.fromPattern("O,,OXXO,X")
 
-		local value = Computer.terminal(board)
+		local value = HardComputer.terminal(board)
 
 		expect(value).to.equal(-1)
 	end)
@@ -202,7 +202,7 @@ describe("Computer.resultOf", function()
 
 			local board = Board.fromPattern(pattern)
 
-			local newBoard = Computer.resultOf(board, chosenMark, chosenPos)
+			local newBoard = HardComputer.resultOf(board, chosenMark, chosenPos)
 
 			for i = 1, 9 do
 				expect(expected[i]).to.equal(newBoard.board[i])

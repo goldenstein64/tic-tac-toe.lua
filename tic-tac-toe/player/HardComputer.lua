@@ -1,9 +1,7 @@
 local Board = require("tic-tac-toe.board.Board")
 local Mark = require("tic-tac-toe.board.Mark")
 
-math.randomseed(os.time() / math.pi)
-
-local Computer = {}
+local HardComputer = {}
 
 local equalities = {
 	[1] = { 1, 3 },
@@ -117,7 +115,7 @@ end
 ---@param board Board
 ---@return integer[]
 ---@nodiscard
-function Computer.actions(board)
+function HardComputer.actions(board)
 	return symmetricActions(board) or simpleActions(board)
 end
 
@@ -126,7 +124,7 @@ end
 ---@param action integer
 ---@return Board
 ---@nodiscard
-function Computer.resultOf(board, mark, action)
+function HardComputer.resultOf(board, mark, action)
 	local newBoard = Board(board)
 	newBoard:setMark(action, mark)
 	return newBoard
@@ -135,7 +133,7 @@ end
 ---@param board Board
 ---@return number?
 ---@nodiscard
-function Computer.terminal(board)
+function HardComputer.terminal(board)
 	if board:won(Mark.X) then
 		return 1
 	elseif board:won(Mark.O) then
@@ -150,13 +148,13 @@ end
 ---@alias Computer.Reconciler fun(a: number, b: number): number
 
 ---@type { [Mark]: Computer.Reconciler }
-Computer.reconcilers = {
+HardComputer.reconcilers = {
 	[Mark.X] = math.max,
 	[Mark.O] = math.min,
 }
 
 ---@type { [Mark]: number }
-Computer.controls = {
+HardComputer.controls = {
 	[Mark.X] = -1,
 	[Mark.O] = 1,
 }
@@ -165,18 +163,18 @@ Computer.controls = {
 ---@param mark Mark
 ---@return number
 ---@nodiscard
-function Computer.judge(board, mark)
-	local terminalValue = Computer.terminal(board)
+function HardComputer.judge(board, mark)
+	local terminalValue = HardComputer.terminal(board)
 	if terminalValue then
 		return terminalValue
 	end
 
-	local value = Computer.controls[mark]
-	local reconcile = Computer.reconcilers[mark]
+	local value = HardComputer.controls[mark]
+	local reconcile = HardComputer.reconcilers[mark]
 	local newMark = mark:other()
-	for _, action in ipairs(Computer.actions(board)) do
-		local newBoard = Computer.resultOf(board, mark, action)
-		value = reconcile(value, Computer.judge(newBoard, newMark))
+	for _, action in ipairs(HardComputer.actions(board)) do
+		local newBoard = HardComputer.resultOf(board, mark, action)
+		value = reconcile(value, HardComputer.judge(newBoard, newMark))
 	end
 
 	return value
@@ -186,15 +184,15 @@ end
 ---@param mark Mark
 ---@return number[]
 ---@nodiscard
-function Computer.getMoves(board, mark)
+function HardComputer.getMoves(board, mark)
 	local opponentMark = mark:other()
 
-	local bestScore = Computer.controls[mark]
-	local reconcile = Computer.reconcilers[mark]
+	local bestScore = HardComputer.controls[mark]
+	local reconcile = HardComputer.reconcilers[mark]
 	local bestMoves = {}
 	for _, position in ipairs(simpleActions(board)) do
-		local nextBoard = Computer.resultOf(board, mark, position)
-		local nextScore = Computer.judge(nextBoard, opponentMark)
+		local nextBoard = HardComputer.resultOf(board, mark, position)
+		local nextScore = HardComputer.judge(nextBoard, opponentMark)
 		if nextScore == bestScore then
 			table.insert(bestMoves, position)
 		elseif bestScore ~= reconcile(bestScore, nextScore) then
@@ -209,15 +207,14 @@ end
 ---@param board Board
 ---@param mark Mark
 ---@return number
----@nodiscard
-function Computer.getMove(board, mark)
+function HardComputer.getMove(board, mark)
 	if board:empty() then
 		return math.random(9)
 	else
-		local moves = Computer.getMoves(board, mark)
+		local moves = HardComputer.getMoves(board, mark)
 		assert(#moves > 0, "no moves to take!")
 		return moves[math.random(#moves)]
 	end
 end
 
-return Computer
+return HardComputer
