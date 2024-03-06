@@ -1,10 +1,12 @@
 local IO = require("tic-tac-toe.IO")
 
-local ERR_INVALID_MOVE = { code = "err.invalidMove" }
+local ERR_NAN = { code = "err.NaN" }
+local ERR_OUT_OF_RANGE = { code = "err.outOfRange" }
 local ERR_OCCUPIED = { code = "err.occupied" }
 
 local errors = {
-	[ERR_INVALID_MOVE] = true,
+	[ERR_NAN] = true,
+	[ERR_OUT_OF_RANGE] = true,
 	[ERR_OCCUPIED] = true,
 }
 
@@ -12,7 +14,8 @@ local Human = {}
 
 Human.io = IO({
 	["msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
-	["err.invalidMove"] = "This does not match [1-9]!",
+	["err.NaN"] = "This is not a number!",
+	["err.outOfRange"] = "This is not in the range of 1-9!",
 	["err.occupied"] = "This space cannot be filled!",
 })
 
@@ -25,8 +28,8 @@ Human.io = IO({
 function Human.promptMove(board, mark)
 	local posString = Human.io:prompt("msg.pickMove", mark)
 	local pos = tonumber(posString)
-	assert(pos, ERR_INVALID_MOVE)
-	assert(pos >= 1 and pos <= 9, ERR_INVALID_MOVE)
+	assert(pos, ERR_NAN)
+	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
 	assert(board:canMark(pos), ERR_OCCUPIED)
 
 	return pos

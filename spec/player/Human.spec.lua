@@ -24,7 +24,8 @@ describe("Human:getMove", function()
 
 		local move = Human.getMove(board, Mark.X)
 		expect(humanIO).to.print("msg.pickMove")
-		expect(humanIO).to.never.print("err.invalidMove")
+		expect(humanIO).to.never.print("err.NaN")
+		expect(humanIO).to.never.print("err.outOfRange")
 		expect(humanIO).to.never.print("err.occupied")
 
 		expect(move).to.equal(2)
@@ -37,19 +38,21 @@ describe("Human:getMove", function()
 		local move = Human.getMove(board, Mark.X)
 
 		-- 3 and 2 should get ignored
-		expect(humanIO).to.never.print("err.invalidMove")
+		expect(humanIO).to.never.print("err.NaN")
+		expect(humanIO).to.never.print("err.outOfRange")
 		expect(humanIO).to.print("err.occupied")
 
 		expect(move).to.equal(1)
 	end)
 
-	it("states that out of range positions are invalid moves", function()
+	it("states that out of range positions are invalid", function()
 		local board = Board.fromPattern(",,,,,,,,,")
 		humanIO:mockInput("0", "1")
 
 		local move = Human.getMove(board, Mark.X)
 
-		expect(humanIO).to.print("err.invalidMove")
+		expect(humanIO).to.never.print("err.NaN")
+		expect(humanIO).to.print("err.outOfRange")
 		expect(humanIO).to.never.print("err.occupied")
 
 		expect(move).to.equal(1)
@@ -62,7 +65,8 @@ describe("Human:getMove", function()
 		local move = Human.getMove(board, Mark.X)
 
 		-- @ should get ignored
-		expect(humanIO).to.print("err.invalidMove")
+		expect(humanIO).to.print("err.NaN")
+		expect(humanIO).to.never.print("err.outOfRange")
 		expect(humanIO).to.never.print("err.occupied")
 
 		expect(move).to.equal(1)
