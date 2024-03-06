@@ -3,6 +3,7 @@ local Mark = require("tic-tac-toe.board.Mark")
 
 local HardComputer = {}
 
+---an enumeration of all positions in a board that are equal
 local equalities = {
 	[1] = { 1, 3 },
 	[2] = { 4, 6 },
@@ -18,6 +19,12 @@ local equalities = {
 	[12] = { 2, 6 },
 }
 
+---all the symmetries in a board
+---
+---- `equalities` lists which of the entries in the `equalities` list are
+---  satisfied by this transformation
+---
+---- `image` lists how the scope of the board is limited by this symmetry
 local symmetries = {
 	{ -- rotate 90
 		equalities = { 1, 2, 3, 7, 8, 9 },
