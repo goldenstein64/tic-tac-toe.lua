@@ -22,7 +22,7 @@ Board.__name = "Board"
 ---@protected
 ---@param board Board?
 function Board:new(board)
-	---@type { [number]: Mark? }
+	---@type (Mark?)[]
 	self.board = {}
 
 	if board then
