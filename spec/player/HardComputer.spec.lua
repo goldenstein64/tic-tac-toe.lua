@@ -82,31 +82,39 @@ describe("Computer.terminal", function()
 end)
 
 describe("Computer.resultOf", function()
-	it("gets calculated correctly", function()
-		local marks = { Mark.X, Mark.O, nil }
-		local char = { "X", "O", "," }
-		for _ = 1, 50 do
-			local patternList, expected, markPositions
-			repeat
-				patternList = {}
-				expected = {}
-				markPositions = {}
-				for pos = 1, 9 do
-					local choice = math.random(3)
-					patternList[pos] = char[choice]
-					expected[pos] = marks[choice]
-					if choice == 3 then
-						table.insert(markPositions, pos)
-					end
-				end
-			until #markPositions > 0
+	local marks = { Mark.X, Mark.O, nil }
 
-			local pattern = table.concat(patternList)
+	---@type fun(amount: number): (fun(): ((Mark?)[], number[]))
+	local function generateBoard(amount)
+		return coroutine.wrap(function()
+			for _ = 1, amount do
+				---@type (Mark?)[], number[]
+				local expected, markPositions
+				repeat
+					expected = {}
+					markPositions = {}
+					for pos = 1, 9 do
+						local choice = math.random(3)
+						expected[pos] = marks[choice]
+						if choice == 3 then
+							table.insert(markPositions, pos)
+						end
+					end
+				until #markPositions > 0
+
+				coroutine.yield(expected, markPositions)
+			end
+		end)
+	end
+
+	it("gets calculated correctly", function()
+		for expected, markPositions in generateBoard(50) do
+			local board = Board()
+			board.board = table.move(expected, 1, 9, 1, {})
+
 			local chosenPos = markPositions[math.random(#markPositions)]
 			local chosenMark = marks[math.random(2)]
 			expected[chosenPos] = chosenMark
-
-			local board = Board.fromPattern(pattern)
 
 			local newBoard = HardComputer.resultOf(board, chosenMark, chosenPos)
 
