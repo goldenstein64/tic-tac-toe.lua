@@ -96,7 +96,7 @@ end
 
 ---@param board Board
 ---@return integer[]?
-local function symmetricActions(board)
+local function symmetricMoves(board)
 	local equalitySet = getEqualitySet(board)
 	for _, symmetry in ipairs(symmetries) do
 		if symmetryMatches(equalitySet, symmetry.equalities) then
@@ -107,7 +107,7 @@ end
 
 ---@param board Board
 ---@return integer[]
-local function simpleActions(board)
+local function simpleMoves(board)
 	local result = {}
 
 	for pos = 1, 9 do
@@ -122,18 +122,18 @@ end
 ---@param board Board
 ---@return integer[]
 ---@nodiscard
-function HardComputer.actions(board)
-	return symmetricActions(board) or simpleActions(board)
+function HardComputer.moves(board)
+	return symmetricMoves(board) or simpleMoves(board)
 end
 
 ---@param board Board
 ---@param mark Mark
----@param action integer
+---@param move integer
 ---@return Board
 ---@nodiscard
-function HardComputer.resultOf(board, mark, action)
+function HardComputer.resultOf(board, mark, move)
 	local newBoard = Board(board)
-	newBoard:setMark(action, mark)
+	newBoard:setMark(move, mark)
 	return newBoard
 end
 
@@ -179,8 +179,8 @@ function HardComputer.judge(board, mark)
 	local value = HardComputer.controls[mark]
 	local reconcile = HardComputer.reconcilers[mark]
 	local newMark = mark:other()
-	for _, action in ipairs(HardComputer.actions(board)) do
-		local newBoard = HardComputer.resultOf(board, mark, action)
+	for _, move in ipairs(HardComputer.moves(board)) do
+		local newBoard = HardComputer.resultOf(board, mark, move)
 		value = reconcile(value, HardComputer.judge(newBoard, newMark))
 	end
 
@@ -197,14 +197,14 @@ function HardComputer.getMoves(board, mark)
 	local bestScore = HardComputer.controls[mark]
 	local reconcile = HardComputer.reconcilers[mark]
 	local bestMoves = {}
-	for _, position in ipairs(simpleActions(board)) do
-		local nextBoard = HardComputer.resultOf(board, mark, position)
+	for _, move in ipairs(simpleMoves(board)) do
+		local nextBoard = HardComputer.resultOf(board, mark, move)
 		local nextScore = HardComputer.judge(nextBoard, opponentMark)
 		if nextScore == bestScore then
-			table.insert(bestMoves, position)
+			table.insert(bestMoves, move)
 		elseif bestScore ~= reconcile(bestScore, nextScore) then
 			bestScore = nextScore
-			bestMoves = { position }
+			bestMoves = { move }
 		end
 	end
 
