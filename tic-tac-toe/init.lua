@@ -13,8 +13,11 @@ local IO = require("tic-tac-toe.IO")
 
 ---@class App : Object
 ---@field super Object
----@overload fun(): App
 local App = Object:extend()
+
+---@class App.Class
+---@overload fun(): App
+local AppClass = App --[[@as App.Class]]
 
 App.__name = "App"
 
@@ -119,4 +122,4 @@ function App:run()
 	self:displayWinner(winner)
 end
 
-return App --[[@as App]]
+return AppClass

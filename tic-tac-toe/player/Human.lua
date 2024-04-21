@@ -16,8 +16,11 @@ local ERRORS = {
 
 ---@class Human : Object, Player
 ---@field super Object
----@overload fun(io: IO): Human
 local Human = Object:extend()
+
+---@class Human.Class
+---@overload fun(): Human
+local HumanClass = Human --[[@as Human.Class]]
 
 Human.io = IO({
 	["human.msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
@@ -62,4 +65,4 @@ function Human:getMove(board, mark)
 	end
 end
 
-return Human
+return HumanClass
