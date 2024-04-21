@@ -1,5 +1,5 @@
-local Board = require("tic-tac-toe.board.Board")
-local Mark = require("tic-tac-toe.board.Mark")
+local Board = require("tic-tac-toe.data.Board")
+local Mark = require("tic-tac-toe.data.Mark")
 
 local HardComputer = {}
 

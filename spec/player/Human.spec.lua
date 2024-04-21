@@ -1,8 +1,8 @@
 local MockIO = require("spec.io.MockIO")
 
 local Human = require("tic-tac-toe.player.Human")
-local Board = require("tic-tac-toe.board.Board")
-local Mark = require("tic-tac-toe.board.Mark")
+local Board = require("tic-tac-toe.data.Board")
+local Mark = require("tic-tac-toe.data.Mark")
 
 local humanIO = MockIO()
 Human.io = humanIO

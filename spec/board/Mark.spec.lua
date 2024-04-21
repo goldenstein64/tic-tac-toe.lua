@@ -1,4 +1,4 @@
-local Mark = require("tic-tac-toe.board.Mark")
+local Mark = require("tic-tac-toe.data.Mark")
 
 describe("Mark.new", function()
 	it("errors", function()

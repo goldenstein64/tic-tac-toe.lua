@@ -1,6 +1,6 @@
 local Object = require("classic")
 
-local Mark = require("tic-tac-toe.board.Mark")
+local Mark = require("tic-tac-toe.data.Mark")
 
 ---@class Board : Object
 ---@field super Object

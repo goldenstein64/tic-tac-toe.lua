@@ -1,4 +1,4 @@
-local Board = require("tic-tac-toe.board.Board")
+local Board = require("tic-tac-toe.data.Board")
 
 local WIN_PATTERN_LOOKUP = {
 	[1] = { 1, 4, 7 },
