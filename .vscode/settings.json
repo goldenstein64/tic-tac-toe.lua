@@ -5,7 +5,8 @@
     "lua_modules/share/lua/5.1",
     "$LUA_ENVS/say/library",
     "$USERPROFILE/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/penlight/module/library",
-    "${3rd}/lfs/library"
+    "${3rd}/lfs/library",
+    ".vscode/types",
   ],
   "Lua.workspace.ignoreDir": [
     ".vscode",
