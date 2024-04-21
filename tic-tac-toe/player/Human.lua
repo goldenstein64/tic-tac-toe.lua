@@ -30,7 +30,7 @@ Human.io = IO({
 ---@return number
 ---@nodiscard
 function Human.promptMove(board, mark)
-	local posString = Human.io:prompt("msg.pickMove", mark)
+	local posString = Human.io:prompt("human.msg.pickMove", mark)
 	local pos = tonumber(posString)
 	assert(pos, ERR_NAN)
 	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
@@ -45,8 +45,10 @@ end
 ---@nodiscard
 function Human.getMove(board, mark)
 	while true do
+		---@type boolean, unknown
 		local s, res = pcall(Human.promptMove, board, mark)
 		if s then
+			---@cast res number
 			return res
 		elseif ERRORS[res] then
 			---@cast res Human.Error
