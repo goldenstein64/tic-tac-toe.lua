@@ -45,12 +45,12 @@ for msg, formatter in pairs(messages) do
 end
 ---@cast messages { [tic-tac-toe.Message]: tic-tac-toe.ConsoleConnection.Formatter }
 
----@class ConsoleConnection : middleclass.Object, tic-tac-toe.Connection
+---@class tic-tac-toe.ConsoleConnection : middleclass.Object, tic-tac-toe.Connection
 ---@field class tic-tac-toe.ConsoleConnection.Class
 local ConsoleConnection = class("ConsoleConnection")
 
----@class tic-tac-toe.ConsoleConnection.Class : ConsoleConnection, middleclass.Class
----@overload fun(): ConsoleConnection
+---@class tic-tac-toe.ConsoleConnection.Class : tic-tac-toe.ConsoleConnection, middleclass.Class
+---@overload fun(): tic-tac-toe.ConsoleConnection
 local ConsoleConnectionClass = ConsoleConnection.static --[[@as tic-tac-toe.ConsoleConnection.Class]]
 
 ---@param inFile? file*
