@@ -10,6 +10,7 @@ description = {
 dependencies = {
 	"lua ~> 5.1",
 	"lrandom == 20180729-1",
+	"middleclass ~> 4.1",
 }
 test_dependencies = {
 	"busted ~> 2.2",
@@ -27,7 +28,5 @@ build = {
 		["tic-tac-toe.player.MediumComputer"] = "tic-tac-toe/player/MediumComputer.lua",
 		["tic-tac-toe.player.HardComputer"] = "tic-tac-toe/player/HardComputer.lua",
 		["tic-tac-toe.player.Human"] = "tic-tac-toe/player/Human.lua",
-
-		["tic-tac-toe.classic"] = "tic-tac-toe/classic.lua",
 	},
 }

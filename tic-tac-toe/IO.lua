@@ -1,19 +1,16 @@
-local Object = require("tic-tac-toe.classic")
+local class = require("middleclass")
 
 ---@alias IO.Formatter fun(...: any): string
 
----@class IO : Object
----@field super Object
-local IO = Object:extend()
+---@class IO : middleclass.Object
+---@field class IO.Class
+local IO = class("IO")
 
----@class IO.Class
+---@class IO.Class : IO, middleclass.Class
 ---@overload fun(messages?: { [Message]: IO.Formatter | string }): IO
-local IOClass = IO --[[@as IO.Class]]
-
-IO.__name = "IO"
 
 ---@param messages? { [Message]: IO.Formatter | string }
-function IO:new(messages)
+function IO:initialize(messages)
 	---@type { [Message]: IO.Formatter }
 	self.messages = {}
 	if messages then
@@ -69,4 +66,4 @@ end
 
 -- luacov: enable
 
-return IOClass
+return IO --[[@as IO.Class]]

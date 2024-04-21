@@ -1,13 +1,14 @@
 local IO = require("tic-tac-toe.IO")
 
 ---@class MockIO : IO
----@field super IO
+---@field class MockIO.Class
+local MockIO = IO:subclass("MockIO") --[[@as MockIO]]
+
+---@class MockIO.Class : MockIO, IO.Class
+---@field super IO.Class
 ---@overload fun(): MockIO
-local MockIO = IO:extend()
 
-MockIO.__name = "MockIO"
-
-function MockIO:new()
+function MockIO:initialize()
 	---a buffer of strings, consumed when `MockIO:prompt` is called
 	---@type string[]
 	self.inputs = {}
@@ -64,4 +65,4 @@ function MockIO:print(message, ...)
 	table.insert(self.outputs, message)
 end
 
-return MockIO --[[@as MockIO]]
+return MockIO --[[@as MockIO.Class]]

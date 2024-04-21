@@ -2,7 +2,6 @@
 
 local luassert = require("luassert")
 local say = require("say")
-local Object = require("tic-tac-toe.classic")
 
 local MockIO = require("spec.io.MockIO")
 
@@ -22,7 +21,7 @@ local function print(state, arguments, level)
 	arguments[2] = mockIO.outputs
 
 	assert(type(message) == "string", "a string must be provided for the message argument")
-	assert(Object.is(mockIO, MockIO), "a MockIO object must be provided for the message argument")
+	assert(mockIO:isInstanceOf(MockIO), "a MockIO object must be provided for the message argument")
 
 	for _, output in ipairs(mockIO.outputs) do
 		if output == message then

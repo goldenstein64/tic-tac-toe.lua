@@ -1,19 +1,15 @@
-local Object = require("tic-tac-toe.classic")
+local class = require("middleclass")
 
----@class Mark : Object
----@field super Object
-local Mark = Object:extend()
+---@class Mark : middleclass.Object
+---@field class Mark.Class
+local Mark = class("Mark")
 
----@class Mark.Class
+---@class Mark.Class : Mark, middleclass.Class
 ---@overload fun(ascii: string): Mark
 local MarkClass = Mark --[[@as Mark.Class]]
 
-Mark.__name = "Mark"
-
----@protected
 ---@param ascii string
-function Mark:new(ascii)
-	Mark.super.new(self)
+function Mark:initialize(ascii)
 	self.ascii = ascii
 end
 

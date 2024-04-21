@@ -1,7 +1,7 @@
-local Object = require("tic-tac-toe.classic")
+local class = require("middleclass")
+
 local EasyComputer = require("tic-tac-toe.player.EasyComputer")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
-
 local HardComputer = require("tic-tac-toe.player.HardComputer")
 local Human = require("tic-tac-toe.player.Human")
 local Mark = require("tic-tac-toe.data.Mark")
@@ -9,18 +9,16 @@ local Mark = require("tic-tac-toe.data.Mark")
 ---@class Player
 ---@field getMove fun(self: any, board: Board, mark: Mark): integer
 
----@class App : Object
----@field super Object
-local App = Object:extend()
+---@class App : middleclass.Object
+---@field class App.Class
+---@field io IO
+local App = class("App")
 
----@class App.Class
+---@class App.Class : App, middleclass.Class
 ---@overload fun(io: IO): App
-local AppClass = App --[[@as App.Class]]
-
-App.__name = "App"
 
 ---@param io IO
-function App:new(io)
+function App:initialize(io)
 	self.io = io
 end
 
@@ -96,4 +94,4 @@ function App:displayWinner(winner)
 	end
 end
 
-return AppClass
+return App --[[@as App.Class]]

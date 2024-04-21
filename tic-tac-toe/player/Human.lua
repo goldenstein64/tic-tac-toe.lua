@@ -1,4 +1,4 @@
-local Object = require("tic-tac-toe.classic")
+local class = require("middleclass")
 
 ---@class Human.Error
 ---@field code Message
@@ -13,16 +13,15 @@ local ERRORS = {
 	[ERR_OCCUPIED] = true,
 }
 
----@class Human : Object, Player
----@field super Object
-local Human = Object:extend()
+---@class Human : middleclass.Object, Player
+---@field io IO
+local Human = class("Human")
 
----@class Human.Class
+---@class Human.Class : Human, middleclass.Class
 ---@overload fun(io: IO): Human
-local HumanClass = Human --[[@as Human.Class]]
 
 ---@param io IO
-function Human:new(io)
+function Human:initialize(io)
 	self.io = io
 end
 
@@ -62,4 +61,4 @@ function Human:getMove(board, mark)
 	end
 end
 
-return HumanClass
+return Human --[[@as Human.Class]]

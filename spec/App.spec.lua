@@ -73,10 +73,10 @@ describe("App:promptPlayer", function()
 		local app = App(appIO)
 		appIO:mockInput("H")
 
-		local playerClass = app:promptPlayer(Mark.X)
+		local player = app:promptPlayer(Mark.X)
 
 		expect(appIO).to.print("app.msg.pickPlayer")
-		expect(getmetatable(playerClass)).to.equal(Human)
+		expect(player).to.be.an.instance.of(Human)
 	end)
 
 	it("emits an error message on an invalid input", function()
@@ -110,7 +110,7 @@ describe("App:choosePlayers", function()
 
 		local mark2, player2 = players()
 		expect(mark2).to.equal(Mark.O)
-		expect(getmetatable(player2)).to.equal(Human)
+		expect(player2).to.be.an.instance.of(Human)
 	end)
 
 	it("retries invalid second inputs for computers", function()

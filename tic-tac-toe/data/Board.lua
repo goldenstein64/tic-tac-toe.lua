@@ -1,20 +1,17 @@
-local Object = require("tic-tac-toe.classic")
+local class = require("middleclass")
 
 local Mark = require("tic-tac-toe.data.Mark")
 
----@class Board : Object
----@field super Object
-local Board = Object:extend()
+---@class Board : middleclass.Object
+---@field class Board.Class
+local Board = class("Board")
 
----@class Board.Class
+---@class Board.Class : Board, middleclass.Class
 ---@overload fun(board: Board?): Board
-local BoardClass = Board --[[@as Board.Class]]
+local BoardClass = Board.static --[[@as Board.Class]]
 
-Board.__name = "Board"
-
----@protected
 ---@param board Board?
-function Board:new(board)
+function Board:initialize(board)
 	---@type (Mark?)[]
 	self.board = {}
 
@@ -28,7 +25,7 @@ end
 ---@param pattern string
 ---@return Board
 function BoardClass.fromPattern(pattern)
-	local result = BoardClass()
+	local result = Board() --[[@as Board]]
 	for i = 1, 9 do
 		local char = pattern:sub(i, i)
 		local mark = Mark[char]
@@ -130,4 +127,4 @@ function Board:__tostring()
 	return table.concat(strBoard)
 end
 
-return BoardClass --[[@as Board.Class]]
+return Board --[[@as Board.Class]]

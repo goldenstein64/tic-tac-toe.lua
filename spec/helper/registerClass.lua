@@ -2,7 +2,6 @@
 
 local luassert = require("luassert")
 local say = require("say")
-local Object = require("tic-tac-toe.classic")
 
 say:set(
 	"assertion.instance_of.negative",
@@ -33,15 +32,13 @@ local function instance_of(state, arguments, level)
 	end
 
 	assert(type(base_class) == "table", "bad 'baseClass' argument, not a table.")
-	assert(Object.is(base_class, Object), "bad 'baseClass' argument, not a table.")
 	assert(type(instance) == "table", "bad 'instance' argument, not a table.")
-	assert(Object.is(instance, Object), "bad 'instance' argument, not a table.")
 
 	-- formatting arguments
-	arguments[1] = instance.__name or tostring(instance)
-	arguments[2] = base_class.__name or tostring(base_class)
+	arguments[1] = instance.class and instance.class.name or tostring(instance)
+	arguments[2] = base_class.name or tostring(base_class)
 
-	return Object.is(instance, base_class)
+	return instance:isInstanceOf(base_class)
 end
 
 luassert:register(
