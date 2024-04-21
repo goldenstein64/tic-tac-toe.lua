@@ -1,5 +1,4 @@
 local Object = require("classic")
-local IO = require("tic-tac-toe.IO")
 
 ---@class Human.Error
 ---@field code Message

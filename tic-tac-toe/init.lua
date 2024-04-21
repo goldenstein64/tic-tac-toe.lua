@@ -5,8 +5,6 @@ local MediumComputer = require("tic-tac-toe.player.MediumComputer")
 local HardComputer = require("tic-tac-toe.player.HardComputer")
 local Human = require("tic-tac-toe.player.Human")
 local Mark = require("tic-tac-toe.data.Mark")
-local Board = require("tic-tac-toe.data.Board")
-local IO = require("tic-tac-toe.IO")
 
 ---@class Player
 ---@field getMove fun(self: any, board: Board, mark: Mark): integer
