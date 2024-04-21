@@ -14,7 +14,7 @@ IO.__name = "IO"
 
 ---@param messages? { [Message]: IO.Formatter | string }
 function IO:new(messages)
-	---@type { [Message]: IO.Formatter | string? }
+	---@type { [Message]: IO.Formatter }
 	self.messages = {}
 	if messages then
 		for message, format in pairs(messages) do
@@ -24,9 +24,18 @@ function IO:new(messages)
 end
 
 ---@param message string
----@param format IO.Formatter | string?
-function IO:bind(message, format)
-	self.messages[message] = format
+---@param formatter IO.Formatter | string?
+function IO:bind(message, formatter)
+	local type_formatter = type(formatter)
+	if type_formatter == "string" then
+		self.messages[message] = function(...)
+			return string.format(formatter, ...)
+		end
+	elseif type_formatter == "function" then
+		self.messages[message] = formatter
+	else
+		error("unknown formatter type")
+	end
 end
 
 -- IO is mocked in the tests, this is a very simple implementation anyway.
@@ -36,12 +45,10 @@ end
 ---@param ... any
 function IO:format(message, ...)
 	local formatter = self.messages[message]
-	local type_formatter = type(formatter)
-	if type_formatter == "string" then
-		return formatter:format(...)
-	elseif type_formatter == "function" then
+	if formatter then
 		return formatter(...)
 	end
+
 	return message
 end
 
