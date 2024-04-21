@@ -1,7 +1,7 @@
 local class = require("middleclass")
 
 ---@class Human.Error
----@field code Message
+---@field code tic-tac-toe.Message
 
 local ERR_NAN = { code = "human.err.NaN" } ---@type Human.Error
 local ERR_OUT_OF_RANGE = { code = "human.err.outOfRange" } ---@type Human.Error
@@ -13,22 +13,22 @@ local ERRORS = {
 	[ERR_OCCUPIED] = true,
 }
 
----@class Human : middleclass.Object, Player
----@field conn Connection
+---@class tic-tac-toe.Human : middleclass.Object, tic-tac-toe.Player
+---@field conn tic-tac-toe.Connection
 local Human = class("Human")
 
----@class Human.Class : Human, middleclass.Class
----@overload fun(conn: Connection): Human
+---@class tic-tac-toe.Human.Class : tic-tac-toe.Human, middleclass.Class
+---@overload fun(conn: tic-tac-toe.Connection): tic-tac-toe.Human
 
----@param conn Connection
+---@param conn tic-tac-toe.Connection
 function Human:initialize(conn)
 	self.conn = conn
 end
 
 ---@private
 ---prompts the user for a move from stdin
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number
 ---@nodiscard
 function Human:promptMove(board, mark)
@@ -41,8 +41,8 @@ function Human:promptMove(board, mark)
 	return pos
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number
 ---@nodiscard
 function Human:getMove(board, mark)
@@ -61,4 +61,4 @@ function Human:getMove(board, mark)
 	end
 end
 
-return Human --[[@as Human.Class]]
+return Human --[[@as tic-tac-toe.Human.Class]]

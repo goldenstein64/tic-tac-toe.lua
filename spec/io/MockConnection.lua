@@ -1,11 +1,11 @@
 local class = require("middleclass")
 
----@class MockIO : middleclass.Object, Connection
----@field class MockIO.Class
+---@class tic-tac-toe.MockConnection : middleclass.Object, tic-tac-toe.Connection
+---@field class tic-tac-toe.MockConnection.Class
 local MockIO = class("MockIO")
 
----@class MockIO.Class : middleclass.Class
----@overload fun(): MockIO
+---@class tic-tac-toe.MockConnection.Class : middleclass.Class
+---@overload fun(): tic-tac-toe.MockConnection
 
 function MockIO:initialize()
 	---a buffer of strings, consumed when `MockIO:prompt` is called
@@ -64,4 +64,4 @@ function MockIO:print(message, ...)
 	table.insert(self.outputs, message)
 end
 
-return MockIO --[[@as MockIO.Class]]
+return MockIO --[[@as tic-tac-toe.MockConnection.Class]]

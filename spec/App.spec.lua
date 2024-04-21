@@ -8,8 +8,8 @@ local EasyComputer = require("tic-tac-toe.player.EasyComputer")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
 local HardComputer = require("tic-tac-toe.player.HardComputer")
 
----@param players Player[]
----@return fun(): (Mark, Player)
+---@param players tic-tac-toe.Player[]
+---@return fun(): (tic-tac-toe.Mark, tic-tac-toe.Player)
 local function cyclePlayers(players)
 	local i = 0
 	return function()

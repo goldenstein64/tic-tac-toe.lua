@@ -1,7 +1,7 @@
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 
----@class HardComputer : Player
+---@class tic-tac-toe.HardComputer : tic-tac-toe.Player
 local HardComputer = {}
 
 ---an enumeration of all positions in a board that are equal
@@ -66,22 +66,22 @@ local function symmetryMatches(equalSet, symmetry)
 	return true
 end
 
----@param board Board
+---@param board tic-tac-toe.Board
 ---@param image integer[]
 ---@return integer[]
 local function filterImage(board, image)
 	local result = {}
 
-	for _, pos in ipairs(image) do
-		if board:canMark(pos) then
-			table.insert(result, pos)
+	for _, move in ipairs(image) do
+		if board:canMark(move) then
+			table.insert(result, move)
 		end
 	end
 
 	return result
 end
 
----@param board Board
+---@param board tic-tac-toe.Board
 ---@return { [integer]: true? }
 local function getEqualitySet(board)
 	local result = {}
@@ -89,7 +89,7 @@ local function getEqualitySet(board)
 	local data = board.board
 
 	for i, equality in pairs(equalities) do
-		result[i] = data[equality[1]] == data[equality[2]]
+		result[i] = data[equality[1]] == data[equality[2]] or nil
 	end
 
 	return result
@@ -97,7 +97,7 @@ end
 
 ---returns all empty positions on the board respective to the largest matching
 ---symmetry
----@param board Board
+---@param board tic-tac-toe.Board
 ---@return integer[]?
 local function symmetricMoves(board)
 	local equalitySet = getEqualitySet(board)
@@ -109,7 +109,7 @@ local function symmetricMoves(board)
 end
 
 ---returns all empty positions on the board
----@param board Board
+---@param board tic-tac-toe.Board
 ---@return integer[]
 local function simpleMoves(board)
 	local result = {}
@@ -125,7 +125,7 @@ end
 
 ---returns all the valid moves a player can make. Some moves may be omitted if
 ---the board contains a symmetry.
----@param board Board
+---@param board tic-tac-toe.Board
 ---@return integer[]
 ---@nodiscard
 function HardComputer.moves(board)
@@ -133,10 +133,10 @@ function HardComputer.moves(board)
 end
 
 ---returns a copy of `board` with `mark` applied at `move`
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@param move integer
----@return Board newBoard
+---@return tic-tac-toe.Board newBoard
 ---@nodiscard
 function HardComputer.resultOf(board, mark, move)
 	local newBoard = Board(board)
@@ -151,7 +151,7 @@ end
 ---- `-1`: Player `O` won
 ---- `0`: there was a tie
 ---- `nil`: the game is not finished
----@param board Board
+---@param board tic-tac-toe.Board
 ---@return number?
 ---@nodiscard
 function HardComputer.terminal(board)
@@ -168,13 +168,13 @@ end
 
 ---@alias Computer.Reconciler fun(a: number, b: number): number
 
----@type { [Mark]: Computer.Reconciler }
+---@type { [tic-tac-toe.Mark]: Computer.Reconciler }
 HardComputer.reconcilers = {
 	[Mark.X] = math.max,
 	[Mark.O] = math.min,
 }
 
----@type { [Mark]: number }
+---@type { [tic-tac-toe.Mark]: number }
 HardComputer.controls = {
 	[Mark.X] = -1,
 	[Mark.O] = 1,
@@ -182,8 +182,8 @@ HardComputer.controls = {
 
 ---returns a number indicating the best possible state for this `board`
 ---respective to `mark`
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number
 ---@nodiscard
 function HardComputer.judge(board, mark)
@@ -203,8 +203,8 @@ function HardComputer.judge(board, mark)
 	return value
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]
 ---@nodiscard
 function HardComputer.getMoves(board, mark)
@@ -227,8 +227,8 @@ function HardComputer.getMoves(board, mark)
 	return bestMoves
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number
 function HardComputer:getMove(board, mark)
 	if board:empty() then

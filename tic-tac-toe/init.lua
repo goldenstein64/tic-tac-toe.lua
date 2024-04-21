@@ -6,24 +6,24 @@ local HardComputer = require("tic-tac-toe.player.HardComputer")
 local Human = require("tic-tac-toe.player.Human")
 local Mark = require("tic-tac-toe.data.Mark")
 
----@class Player
----@field getMove fun(self: any, board: Board, mark: Mark): integer
+---@class tic-tac-toe.Player
+---@field getMove fun(self: any, board: tic-tac-toe.Board, mark: tic-tac-toe.Mark): integer
 
----@class App : middleclass.Object
----@field class App.Class
----@field conn Connection
+---@class tic-tac-toe.App : middleclass.Object
+---@field class tic-tac-toe.App.Class
+---@field conn tic-tac-toe.Connection
 local App = class("App")
 
----@class App.Class : App, middleclass.Class
----@overload fun(conn: Connection): App
+---@class tic-tac-toe.App.Class : tic-tac-toe.App, middleclass.Class
+---@overload fun(conn: tic-tac-toe.Connection): tic-tac-toe.App
 
----@param conn Connection
+---@param conn tic-tac-toe.Connection
 function App:initialize(conn)
 	self.conn = conn
 end
 
----@param mark Mark
----@return Player?
+---@param mark tic-tac-toe.Mark
+---@return tic-tac-toe.Player?
 function App:promptPlayer(mark)
 	local chosenPlayer = self.conn:prompt("app.msg.pickPlayer", mark)
 	if chosenPlayer == "H" then
@@ -46,16 +46,16 @@ function App:promptPlayer(mark)
 	end
 end
 
----@return fun(): (Mark, Player)
+---@return fun(): (tic-tac-toe.Mark, tic-tac-toe.Player)
 function App:choosePlayers()
-	local players = {} ---@type Player[]
+	local players = {} ---@type tic-tac-toe.Player[]
 
 	for _, mark in ipairs(Mark.all) do
-		local player ---@type Player?
+		local player ---@type tic-tac-toe.Player?
 		repeat
 			player = self:promptPlayer(mark)
 		until player
-		---@cast player Player
+		---@cast player tic-tac-toe.Player
 		table.insert(players, player)
 	end
 
@@ -67,9 +67,9 @@ function App:choosePlayers()
 	end
 end
 
----@param board Board
----@param players fun(): (Mark, Player)
----@return Mark?
+---@param board tic-tac-toe.Board
+---@param players fun(): (tic-tac-toe.Mark, tic-tac-toe.Player)
+---@return tic-tac-toe.Mark?
 function App:playGame(board, players)
 	while not board:full() do
 		local mark, player = players()
@@ -85,7 +85,7 @@ function App:playGame(board, players)
 	return nil
 end
 
----@param winner Mark?
+---@param winner tic-tac-toe.Mark?
 function App:displayWinner(winner)
 	if winner == nil then
 		self.conn:print("app.msg.tied")
@@ -94,4 +94,4 @@ function App:displayWinner(winner)
 	end
 end
 
-return App --[[@as App.Class]]
+return App --[[@as tic-tac-toe.App.Class]]

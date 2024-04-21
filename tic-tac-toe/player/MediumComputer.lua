@@ -12,11 +12,11 @@ local WIN_PATTERN_LOOKUP = {
 	[9] = { 3, 6, 7 },
 }
 
----@class MediumComputer : Player
+---@class tic-tac-toe.MediumComputer : tic-tac-toe.Player
 local MediumComputer = {}
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]?
 ---@nodiscard
 local function getWinningMoves(board, mark)
@@ -47,16 +47,16 @@ local function getWinningMoves(board, mark)
 	return #result > 0 and result or nil
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]?
 ---@nodiscard
 local function getBlockingMoves(board, mark)
 	return getWinningMoves(board, mark:other())
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]?
 ---@nodiscard
 local function getTrappingMoves(board, mark)
@@ -102,8 +102,8 @@ local function getTrappingMoves(board, mark)
 	return #result > 0 and result or nil
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]?
 ---@nodiscard
 local function getCenterMove(board, mark)
@@ -112,8 +112,8 @@ end
 
 local CORNERS = { 1, 3, 7, 9 }
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]?
 ---@nodiscard
 local function getCornerMoves(board, mark)
@@ -128,8 +128,8 @@ end
 
 local SIDES = { 2, 4, 6, 8 }
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]?
 ---@nodiscard
 local function getSideMoves(board, mark)
@@ -142,8 +142,8 @@ local function getSideMoves(board, mark)
 	return #result > 0 and result or nil
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number
 function MediumComputer:getMove(board, mark)
 	local moves = getWinningMoves(board, mark)

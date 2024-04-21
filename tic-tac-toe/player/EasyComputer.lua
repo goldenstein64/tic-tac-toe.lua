@@ -1,8 +1,8 @@
----@class EasyComputer : Player
+---@class tic-tac-toe.EasyComputer : tic-tac-toe.Player
 local EasyComputer = {}
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number[]
 ---@nodiscard
 function EasyComputer.getMoves(board, mark)
@@ -18,8 +18,8 @@ function EasyComputer.getMoves(board, mark)
 	return result
 end
 
----@param board Board
----@param mark Mark
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
 ---@return number
 function EasyComputer:getMove(board, mark)
 	local moves = EasyComputer.getMoves(board, mark)

@@ -1,4 +1,4 @@
----@alias Message
+---@alias tic-tac-toe.Message
 ---| "app.msg.greeting"
 ---| "app.msg.pickPlayer"
 ---| "app.msg.pickComputer"
@@ -12,6 +12,6 @@
 ---| "human.err.outOfRange"
 ---| "human.err.occupied"
 
----@class Connection
----@field print fun(self: Connection, msg: Message, ...: any)
----@field prompt fun(self: Connection, msg: Message, ...: any): string
+---@class tic-tac-toe.Connection
+---@field print fun(self: tic-tac-toe.Connection, msg: tic-tac-toe.Message, ...: any)
+---@field prompt fun(self: tic-tac-toe.Connection, msg: tic-tac-toe.Message, ...: any): string

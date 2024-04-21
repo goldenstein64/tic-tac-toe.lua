@@ -11,7 +11,7 @@ local MockConnection = require("spec.io.MockConnection")
 ---@return boolean
 local function print(state, arguments, level)
 	local message = arguments[1] ---@type string
-	local mockIO = arguments[2] ---@type MockIO
+	local mockIO = arguments[2] ---@type tic-tac-toe.MockConnection
 	local failure_message = arguments[3]
 
 	if failure_message ~= nil then

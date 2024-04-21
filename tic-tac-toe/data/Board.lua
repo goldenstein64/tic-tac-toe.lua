@@ -2,17 +2,17 @@ local class = require("middleclass")
 
 local Mark = require("tic-tac-toe.data.Mark")
 
----@class Board : middleclass.Object
----@field class Board.Class
+---@class tic-tac-toe.Board : middleclass.Object
+---@field class tic-tac-toe.Board.Class
 local Board = class("Board")
 
----@class Board.Class : Board, middleclass.Class
----@overload fun(board: Board?): Board
-local BoardClass = Board.static --[[@as Board.Class]]
+---@class tic-tac-toe.Board.Class : tic-tac-toe.Board, middleclass.Class
+---@overload fun(board: tic-tac-toe.Board?): tic-tac-toe.Board
+local BoardClass = Board.static --[[@as tic-tac-toe.Board.Class]]
 
----@param board Board?
+---@param board tic-tac-toe.Board?
 function Board:initialize(board)
-	---@type (Mark?)[]
+	---@type (tic-tac-toe.Mark?)[]
 	self.board = {}
 
 	if board then
@@ -23,9 +23,9 @@ function Board:initialize(board)
 end
 
 ---@param pattern string
----@return Board
+---@return tic-tac-toe.Board
 function BoardClass.fromPattern(pattern)
-	local result = Board() --[[@as Board]]
+	local result = Board() --[[@as tic-tac-toe.Board]]
 	for i = 1, 9 do
 		local char = pattern:sub(i, i)
 		local mark = Mark[char]
@@ -49,7 +49,7 @@ BoardClass.WIN_PATTERNS = {
 ---attempt to mark the given position with the given mark. Errors if it is
 ---unable to do so
 ---@param position number
----@param mark Mark?
+---@param mark tic-tac-toe.Mark?
 function Board:setMark(position, mark)
 	assert(self:canMark(position), "This space is already filled!")
 
@@ -65,14 +65,14 @@ end
 
 ---does this position on the board have this mark?
 ---@param position number
----@param mark Mark?
+---@param mark tic-tac-toe.Mark?
 ---@return boolean
 function Board:isMarkedWith(position, mark)
 	return position >= 1 and position <= 9 and self.board[position] == mark
 end
 
 ---did the player with this mark win?
----@param mark Mark
+---@param mark tic-tac-toe.Mark
 ---@return boolean
 function Board:won(mark)
 	for _, pattern in ipairs(BoardClass.WIN_PATTERNS) do
@@ -127,4 +127,4 @@ function Board:__tostring()
 	return table.concat(strBoard)
 end
 
-return Board --[[@as Board.Class]]
+return Board --[[@as tic-tac-toe.Board.Class]]

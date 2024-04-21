@@ -84,11 +84,11 @@ end)
 describe("Computer.resultOf", function()
 	local marks = { Mark.X, Mark.O, nil }
 
-	---@type fun(amount: number): (fun(): ((Mark?)[], number[]))
+	---@type fun(amount: number): (fun(): ((tic-tac-toe.Mark?)[], number[]))
 	local function generateBoard(amount)
 		return coroutine.wrap(function()
 			for _ = 1, amount do
-				---@type (Mark?)[], number[]
+				---@type (tic-tac-toe.Mark?)[], number[]
 				local expected, markPositions
 				repeat
 					expected = {}

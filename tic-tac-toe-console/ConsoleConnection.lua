@@ -1,6 +1,6 @@
 local class = require("middleclass")
 
----@alias IO.Formatter fun(...: any): string
+---@alias tic-tac-toe.ConsoleConnection.Formatter fun(...: any): string
 
 local BOARD_FORMAT = [[
 	 %s | %s | %s
@@ -9,7 +9,8 @@ local BOARD_FORMAT = [[
 	---|---|---
 	 %s | %s | %s]]
 
----@type IO.Formatter
+---@param board tic-tac-toe.Board
+---@return string
 local function boardFormat(board)
 	local strBoard = {} ---@type string[]
 	for i = 1, 9 do
@@ -18,7 +19,7 @@ local function boardFormat(board)
 	return BOARD_FORMAT:format(table.unpack(strBoard))
 end
 
-local ioMap = {
+local messages = {
 	["app.msg.greeting"] = "This program runs a tic-tac-toe game.",
 	["app.msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
 	["app.msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
@@ -35,35 +36,36 @@ local ioMap = {
 	["human.err.occupied"] = "This space cannot be filled!",
 }
 
-for msg, formatter in pairs(ioMap) do
+for msg, formatter in pairs(messages) do
 	if type(formatter) == "string" then
-		ioMap[msg] = function(...)
+		messages[msg] = function(...)
 			return string.format(formatter, ...)
 		end
 	end
 end
----@cast ioMap { [Message]: IO.Formatter }
+---@cast messages { [tic-tac-toe.Message]: tic-tac-toe.ConsoleConnection.Formatter }
 
----@class ConsoleConnection : middleclass.Object, Connection
----@field class ConsoleConnection.Class
+---@class ConsoleConnection : middleclass.Object, tic-tac-toe.Connection
+---@field class tic-tac-toe.ConsoleConnection.Class
 local ConsoleConnection = class("ConsoleConnection")
 
----@class ConsoleConnection.Class : ConsoleConnection, middleclass.Class
+---@class tic-tac-toe.ConsoleConnection.Class : ConsoleConnection, middleclass.Class
 ---@overload fun(): ConsoleConnection
-local ConsoleConnectionClass = ConsoleConnection.static --[[@as ConsoleConnection.Class]]
+local ConsoleConnectionClass = ConsoleConnection.static --[[@as tic-tac-toe.ConsoleConnection.Class]]
 
 ---@param inFile? file*
 ---@param outFile? file*
 function ConsoleConnection:initialize(inFile, outFile)
+	self.messages = messages
 	self.inFile = inFile or io.stdin
 	self.outFile = outFile or io.stdout
 end
 
----@param message Message
+---@param message tic-tac-toe.Message
 ---@param ... any
 ---@return string
 function ConsoleConnection:format(message, ...)
-	local formatter = ioMap[message]
+	local formatter = self.messages[message]
 	if formatter then
 		return formatter(...)
 	end
@@ -71,18 +73,18 @@ function ConsoleConnection:format(message, ...)
 	return message
 end
 
----@param message Message
+---@param message tic-tac-toe.Message
 ---@param ... any
 function ConsoleConnection:print(message, ...)
 	self.outFile:write(self:format(message, ...))
 	self.outFile:write("\n")
 end
 
----@param message Message
+---@param message tic-tac-toe.Message
 ---@param ... any
 function ConsoleConnection:prompt(message, ...)
 	self.outFile:write(self:format(message, ...))
 	return self.inFile:read()
 end
 
-return ConsoleConnection --[[@as ConsoleConnection.Class]]
+return ConsoleConnection --[[@as tic-tac-toe.ConsoleConnection.Class]]

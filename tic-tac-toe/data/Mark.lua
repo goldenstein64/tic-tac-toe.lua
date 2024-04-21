@@ -1,12 +1,12 @@
 local class = require("middleclass")
 
----@class Mark : middleclass.Object
----@field class Mark.Class
+---@class tic-tac-toe.Mark : middleclass.Object
+---@field class tic-tac-toe.Mark.Class
 local Mark = class("Mark")
 
----@class Mark.Class : Mark, middleclass.Class
----@overload fun(ascii: string): Mark
-local MarkClass = Mark --[[@as Mark.Class]]
+---@class tic-tac-toe.Mark.Class : tic-tac-toe.Mark, middleclass.Class
+---@overload fun(ascii: string): tic-tac-toe.Mark
+local MarkClass = Mark --[[@as tic-tac-toe.Mark.Class]]
 
 ---@param ascii string
 function Mark:initialize(ascii)

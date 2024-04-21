@@ -3,7 +3,7 @@ local Mark = require("tic-tac-toe.data.Mark")
 
 local METHOD_FORMAT = "%s:getMove"
 
----@param computer Player
+---@param computer tic-tac-toe.Player
 ---@param name string
 local function testCommonTactics(computer, name)
 	describe(METHOD_FORMAT:format(name), function()
