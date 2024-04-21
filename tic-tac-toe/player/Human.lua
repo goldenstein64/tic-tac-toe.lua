@@ -35,8 +35,8 @@ Human.io = IO({
 ---@param mark Mark
 ---@return number
 ---@nodiscard
-	local posString = Human.io:prompt("human.msg.pickMove", mark)
 function Human:promptMove(board, mark)
+	local posString = Human.io:prompt("human.msg.pickMove", mark)
 	local pos = tonumber(posString)
 	assert(pos, ERR_NAN)
 	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
