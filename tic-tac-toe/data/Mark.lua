@@ -36,4 +36,5 @@ end
 return {
 	X = X,
 	O = O,
+	all = { X, O },
 }

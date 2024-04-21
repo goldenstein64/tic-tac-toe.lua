@@ -50,36 +50,43 @@ function App:promptPlayer(mark)
 	end
 end
 
----@return { [Mark]: Player }
+---@return fun(): (Mark, Player)
 function App:choosePlayers()
-	local players = {} ---@type { [Mark]: Player }
+	local players = {} ---@type { [1]: Mark, [2]: Player }[]
 
-	local mark = Mark.X
-	while not players[mark] do
-		players[mark] = self:promptPlayer(mark)
-		mark = players[mark] and mark:other() or mark
+	for _, mark in ipairs(Mark.all) do
+		local player ---@type Player?
+		repeat
+			player = self:promptPlayer(mark)
+		until player
+		---@cast player Player
+		table.insert(players, { mark, player } --[[@as { [1]: Mark, [2]: Player }]])
 	end
 
-	return players
+	local i = 0
+	return function()
+		i = i % #players + 1
+		---@diagnostic disable-next-line:return-type-mismatch
+		return table.unpack(players[i], 1, 2)
+	end
 end
 
 ---@param board Board
----@param mark Mark
----@param players { [Mark]: Player }
+---@param players fun(): (Mark, Player)
 ---@return Mark?
-function App:playGame(board, mark, players)
-	local otherMark = mark:other()
-	if board:won(otherMark) then
-		return otherMark
-	elseif board:full() then
-		return nil
-	else
-		local player = players[mark]
+function App:playGame(board, players)
+	while not board:full() do
+		local mark, player = players()
 		local move = player:getMove(board, mark)
 		board:setMark(move, mark)
 		self.io:print("app.msg.game", board)
-		return self:playGame(board, otherMark, players)
+
+		if board:won(mark) then
+			return mark
+		end
 	end
+
+	return nil
 end
 
 ---@param winner Mark?
@@ -89,12 +96,6 @@ function App:displayWinner(winner)
 	else
 		self.io:print("app.msg.playerWon", winner)
 	end
-end
-
-function App:run()
-	self.io:print("app.msg.greeting")
-	local winner = self:playGame(Board(), Mark.X, self:choosePlayers())
-	self:displayWinner(winner)
 end
 
 return AppClass
