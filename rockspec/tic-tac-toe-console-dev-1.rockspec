@@ -10,6 +10,7 @@ description = {
 dependencies = {
 	"lua ~> 5.1",
 	"tic-tac-toe == dev-1",
+	"middleclass ~> 4.1",
 }
 build = {
 	type = "builtin",
