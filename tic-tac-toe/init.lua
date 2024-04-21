@@ -16,39 +16,14 @@ local IO = require("tic-tac-toe.IO")
 local App = Object:extend()
 
 ---@class App.Class
----@overload fun(): App
+---@overload fun(io: IO): App
 local AppClass = App --[[@as App.Class]]
 
 App.__name = "App"
 
-do
-	local BOARD_FORMAT = [[
-	 %s | %s | %s
-	---|---|---
-	 %s | %s | %s
-	---|---|---
-	 %s | %s | %s]]
-
-	---@type IO.Formatter
-	local function boardFormat(board)
-		local strBoard = {} ---@type string[]
-		for i = 1, 9 do
-			strBoard[i] = tostring(board.board[i] or " ")
-		end
-		return BOARD_FORMAT:format(table.unpack(strBoard))
-	end
-
-	App.io = IO({
-		["app.msg.greeting"] = "This program runs a tic-tac-toe game.",
-		["app.msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
-		["app.msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
-		["app.msg.game"] = boardFormat,
-		["app.msg.playerWon"] = "Player %s won!",
-		["app.msg.tied"] = "There was a tie!",
-
-		["app.err.invalidPlayer"] = "This does not match 'H', 'C'!",
-		["app.err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
-	})
+---@param io IO
+function App:new(io)
+	self.io = io
 end
 
 ---@param mark Mark
@@ -56,7 +31,7 @@ end
 function App:promptPlayer(mark)
 	local chosenPlayer = self.io:prompt("app.msg.pickPlayer", mark)
 	if chosenPlayer == "H" then
-		return Human
+		return Human(self.io)
 	elseif chosenPlayer == "C" then
 		local chosenComputer = self.io:prompt("app.msg.pickComputer", mark)
 		if chosenComputer == "E" then

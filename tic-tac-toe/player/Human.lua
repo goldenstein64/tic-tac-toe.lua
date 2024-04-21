@@ -19,15 +19,13 @@ local ERRORS = {
 local Human = Object:extend()
 
 ---@class Human.Class
----@overload fun(): Human
+---@overload fun(io: IO): Human
 local HumanClass = Human --[[@as Human.Class]]
 
-Human.io = IO({
-	["human.msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
-	["human.err.NaN"] = "This is not a number!",
-	["human.err.outOfRange"] = "This is not in the range of 1-9!",
-	["human.err.occupied"] = "This space cannot be filled!",
-})
+---@param io IO
+function Human:new(io)
+	self.io = io
+end
 
 ---@private
 ---prompts the user for a move from stdin
@@ -36,7 +34,7 @@ Human.io = IO({
 ---@return number
 ---@nodiscard
 function Human:promptMove(board, mark)
-	local posString = Human.io:prompt("human.msg.pickMove", mark)
+	local posString = self.io:prompt("human.msg.pickMove", mark)
 	local pos = tonumber(posString)
 	assert(pos, ERR_NAN)
 	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
@@ -58,7 +56,7 @@ function Human:getMove(board, mark)
 			return res
 		elseif ERRORS[res] then
 			---@cast res Human.Error
-			Human.io:print(res.code)
+			self.io:print(res.code)
 		else
 			error(res)
 		end
