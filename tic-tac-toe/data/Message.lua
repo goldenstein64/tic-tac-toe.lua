@@ -1,0 +1,13 @@
+---@alias Message
+---| "app.msg.greeting"
+---| "app.msg.pickPlayer"
+---| "app.msg.pickComputer"
+---| "app.msg.game"
+---| "app.msg.playerWon"
+---| "app.msg.tied"
+---| "app.err.invalidPlayer"
+---| "app.err.invalidComputer"
+---| "human.msg.pickMove"
+---| "human.err.NaN"
+---| "human.err.outOfRange"
+---| "human.err.occupied"

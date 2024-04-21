@@ -35,28 +35,27 @@ do
 		return BOARD_FORMAT:format(table.unpack(strBoard))
 	end
 
-	---@type { [string]: IO.Formatter | string }
 	App.io = IO({
-		["msg.greeting"] = "This program runs a tic-tac-toe game.",
-		["msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
-		["msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
-		["msg.game"] = boardFormat,
-		["msg.playerWon"] = "Player %s won!",
-		["msg.tied"] = "There was a tie!",
+		["app.msg.greeting"] = "This program runs a tic-tac-toe game.",
+		["app.msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
+		["app.msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
+		["app.msg.game"] = boardFormat,
+		["app.msg.playerWon"] = "Player %s won!",
+		["app.msg.tied"] = "There was a tie!",
 
-		["err.invalidPlayer"] = "This does not match 'H', 'C'!",
-		["err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
+		["app.err.invalidPlayer"] = "This does not match 'H', 'C'!",
+		["app.err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
 	})
 end
 
 ---@param mark Mark
 ---@return Player?
 function App:promptPlayer(mark)
-	local chosenPlayer = self.io:prompt("msg.pickPlayer", mark)
+	local chosenPlayer = self.io:prompt("app.msg.pickPlayer", mark)
 	if chosenPlayer == "H" then
 		return Human
 	elseif chosenPlayer == "C" then
-		local chosenComputer = self.io:prompt("msg.pickComputer", mark)
+		local chosenComputer = self.io:prompt("app.msg.pickComputer", mark)
 		if chosenComputer == "E" then
 			return EasyComputer
 		elseif chosenComputer == "M" then
@@ -64,11 +63,11 @@ function App:promptPlayer(mark)
 		elseif chosenComputer == "H" then
 			return HardComputer
 		else
-			self.io:print("err.invalidComputer")
+			self.io:print("app.err.invalidComputer")
 			return nil
 		end
 	else
-		self.io:print("err.invalidPlayer")
+		self.io:print("app.err.invalidPlayer")
 		return nil
 	end
 end
@@ -100,7 +99,7 @@ function App:playGame(board, mark, players)
 		local player = players[mark]
 		local move = player.getMove(board, mark)
 		board:setMark(move, mark)
-		self.io:print("msg.game", board)
+		self.io:print("app.msg.game", board)
 		return self:playGame(board, otherMark, players)
 	end
 end
@@ -108,14 +107,14 @@ end
 ---@param winner Mark?
 function App:displayWinner(winner)
 	if winner == nil then
-		self.io:print("msg.tied")
+		self.io:print("app.msg.tied")
 	else
-		self.io:print("msg.playerWon", winner)
+		self.io:print("app.msg.playerWon", winner)
 	end
 end
 
 function App:run()
-	self.io:print("msg.greeting")
+	self.io:print("app.msg.greeting")
 	local winner = self:playGame(Board(), Mark.X, self:choosePlayers())
 	self:displayWinner(winner)
 end

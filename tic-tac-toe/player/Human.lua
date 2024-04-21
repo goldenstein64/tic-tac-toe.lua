@@ -1,17 +1,12 @@
+local Object = require("classic")
 local IO = require("tic-tac-toe.IO")
 
----@alias Human.IOMessage
----| "msg.pickMove"
----| "err.NaN"
----| "err.outOfRange"
----| "err.occupied"
-
 ---@class Human.Error
----@field code Human.IOMessage
+---@field code Message
 
-local ERR_NAN = { code = "err.NaN" } ---@type Human.Error
-local ERR_OUT_OF_RANGE = { code = "err.outOfRange" } ---@type Human.Error
-local ERR_OCCUPIED = { code = "err.occupied" } ---@type Human.Error
+local ERR_NAN = { code = "human.err.NaN" } ---@type Human.Error
+local ERR_OUT_OF_RANGE = { code = "human.err.outOfRange" } ---@type Human.Error
+local ERR_OCCUPIED = { code = "human.err.occupied" } ---@type Human.Error
 
 local ERRORS = {
 	[ERR_NAN] = true,
@@ -19,13 +14,13 @@ local ERRORS = {
 	[ERR_OCCUPIED] = true,
 }
 
-local Human = {}
+local Human = Object:extend()
 
 Human.io = IO({
-	["msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
-	["err.NaN"] = "This is not a number!",
-	["err.outOfRange"] = "This is not in the range of 1-9!",
-	["err.occupied"] = "This space cannot be filled!",
+	["human.msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
+	["human.err.NaN"] = "This is not a number!",
+	["human.err.outOfRange"] = "This is not in the range of 1-9!",
+	["human.err.occupied"] = "This space cannot be filled!",
 })
 
 ---@private

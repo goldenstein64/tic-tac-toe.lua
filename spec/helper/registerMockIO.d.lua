@@ -16,7 +16,7 @@ luassert.does_print = luassert.print
 local expect = {}
 
 ---asserts that our expectation, a `MockIO` object, printed the given content.
----@param content string
+---@param content Message
 ---@param message? string
 ---@return bustez.Expectation
 function expect.print(content, message) end

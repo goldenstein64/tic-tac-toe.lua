@@ -4,14 +4,14 @@ local Object = require("classic")
 
 ---@class IO : Object
 ---@field super Object
----@overload fun(messages?: { [string]: IO.Formatter | string }): IO
+---@overload fun(messages?: { [Message]: IO.Formatter | string }): IO
 local IO = Object:extend()
 
 IO.__name = "IO"
 
----@param messages? { [string]: IO.Formatter | string }
+---@param messages? { [Message]: IO.Formatter | string }
 function IO:new(messages)
-	---@type { [string]: IO.Formatter | string? }
+	---@type { [Message]: IO.Formatter | string? }
 	self.messages = {}
 	if messages then
 		for message, format in pairs(messages) do
@@ -29,7 +29,7 @@ end
 -- IO is mocked in the tests, this is a very simple implementation anyway.
 -- luacov: disable
 
----@param message string
+---@param message Message
 ---@param ... any
 function IO:format(message, ...)
 	local formatter = self.messages[message]
@@ -42,7 +42,7 @@ function IO:format(message, ...)
 	return message
 end
 
----@param message string
+---@param message Message
 ---@param ... any
 ---@return string
 function IO:prompt(message, ...)
@@ -50,7 +50,7 @@ function IO:prompt(message, ...)
 	return io.read()
 end
 
----@param message string
+---@param message Message
 ---@param ... any
 function IO:print(message, ...)
 	io.write(self:format(message, ...))

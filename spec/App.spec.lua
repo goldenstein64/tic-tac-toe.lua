@@ -25,8 +25,8 @@ describe("App:promptPlayer", function()
 
 		local playerClass = app:promptPlayer(Mark.X)
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("msg.pickComputer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.msg.pickComputer")
 		expect(playerClass).to.equal(HardComputer)
 	end)
 
@@ -36,8 +36,8 @@ describe("App:promptPlayer", function()
 
 		local playerClass = app:promptPlayer(Mark.X)
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("msg.pickComputer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.msg.pickComputer")
 		expect(playerClass).to.equal(MediumComputer)
 	end)
 
@@ -47,8 +47,8 @@ describe("App:promptPlayer", function()
 
 		local playerClass = app:promptPlayer(Mark.X)
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("msg.pickComputer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.msg.pickComputer")
 		expect(playerClass).to.equal(EasyComputer)
 	end)
 
@@ -58,9 +58,9 @@ describe("App:promptPlayer", function()
 
 		local playerClass = app:promptPlayer(Mark.X)
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("msg.pickComputer")
-		expect(appIO).to.print("err.invalidComputer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.msg.pickComputer")
+		expect(appIO).to.print("app.err.invalidComputer")
 		expect(playerClass).to.be._nil()
 	end)
 
@@ -70,7 +70,7 @@ describe("App:promptPlayer", function()
 
 		local playerClass = app:promptPlayer(Mark.X)
 
-		expect(appIO).to.print("msg.pickPlayer")
+		expect(appIO).to.print("app.msg.pickPlayer")
 		expect(playerClass).to.equal(Human)
 	end)
 
@@ -80,8 +80,8 @@ describe("App:promptPlayer", function()
 
 		local playerClass = app:promptPlayer(Mark.X)
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("err.invalidPlayer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.err.invalidPlayer")
 		expect(playerClass).to.be._nil()
 	end)
 end)
@@ -97,8 +97,8 @@ describe("App:choosePlayers", function()
 
 		local players = app:choosePlayers()
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("err.invalidPlayer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.err.invalidPlayer")
 
 		expect(players).to.be.a("table")
 		expect(players[Mark.X]).to.equal(HardComputer)
@@ -111,10 +111,10 @@ describe("App:choosePlayers", function()
 
 		local players = app:choosePlayers()
 
-		expect(appIO).to.print("msg.pickPlayer")
-		expect(appIO).to.print("msg.pickComputer")
-		expect(appIO).to.print("err.invalidPlayer")
-		expect(appIO).to.print("err.invalidComputer")
+		expect(appIO).to.print("app.msg.pickPlayer")
+		expect(appIO).to.print("app.msg.pickComputer")
+		expect(appIO).to.print("app.err.invalidPlayer")
+		expect(appIO).to.print("app.err.invalidComputer")
 
 		expect(players).to.be.a("table")
 		expect(players[Mark.X]).to.equal(MediumComputer)
@@ -128,7 +128,7 @@ describe("App:displayWinner", function()
 
 		app:displayWinner(nil)
 
-		expect(appIO).to.print("msg.tied")
+		expect(appIO).to.print("app.msg.tied")
 	end)
 
 	it("outputs the winner when given Mark.X as an argument", function()
@@ -136,7 +136,7 @@ describe("App:displayWinner", function()
 
 		app:displayWinner(Mark.X)
 
-		expect(appIO).to.print("msg.playerWon")
+		expect(appIO).to.print("app.msg.playerWon")
 	end)
 
 	it("outputs the winner when given Mark.O as an argument", function()
@@ -144,7 +144,7 @@ describe("App:displayWinner", function()
 
 		app:displayWinner(Mark.O)
 
-		expect(appIO).to.print("msg.playerWon")
+		expect(appIO).to.print("app.msg.playerWon")
 	end)
 end)
 
@@ -163,8 +163,8 @@ describe("App:playGame", function()
 		local winner = app:playGame(board, Mark.X, { [Mark.X] = Human, [Mark.O] = Human })
 
 		expect(winner).to.equal(Mark.X)
-		expect(humanIO).to.print("msg.pickMove")
-		expect(appIO).to.print("msg.game")
+		expect(humanIO).to.print("human.msg.pickMove")
+		expect(appIO).to.print("app.msg.game")
 	end)
 
 	it("can run a game of tic~tac~toe between computers", function()
@@ -174,6 +174,6 @@ describe("App:playGame", function()
 			app:playGame(Board(), Mark.X, { [Mark.X] = HardComputer, [Mark.O] = HardComputer })
 		end).not_to.throw()
 
-		expect(appIO).to.print("msg.game")
+		expect(appIO).to.print("app.msg.game")
 	end)
 end)
