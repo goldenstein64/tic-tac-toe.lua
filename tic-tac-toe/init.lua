@@ -48,7 +48,7 @@ end
 
 ---@return fun(): (Mark, Player)
 function App:choosePlayers()
-	local players = {} ---@type { [1]: Mark, [2]: Player }[]
+	local players = {} ---@type Player[]
 
 	for _, mark in ipairs(Mark.all) do
 		local player ---@type Player?
@@ -56,14 +56,14 @@ function App:choosePlayers()
 			player = self:promptPlayer(mark)
 		until player
 		---@cast player Player
-		table.insert(players, { mark, player } --[[@as { [1]: Mark, [2]: Player }]])
+		table.insert(players, player)
 	end
 
 	local i = 0
 	return function()
 		i = i % #players + 1
 		---@diagnostic disable-next-line:return-type-mismatch
-		return table.unpack(players[i], 1, 2)
+		return Mark.all[i], players[i]
 	end
 end
 
