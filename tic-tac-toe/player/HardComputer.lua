@@ -21,8 +21,8 @@ local equalities = {
 
 ---all the symmetries in a board
 ---
----- `equalities` lists which of the entries in the `equalities` list are
----  satisfied by this transformation
+---- `equalities` lists what entries in the `equalities` list satisfy this
+---  transformation
 ---
 ---- `image` lists how the scope of the board is limited by this symmetry
 local symmetries = {
@@ -94,6 +94,8 @@ local function getEqualitySet(board)
 	return result
 end
 
+---returns all empty positions on the board respective to the largest matching
+---symmetry
 ---@param board Board
 ---@return integer[]?
 local function symmetricMoves(board)
@@ -105,20 +107,23 @@ local function symmetricMoves(board)
 	end
 end
 
+---returns all empty positions on the board
 ---@param board Board
 ---@return integer[]
 local function simpleMoves(board)
 	local result = {}
 
-	for pos = 1, 9 do
-		if board:canMark(pos) then
-			table.insert(result, pos)
+	for move = 1, 9 do
+		if board:canMark(move) then
+			table.insert(result, move)
 		end
 	end
 
 	return result
 end
 
+---returns all the valid moves a player can make. Some moves may be omitted if
+---the board contains a symmetry.
 ---@param board Board
 ---@return integer[]
 ---@nodiscard
@@ -126,10 +131,11 @@ function HardComputer.moves(board)
 	return symmetricMoves(board) or simpleMoves(board)
 end
 
+---returns a copy of `board` with `mark` applied at `move`
 ---@param board Board
 ---@param mark Mark
 ---@param move integer
----@return Board
+---@return Board newBoard
 ---@nodiscard
 function HardComputer.resultOf(board, mark, move)
 	local newBoard = Board(board)
@@ -137,6 +143,13 @@ function HardComputer.resultOf(board, mark, move)
 	return newBoard
 end
 
+---returns a number indicating the final result of this `board`. It will be
+---`nil` if the game is not finished.
+---
+---- `1`: Player `X` won
+---- `-1`: Player `O` won
+---- `0`: there was a tie
+---- `nil`: the game is not finished
 ---@param board Board
 ---@return number?
 ---@nodiscard
@@ -166,6 +179,8 @@ HardComputer.controls = {
 	[Mark.O] = 1,
 }
 
+---returns a number indicating the best possible state for this `board`
+---respective to `mark`
 ---@param board Board
 ---@param mark Mark
 ---@return number
