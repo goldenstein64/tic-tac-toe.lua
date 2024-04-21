@@ -15,7 +15,8 @@
 		"busted-test-explorer.env": {
 			"LUA_PATH": "?/init.lua;?.lua;pkg/?/init.lua;pkg/?.lua;./lua_modules/share/lua/5.1/?/init.lua;./lua_modules/share/lua/5.1/?.lua;%LUA_PATH%",
 			"LUA_CPATH": "./lua_modules/lib/lua/5.1/?.dll;%LUA_CPATH%"
-		}
+		},
+		"stylua.targetReleaseVersion": "latest"
 	},
 	"extensions": {
 		"recommendations": [
