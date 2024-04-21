@@ -4,8 +4,11 @@ local Object = require("classic")
 
 ---@class IO : Object
 ---@field super Object
----@overload fun(messages?: { [Message]: IO.Formatter | string }): IO
 local IO = Object:extend()
+
+---@class IO.Class
+---@overload fun(messages?: { [Message]: IO.Formatter | string }): IO
+local IOClass = IO --[[@as IO.Class]]
 
 IO.__name = "IO"
 
@@ -59,4 +62,4 @@ end
 
 -- luacov: enable
 
-return IO --[[@as IO]]
+return IOClass
