@@ -1,6 +1,6 @@
 local MockIO = require("spec.io.MockIO")
 
-local App = require("tic-tac-toe.App")
+local App = require("tic-tac-toe")
 local Mark = require("tic-tac-toe.data.Mark")
 local Board = require("tic-tac-toe.data.Board")
 local Human = require("tic-tac-toe.player.Human")
