@@ -14,15 +14,15 @@ local ERRORS = {
 }
 
 ---@class Human : middleclass.Object, Player
----@field io IO
+---@field conn Connection
 local Human = class("Human")
 
 ---@class Human.Class : Human, middleclass.Class
----@overload fun(io: IO): Human
+---@overload fun(conn: Connection): Human
 
----@param io IO
-function Human:initialize(io)
-	self.io = io
+---@param conn Connection
+function Human:initialize(conn)
+	self.conn = conn
 end
 
 ---@private
@@ -32,7 +32,7 @@ end
 ---@return number
 ---@nodiscard
 function Human:promptMove(board, mark)
-	local posString = self.io:prompt("human.msg.pickMove", mark)
+	local posString = self.conn:prompt("human.msg.pickMove", mark)
 	local pos = tonumber(posString)
 	assert(pos, ERR_NAN)
 	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
@@ -54,7 +54,7 @@ function Human:getMove(board, mark)
 			return res
 		elseif ERRORS[res] then
 			---@cast res Human.Error
-			self.io:print(res.code)
+			self.conn:print(res.code)
 		else
 			error(res)
 		end

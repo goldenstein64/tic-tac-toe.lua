@@ -11,25 +11,25 @@ local Mark = require("tic-tac-toe.data.Mark")
 
 ---@class App : middleclass.Object
 ---@field class App.Class
----@field io IO
+---@field conn Connection
 local App = class("App")
 
 ---@class App.Class : App, middleclass.Class
----@overload fun(io: IO): App
+---@overload fun(conn: Connection): App
 
----@param io IO
-function App:initialize(io)
-	self.io = io
+---@param conn Connection
+function App:initialize(conn)
+	self.conn = conn
 end
 
 ---@param mark Mark
 ---@return Player?
 function App:promptPlayer(mark)
-	local chosenPlayer = self.io:prompt("app.msg.pickPlayer", mark)
+	local chosenPlayer = self.conn:prompt("app.msg.pickPlayer", mark)
 	if chosenPlayer == "H" then
-		return Human(self.io)
+		return Human(self.conn)
 	elseif chosenPlayer == "C" then
-		local chosenComputer = self.io:prompt("app.msg.pickComputer", mark)
+		local chosenComputer = self.conn:prompt("app.msg.pickComputer", mark)
 		if chosenComputer == "E" then
 			return EasyComputer
 		elseif chosenComputer == "M" then
@@ -37,11 +37,11 @@ function App:promptPlayer(mark)
 		elseif chosenComputer == "H" then
 			return HardComputer
 		else
-			self.io:print("app.err.invalidComputer")
+			self.conn:print("app.err.invalidComputer")
 			return nil
 		end
 	else
-		self.io:print("app.err.invalidPlayer")
+		self.conn:print("app.err.invalidPlayer")
 		return nil
 	end
 end
@@ -75,7 +75,7 @@ function App:playGame(board, players)
 		local mark, player = players()
 		local move = player:getMove(board, mark)
 		board:setMark(move, mark)
-		self.io:print("app.msg.game", board)
+		self.conn:print("app.msg.game", board)
 
 		if board:won(mark) then
 			return mark
@@ -88,9 +88,9 @@ end
 ---@param winner Mark?
 function App:displayWinner(winner)
 	if winner == nil then
-		self.io:print("app.msg.tied")
+		self.conn:print("app.msg.tied")
 	else
-		self.io:print("app.msg.playerWon", winner)
+		self.conn:print("app.msg.playerWon", winner)
 	end
 end
 
