@@ -8,19 +8,20 @@ local EasyComputer = require("tic-tac-toe.player.EasyComputer")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
 local HardComputer = require("tic-tac-toe.player.HardComputer")
 
-local appIO = MockIO()
-App.io = appIO
-
-local humanIO = MockIO()
-Human.io = humanIO
+---@param players Player[]
+---@return fun(): (Mark, Player)
+local function cyclePlayers(players)
+	local i = 0
+	return function()
+		i = i % 2 + 1
+		return Mark.all[i], players[i]
+	end
+end
 
 describe("App:promptPlayer", function()
-	after_each(function()
-		appIO:mockReset()
-	end)
-
 	it("returns the HardComputer class on input 'C' > 'H'", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("C", "H")
 
 		local playerClass = app:promptPlayer(Mark.X)
@@ -31,7 +32,8 @@ describe("App:promptPlayer", function()
 	end)
 
 	it("returns the MediumComputer class on input 'C' > 'M'", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("C", "M")
 
 		local playerClass = app:promptPlayer(Mark.X)
@@ -42,7 +44,8 @@ describe("App:promptPlayer", function()
 	end)
 
 	it("returns the EasyComputer class on input 'C' > 'E'", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("C", "E")
 
 		local playerClass = app:promptPlayer(Mark.X)
@@ -53,7 +56,8 @@ describe("App:promptPlayer", function()
 	end)
 
 	it("emits an error message on an invalid input 'C' -> ??", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("C", "@")
 
 		local playerClass = app:promptPlayer(Mark.X)
@@ -65,17 +69,19 @@ describe("App:promptPlayer", function()
 	end)
 
 	it("returns the Human class on input 'H'", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("H")
 
 		local playerClass = app:promptPlayer(Mark.X)
 
 		expect(appIO).to.print("app.msg.pickPlayer")
-		expect(playerClass).to.equal(Human)
+		expect(getmetatable(playerClass)).to.equal(Human)
 	end)
 
 	it("emits an error message on an invalid input", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("@")
 
 		local playerClass = app:promptPlayer(Mark.X)
@@ -87,12 +93,9 @@ describe("App:promptPlayer", function()
 end)
 
 describe("App:choosePlayers", function()
-	after_each(function()
-		appIO:mockReset()
-	end)
-
 	it("retries invalid inputs for players", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("@", "C", "H", "@", "@", "H")
 
 		local players = app:choosePlayers()
@@ -100,13 +103,19 @@ describe("App:choosePlayers", function()
 		expect(appIO).to.print("app.msg.pickPlayer")
 		expect(appIO).to.print("app.err.invalidPlayer")
 
-		expect(players).to.be.a("table")
-		expect(players[Mark.X]).to.equal(HardComputer)
-		expect(players[Mark.O]).to.equal(Human)
+		expect(players).to.be.a("function")
+		local mark1, player1 = players()
+		expect(mark1).to.equal(Mark.X)
+		expect(player1).to.equal(HardComputer)
+
+		local mark2, player2 = players()
+		expect(mark2).to.equal(Mark.O)
+		expect(getmetatable(player2)).to.equal(Human)
 	end)
 
 	it("retries invalid second inputs for computers", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 		appIO:mockInput("C", "@", "C", "M", "@", "C", "@", "C", "E")
 
 		local players = app:choosePlayers()
@@ -116,15 +125,21 @@ describe("App:choosePlayers", function()
 		expect(appIO).to.print("app.err.invalidPlayer")
 		expect(appIO).to.print("app.err.invalidComputer")
 
-		expect(players).to.be.a("table")
-		expect(players[Mark.X]).to.equal(MediumComputer)
-		expect(players[Mark.O]).to.equal(EasyComputer)
+		expect(players).to.be.a("function")
+		local mark1, player1 = players()
+		expect(mark1).to.equal(Mark.X)
+		expect(player1).to.equal(MediumComputer)
+
+		local mark2, player2 = players()
+		expect(mark2).to.equal(Mark.O)
+		expect(player2).to.equal(EasyComputer)
 	end)
 end)
 
 describe("App:displayWinner", function()
 	it("outputs a tie when given a nil argument", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 
 		app:displayWinner(nil)
 
@@ -132,7 +147,8 @@ describe("App:displayWinner", function()
 	end)
 
 	it("outputs the winner when given Mark.X as an argument", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 
 		app:displayWinner(Mark.X)
 
@@ -140,7 +156,8 @@ describe("App:displayWinner", function()
 	end)
 
 	it("outputs the winner when given Mark.O as an argument", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 
 		app:displayWinner(Mark.O)
 
@@ -149,29 +166,27 @@ describe("App:displayWinner", function()
 end)
 
 describe("App:playGame", function()
-	after_each(function()
-		humanIO:mockReset()
-	end)
-
 	it("can run a game of tic~tac~toe between humans", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 
 		-- a classic corner trap game
-		humanIO:mockInput("1", "2", "7", "4", "9", "5", "8")
+		appIO:mockInput("1", "2", "7", "4", "9", "5", "8")
 
 		local board = Board()
-		local winner = app:playGame(board, Mark.X, { [Mark.X] = Human, [Mark.O] = Human })
+		local winner = app:playGame(board, cyclePlayers({ Human(appIO), Human(appIO) }))
 
 		expect(winner).to.equal(Mark.X)
-		expect(humanIO).to.print("human.msg.pickMove")
+		expect(appIO).to.print("human.msg.pickMove")
 		expect(appIO).to.print("app.msg.game")
 	end)
 
 	it("can run a game of tic~tac~toe between computers", function()
-		local app = App()
+		local appIO = MockIO()
+		local app = App(appIO)
 
 		expect(function()
-			app:playGame(Board(), Mark.X, { [Mark.X] = HardComputer, [Mark.O] = HardComputer })
+			app:playGame(Board(), cyclePlayers({ HardComputer, HardComputer }))
 		end).not_to.throw()
 
 		expect(appIO).to.print("app.msg.game")

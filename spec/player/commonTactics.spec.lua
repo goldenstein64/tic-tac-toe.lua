@@ -1,11 +1,11 @@
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 
-local METHOD_FORMAT = "%s.getMove"
+local METHOD_FORMAT = "%s:getMove"
 
----@param cls Player
+---@param computer Player
 ---@param name string
-local function testCommonTactics(cls, name)
+local function testCommonTactics(computer, name)
 	describe(METHOD_FORMAT:format(name), function()
 		it("can detect winning moves for X", function()
 			--[[
@@ -17,7 +17,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern(",XX,OO,,,")
 
-			local move = cls.getMove(board, Mark.X)
+			local move = computer:getMove(board, Mark.X)
 
 			expect(move).to.equal(1)
 		end)
@@ -32,7 +32,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern(",OO,XX,,X")
 
-			local move = cls.getMove(board, Mark.O)
+			local move = computer:getMove(board, Mark.O)
 
 			expect(move).to.equal(1)
 		end)
@@ -47,7 +47,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern("O,,O,X,X,")
 
-			local move = cls.getMove(board, Mark.X)
+			local move = computer:getMove(board, Mark.X)
 
 			expect(move).to.equal(7)
 		end)
@@ -62,7 +62,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern(",O,X,,XXO")
 
-			local move = cls.getMove(board, Mark.O)
+			local move = computer:getMove(board, Mark.O)
 
 			expect(move).to.equal(1)
 		end)
@@ -77,7 +77,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern(",X,O,X,O,")
 
-			local move = cls.getMove(board, Mark.X)
+			local move = computer:getMove(board, Mark.X)
 
 			expect(move).to.equal(3)
 		end)
@@ -92,7 +92,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern(",X,OXX,O,")
 
-			local move = cls.getMove(board, Mark.O)
+			local move = computer:getMove(board, Mark.O)
 
 			expect(move).to.equal(7)
 		end)
@@ -107,7 +107,7 @@ local function testCommonTactics(cls, name)
 			]]
 			local board = Board.fromPattern(",XXXOOOX,")
 
-			local move = cls.getMove(board, Mark.O)
+			local move = computer:getMove(board, Mark.O)
 
 			expect(move).to.equal(1)
 		end)
