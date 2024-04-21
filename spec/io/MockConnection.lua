@@ -1,11 +1,10 @@
-local IO = require("tic-tac-toe.IO")
+local class = require("middleclass")
 
----@class MockIO : IO
+---@class MockIO : middleclass.Object, Connection
 ---@field class MockIO.Class
-local MockIO = IO:subclass("MockIO") --[[@as MockIO]]
+local MockIO = class("MockIO")
 
----@class MockIO.Class : MockIO, IO.Class
----@field super IO.Class
+---@class MockIO.Class : middleclass.Class
 ---@overload fun(): MockIO
 
 function MockIO:initialize()

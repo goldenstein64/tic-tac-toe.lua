@@ -1,10 +1,11 @@
 math.randomseed(os.time() / math.pi)
 
-local ConsoleIO = require("tic-tac-toe-console.ConsoleIO")
+local ConsoleConnection = require("tic-tac-toe-console.ConsoleConnection")
 local App = require("tic-tac-toe")
 local Board = require("tic-tac-toe.data.Board")
 
-local app = App(ConsoleIO)
+local conn = ConsoleConnection()
+local app = App(conn)
 
 local players = app:choosePlayers()
 local winner = app:playGame(Board(), players)
