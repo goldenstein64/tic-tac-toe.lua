@@ -1,4 +1,4 @@
-local Object = require("classic")
+local Object = require("tic-tac-toe.classic")
 
 ---@class Mark : Object
 ---@field super Object

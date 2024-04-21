@@ -2,7 +2,7 @@
 
 local luassert = require("luassert")
 local say = require("say")
-local Object = require("classic")
+local Object = require("tic-tac-toe.classic")
 
 local MockIO = require("spec.io.MockIO")
 

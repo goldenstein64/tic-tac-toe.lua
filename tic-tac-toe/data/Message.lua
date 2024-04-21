@@ -11,3 +11,7 @@
 ---| "human.err.NaN"
 ---| "human.err.outOfRange"
 ---| "human.err.occupied"
+
+---@class Connection
+---@field print fun(self: Connection, msg: Message, ...: any)
+---@field prompt fun(self: Connection, msg: Message, ...: any): string

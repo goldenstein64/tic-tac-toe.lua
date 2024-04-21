@@ -1,4 +1,4 @@
-local Object = require("classic")
+local Object = require("tic-tac-toe.classic")
 
 ---@alias IO.Formatter fun(...: any): string
 

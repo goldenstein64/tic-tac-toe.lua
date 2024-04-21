@@ -1,4 +1,4 @@
-local Object = require("classic")
+local Object = require("tic-tac-toe.classic")
 
 local Mark = require("tic-tac-toe.data.Mark")
 

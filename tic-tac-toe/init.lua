@@ -1,4 +1,4 @@
-local Object = require("classic")
+local Object = require("tic-tac-toe.classic")
 local EasyComputer = require("tic-tac-toe.player.EasyComputer")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
 
