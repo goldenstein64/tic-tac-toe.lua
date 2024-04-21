@@ -17,11 +17,13 @@ lrandom.version = nil
 ---creates a new random number generator
 ---@param seed? number
 ---@return lrandom.Random c
+---@nodiscard
 function lrandom.new(seed) end
 
 ---clones an existing random number generator
 ---@param c lrandom.Random
 ---@return lrandom.Random cNew
+---@nodiscard
 function lrandom.clone(c) end
 
 ---sets the seed on a random number generator
