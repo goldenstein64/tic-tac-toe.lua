@@ -18,17 +18,36 @@ local App = Object:extend()
 
 App.__name = "App"
 
-App.io = IO({
-	["msg.greeting"] = "This program runs a tic-tac-toe game.",
-	["msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
-	["msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
-	["msg.game"] = "%s\n",
-	["msg.playerWon"] = "Player %s won!",
-	["msg.tied"] = "There was a tie!",
+do
+	local BOARD_FORMAT = [[
+	 %s | %s | %s
+	---|---|---
+	 %s | %s | %s
+	---|---|---
+	 %s | %s | %s]]
 
-	["err.invalidPlayer"] = "This does not match 'H', 'C'!",
-	["err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
-})
+	---@type IO.Formatter
+	local function boardFormat(board)
+		local strBoard = {} ---@type string[]
+		for i = 1, 9 do
+			strBoard[i] = tostring(board.board[i] or " ")
+		end
+		return BOARD_FORMAT:format(table.unpack(strBoard))
+	end
+
+	---@type { [string]: IO.Formatter | string }
+	App.io = IO({
+		["msg.greeting"] = "This program runs a tic-tac-toe game.",
+		["msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
+		["msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
+		["msg.game"] = boardFormat,
+		["msg.playerWon"] = "Player %s won!",
+		["msg.tied"] = "There was a tie!",
+
+		["err.invalidPlayer"] = "This does not match 'H', 'C'!",
+		["err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
+	})
+end
 
 ---@param mark Mark
 ---@return Player?

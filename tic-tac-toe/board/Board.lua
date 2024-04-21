@@ -2,13 +2,6 @@ local Object = require("classic")
 
 local Mark = require("tic-tac-toe.board.Mark")
 
-local BOARD_FORMAT = [[
- %s | %s | %s
----|---|---
- %s | %s | %s
----|---|---
- %s | %s | %s]]
-
 ---@class Board : Object
 ---@field super Object
 local Board = Object:extend()
@@ -128,17 +121,13 @@ function Board:empty()
 	return true
 end
 
----@return string
 function Board:__tostring()
-	-- luacov: disable
 	local strBoard = {}
-
 	for i = 1, 9 do
-		strBoard[i] = tostring(self.board[i] or " ")
+		strBoard[i] = tostring(self.board[i] or ",")
 	end
 
-	return BOARD_FORMAT:format(table.unpack(strBoard))
-	-- luavoc: enable
+	return table.concat(strBoard)
 end
 
 return BoardClass --[[@as Board.Class]]
