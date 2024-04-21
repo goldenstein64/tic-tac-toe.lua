@@ -1,6 +1,7 @@
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 
+---@class HardComputer : Player
 local HardComputer = {}
 
 ---an enumeration of all positions in a board that are equal
@@ -229,7 +230,7 @@ end
 ---@param board Board
 ---@param mark Mark
 ---@return number
-function HardComputer.getMove(board, mark)
+function HardComputer:getMove(board, mark)
 	if board:empty() then
 		return math.random(9)
 	else

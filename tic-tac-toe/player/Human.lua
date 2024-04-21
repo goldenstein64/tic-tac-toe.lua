@@ -14,6 +14,9 @@ local ERRORS = {
 	[ERR_OCCUPIED] = true,
 }
 
+---@class Human : Object, Player
+---@field super Object
+---@overload fun(io: IO): Human
 local Human = Object:extend()
 
 Human.io = IO({
@@ -29,8 +32,8 @@ Human.io = IO({
 ---@param mark Mark
 ---@return number
 ---@nodiscard
-function Human.promptMove(board, mark)
 	local posString = Human.io:prompt("human.msg.pickMove", mark)
+function Human:promptMove(board, mark)
 	local pos = tonumber(posString)
 	assert(pos, ERR_NAN)
 	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
@@ -43,10 +46,10 @@ end
 ---@param mark Mark
 ---@return number
 ---@nodiscard
-function Human.getMove(board, mark)
+function Human:getMove(board, mark)
 	while true do
 		---@type boolean, unknown
-		local s, res = pcall(Human.promptMove, board, mark)
+		local s, res = pcall(self.promptMove, self, board, mark)
 		if s then
 			---@cast res number
 			return res

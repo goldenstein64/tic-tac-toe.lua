@@ -9,7 +9,7 @@ local Board = require("tic-tac-toe.data.Board")
 local IO = require("tic-tac-toe.IO")
 
 ---@class Player
----@field getMove fun(board: Board, mark: Mark): integer
+---@field getMove fun(self: any, board: Board, mark: Mark): integer
 
 ---@class App : Object
 ---@field super Object
@@ -97,7 +97,7 @@ function App:playGame(board, mark, players)
 		return nil
 	else
 		local player = players[mark]
-		local move = player.getMove(board, mark)
+		local move = player:getMove(board, mark)
 		board:setMark(move, mark)
 		self.io:print("app.msg.game", board)
 		return self:playGame(board, otherMark, players)

@@ -12,6 +12,7 @@ local WIN_PATTERN_LOOKUP = {
 	[9] = { 3, 6, 7 },
 }
 
+---@class MediumComputer : Player
 local MediumComputer = {}
 
 ---@param board Board
@@ -144,7 +145,7 @@ end
 ---@param board Board
 ---@param mark Mark
 ---@return number
-function MediumComputer.getMove(board, mark)
+function MediumComputer:getMove(board, mark)
 	local moves = getWinningMoves(board, mark)
 		or getBlockingMoves(board, mark)
 		or getTrappingMoves(board, mark)

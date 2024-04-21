@@ -1,3 +1,4 @@
+---@class EasyComputer : Player
 local EasyComputer = {}
 
 ---@param board Board
@@ -20,7 +21,7 @@ end
 ---@param board Board
 ---@param mark Mark
 ---@return number
-function EasyComputer.getMove(board, mark)
+function EasyComputer:getMove(board, mark)
 	local moves = EasyComputer.getMoves(board, mark)
 	assert(#moves > 0, "no moves to take!")
 	return moves[math.random(#moves)]
