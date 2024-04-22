@@ -1,8 +1,6 @@
+local class = require("middleclass")
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
-
----@class tic-tac-toe.HardComputer : tic-tac-toe.Player
-local HardComputer = {}
 
 ---an enumeration of all positions in a board that are equal
 local equalities = {
@@ -123,6 +121,19 @@ local function simpleMoves(board)
 	return result
 end
 
+---@class tic-tac-toe.HardComputer : middleclass.Object, tic-tac-toe.Player
+---@field class tic-tac-toe.HardComputer.Class
+local HardComputer = class("HardComputer")
+
+---@class tic-tac-toe.HardComputer.Class : tic-tac-toe.HardComputer, middleclass.Class
+---@overload fun(rng: lrandom.Random): tic-tac-toe.HardComputer
+local HardComputerClass = HardComputer.static --[[@as tic-tac-toe.HardComputer.Class]]
+
+---@param rng lrandom.Random
+function HardComputer:initialize(rng)
+	self.rng = rng
+end
+
 ---returns all the valid moves a player can make. Some moves may be omitted if
 ---the board contains a symmetry.
 ---@param board tic-tac-toe.Board
@@ -232,7 +243,7 @@ end
 ---@return number
 function HardComputer:getMove(board, mark)
 	if board:empty() then
-		return math.random(9)
+		return self.rng:value(9)
 	else
 		local moves = HardComputer.getMoves(board, mark)
 		assert(#moves > 0, "no moves to take!")
@@ -240,4 +251,4 @@ function HardComputer:getMove(board, mark)
 	end
 end
 
-return HardComputer
+return HardComputer --[[@as tic-tac-toe.HardComputer.Class]]

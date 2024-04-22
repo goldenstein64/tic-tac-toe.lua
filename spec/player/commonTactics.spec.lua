@@ -3,9 +3,14 @@ local Mark = require("tic-tac-toe.data.Mark")
 
 local METHOD_FORMAT = "%s:getMove"
 
----@param computer tic-tac-toe.Player
+---@param computerGen fun(): tic-tac-toe.Player
 ---@param name string
-local function testCommonTactics(computer, name)
+local function testCommonTactics(computerGen, name)
+	local computer
+	before_each(function()
+		computer = computerGen()
+	end)
+
 	describe(METHOD_FORMAT:format(name), function()
 		it("can detect winning moves for X", function()
 			--[[
@@ -114,8 +119,13 @@ local function testCommonTactics(computer, name)
 	end)
 end
 
+local random = require("random")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
 local HardComputer = require("tic-tac-toe.player.HardComputer")
 
-testCommonTactics(MediumComputer, "MediumComputer")
-testCommonTactics(HardComputer, "HardComputer")
+testCommonTactics(function()
+	return MediumComputer(random.new())
+end, "MediumComputer")
+testCommonTactics(function()
+	return HardComputer(random.new())
+end, "HardComputer")

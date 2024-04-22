@@ -1,4 +1,5 @@
 local class = require("middleclass")
+local random = require("random")
 
 local EasyComputer = require("tic-tac-toe.player.EasyComputer")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
@@ -31,11 +32,11 @@ function App:promptPlayer(mark)
 	elseif chosenPlayer == "C" then
 		local chosenComputer = self.conn:prompt("app.msg.pickComputer", mark)
 		if chosenComputer == "E" then
-			return EasyComputer
+			return EasyComputer(random.new())
 		elseif chosenComputer == "M" then
-			return MediumComputer
+			return MediumComputer(random.new())
 		elseif chosenComputer == "H" then
-			return HardComputer
+			return HardComputer(random.new())
 		else
 			self.conn:print("app.err.invalidComputer")
 			return nil

@@ -1,5 +1,6 @@
 local MockConnection = require("spec.io.MockConnection")
 
+local random = require("random")
 local App = require("tic-tac-toe")
 local Mark = require("tic-tac-toe.data.Mark")
 local Board = require("tic-tac-toe.data.Board")
@@ -28,7 +29,7 @@ describe("App:promptPlayer", function()
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
-		expect(playerClass).to.equal(HardComputer)
+		expect(playerClass).to.be.an.instance.of(HardComputer)
 	end)
 
 	it("returns the MediumComputer class on input 'C' > 'M'", function()
@@ -40,7 +41,7 @@ describe("App:promptPlayer", function()
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
-		expect(playerClass).to.equal(MediumComputer)
+		expect(playerClass).to.be.an.instance.of(MediumComputer)
 	end)
 
 	it("returns the EasyComputer class on input 'C' > 'E'", function()
@@ -52,7 +53,7 @@ describe("App:promptPlayer", function()
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
-		expect(playerClass).to.equal(EasyComputer)
+		expect(playerClass).to.be.an.instance.of(EasyComputer)
 	end)
 
 	it("emits an error message on an invalid input 'C' -> ??", function()
@@ -106,7 +107,7 @@ describe("App:choosePlayers", function()
 		expect(players).to.be.a("function")
 		local mark1, player1 = players()
 		expect(mark1).to.equal(Mark.X)
-		expect(player1).to.equal(HardComputer)
+		expect(player1).to.be.an.instance.of(HardComputer)
 
 		local mark2, player2 = players()
 		expect(mark2).to.equal(Mark.O)
@@ -128,11 +129,11 @@ describe("App:choosePlayers", function()
 		expect(players).to.be.a("function")
 		local mark1, player1 = players()
 		expect(mark1).to.equal(Mark.X)
-		expect(player1).to.equal(MediumComputer)
+		expect(player1).to.be.an.instance.of(MediumComputer)
 
 		local mark2, player2 = players()
 		expect(mark2).to.equal(Mark.O)
-		expect(player2).to.equal(EasyComputer)
+		expect(player2).to.be.an.instance.of(EasyComputer)
 	end)
 end)
 
@@ -185,9 +186,7 @@ describe("App:playGame", function()
 		local conn = MockConnection()
 		local app = App(conn)
 
-		expect(function()
-			app:playGame(Board(), cyclePlayers({ HardComputer, HardComputer }))
-		end).not_to.throw()
+		app:playGame(Board(), cyclePlayers({ HardComputer(random.new()), HardComputer(random.new()) }))
 
 		expect(conn).to.print("app.msg.game")
 	end)
