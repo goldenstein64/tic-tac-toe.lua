@@ -19,13 +19,13 @@ local function cyclePlayers(players)
 	end
 end
 
-describe("App:promptPlayer", function()
+describe("App:promptPlayerOnce", function()
 	it("returns the HardComputer class on input 'C' > 'H'", function()
 		local conn = MockConnection()
 		local app = App(conn)
 		conn:mockInput("C", "H")
 
-		local playerClass = app:promptPlayer(Mark.X)
+		local playerClass = app:promptPlayerOnce(Mark.X)
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
@@ -37,7 +37,7 @@ describe("App:promptPlayer", function()
 		local app = App(conn)
 		conn:mockInput("C", "M")
 
-		local playerClass = app:promptPlayer(Mark.X)
+		local playerClass = app:promptPlayerOnce(Mark.X)
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
@@ -49,7 +49,7 @@ describe("App:promptPlayer", function()
 		local app = App(conn)
 		conn:mockInput("C", "E")
 
-		local playerClass = app:promptPlayer(Mark.X)
+		local playerClass = app:promptPlayerOnce(Mark.X)
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
@@ -61,7 +61,7 @@ describe("App:promptPlayer", function()
 		local app = App(conn)
 		conn:mockInput("C", "@")
 
-		local playerClass = app:promptPlayer(Mark.X)
+		local playerClass = app:promptPlayerOnce(Mark.X)
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.msg.pickComputer")
@@ -74,7 +74,7 @@ describe("App:promptPlayer", function()
 		local app = App(conn)
 		conn:mockInput("H")
 
-		local player = app:promptPlayer(Mark.X)
+		local player = app:promptPlayerOnce(Mark.X)
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(player).to.be.an.instance.of(Human)
@@ -85,7 +85,7 @@ describe("App:promptPlayer", function()
 		local app = App(conn)
 		conn:mockInput("@")
 
-		local playerClass = app:promptPlayer(Mark.X)
+		local playerClass = app:promptPlayerOnce(Mark.X)
 
 		expect(conn).to.print("app.msg.pickPlayer")
 		expect(conn).to.print("app.err.invalidPlayer")

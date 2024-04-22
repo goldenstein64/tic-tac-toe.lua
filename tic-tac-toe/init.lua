@@ -25,39 +25,51 @@ end
 
 ---@param mark tic-tac-toe.Mark
 ---@return tic-tac-toe.Player?
-function App:promptPlayer(mark)
+function App:promptComputerOnce(mark)
+	local chosenComputer = self.conn:prompt("app.msg.pickComputer", mark)
+	if chosenComputer == "E" then
+		return EasyComputer(random.new())
+	elseif chosenComputer == "M" then
+		return MediumComputer(random.new())
+	elseif chosenComputer == "H" then
+		return HardComputer(random.new())
+	else
+		self.conn:print("app.err.invalidComputer")
+		return nil
+	end
+end
+
+---@param mark tic-tac-toe.Mark
+---@return tic-tac-toe.Player?
+function App:promptPlayerOnce(mark)
 	local chosenPlayer = self.conn:prompt("app.msg.pickPlayer", mark)
 	if chosenPlayer == "H" then
 		return Human(self.conn)
 	elseif chosenPlayer == "C" then
-		local chosenComputer = self.conn:prompt("app.msg.pickComputer", mark)
-		if chosenComputer == "E" then
-			return EasyComputer(random.new())
-		elseif chosenComputer == "M" then
-			return MediumComputer(random.new())
-		elseif chosenComputer == "H" then
-			return HardComputer(random.new())
-		else
-			self.conn:print("app.err.invalidComputer")
-			return nil
-		end
+		return self:promptComputerOnce(mark)
 	else
 		self.conn:print("app.err.invalidPlayer")
 		return nil
 	end
 end
 
+---@param mark tic-tac-toe.Mark
+---@return tic-tac-toe.Player
+function App:promptPlayer(mark)
+	local player ---@type tic-tac-toe.Player?
+	repeat
+		player = self:promptPlayerOnce(mark)
+	until player
+	---@cast player tic-tac-toe.Player
+	return player
+end
+
 ---@return fun(): (tic-tac-toe.Mark, tic-tac-toe.Player)
 function App:choosePlayers()
-	local players = {} ---@type tic-tac-toe.Player[]
-
-	for _, mark in ipairs(Mark.all) do
-		local player ---@type tic-tac-toe.Player?
-		repeat
-			player = self:promptPlayer(mark)
-		until player
-		---@cast player tic-tac-toe.Player
-		table.insert(players, player)
+	---@type tic-tac-toe.Player[]
+	local players = {}
+	for i, mark in ipairs(Mark.all) do
+		players[i] = self:promptPlayer(mark)
 	end
 
 	local i = 0
