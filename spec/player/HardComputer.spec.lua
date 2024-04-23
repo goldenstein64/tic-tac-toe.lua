@@ -84,10 +84,10 @@ end)
 describe("Computer.resultOf", function()
 	local marks = { Mark.X, Mark.O, nil }
 
-	---@type fun(amount: number): (fun(): ((tic-tac-toe.Mark?)[], number[]))
+	---@type fun(amount: number): fun(): (integer, (tic-tac-toe.Mark?)[], number[])
 	local function generateBoard(amount)
 		return coroutine.wrap(function()
-			for _ = 1, amount do
+			for i = 1, amount do
 				---@type (tic-tac-toe.Mark?)[], number[]
 				local expected, markPositions
 				repeat
@@ -102,13 +102,14 @@ describe("Computer.resultOf", function()
 					end
 				until #markPositions > 0
 
-				coroutine.yield(expected, markPositions)
+				coroutine.yield(i, expected, markPositions)
 			end
 		end)
 	end
 
-	it("gets calculated correctly", function()
-		for expected, markPositions in generateBoard(50) do
+	for i, expected, markPositions in generateBoard(50) do
+		local testName = string.format("gets calculated correctly (%d)", i)
+		it(testName, function()
 			local board = Board()
 			board.board = table.move(expected, 1, 9, 1, {})
 
@@ -118,9 +119,9 @@ describe("Computer.resultOf", function()
 
 			local newBoard = HardComputer.resultOf(board, chosenMark, chosenPos)
 
-			for i = 1, 9 do
-				expect(expected[i]).to.equal(newBoard.board[i])
+			for j = 1, 9 do
+				expect(expected[j]).to.equal(newBoard.board[j])
 			end
-		end
-	end)
+		end)
+	end
 end)
