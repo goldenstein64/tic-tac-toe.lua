@@ -3,6 +3,16 @@ local Mark = require("tic-tac-toe.data.Mark")
 
 local METHOD_FORMAT = "%s:getMove"
 
+local testTactics = {
+	{ "detects winning moves for X", ",XX,OO,,,", Mark.X, 1 },
+	{ "detects winning moves for O", ",OO,XX,,X", Mark.O, 1 },
+	{ "detects blocking moves for X", "O,,O,X,X,", Mark.X, 7 },
+	{ "detects blocking moves for O", ",O,X,,XXO", Mark.O, 1 },
+	{ "detects trapping moves for X", ",X,O,X,O,", Mark.X, 3 },
+	{ "detects trapping moves for O", ",X,OXX,O,", Mark.O, 7 },
+	{ "matches ',XXXOOOX,'", ",XXXOOOX,", Mark.O, 1 },
+}
+
 ---@param computerGen fun(): tic-tac-toe.Player
 ---@param name string
 local function testCommonTactics(computerGen, name)
@@ -12,110 +22,17 @@ local function testCommonTactics(computerGen, name)
 	end)
 
 	describe(METHOD_FORMAT:format(name), function()
-		it("can detect winning moves for X", function()
-			--[[
-				 1 | X | X
-				---|---|---
-				 4 | O | O
-				---|---|---
-				 7 | 8 | 9
-			]]
-			local board = Board.fromPattern(",XX,OO,,,")
+		for _, tactic in ipairs(testTactics) do
+			---@type string, string, tic-tac-toe.Mark, integer
+			local testName, pattern, mark, expected = table.unpack(tactic, 1, 4)
+			it(testName, function()
+				local board = Board.fromPattern(pattern)
 
-			local move = computer:getMove(board, Mark.X)
+				local move = computer:getMove(board, mark)
 
-			expect(move).to.equal(1)
-		end)
-
-		it("can detect winning moves for O", function()
-			--[[
-				 1 | O | O
-				---|---|---
-				 4 | X | X
-				---|---|---
-				 7 | 8 | X
-			]]
-			local board = Board.fromPattern(",OO,XX,,X")
-
-			local move = computer:getMove(board, Mark.O)
-
-			expect(move).to.equal(1)
-		end)
-
-		it("can detect blocking moves for X", function()
-			--[[
-				 O | 2 | 3
-				---|---|---
-				 O | 5 | X
-				---|---|---
-				 7 | X | 9
-			]]
-			local board = Board.fromPattern("O,,O,X,X,")
-
-			local move = computer:getMove(board, Mark.X)
-
-			expect(move).to.equal(7)
-		end)
-
-		it("can detect blocking moves for O", function()
-			--[[
-				 1 | O | 3
-				---|---|---
-				 X | 5 | 6
-				---|---|---
-				 X | X | O
-			]]
-			local board = Board.fromPattern(",O,X,,XXO")
-
-			local move = computer:getMove(board, Mark.O)
-
-			expect(move).to.equal(1)
-		end)
-
-		it("can detect trapping moves for X", function()
-			--[[
-				 1 | X | 3
-				---|---|---
-				 O | 5 | X
-				---|---|---
-				 7 | O | 9
-			]]
-			local board = Board.fromPattern(",X,O,X,O,")
-
-			local move = computer:getMove(board, Mark.X)
-
-			expect(move).to.equal(3)
-		end)
-
-		it("can detect trapping moves for O", function()
-			--[[
-				 1 | X | 3
-				---|---|---
-				 O | X | X
-				---|---|---
-				 7 | O | 9
-			]]
-			local board = Board.fromPattern(",X,OXX,O,")
-
-			local move = computer:getMove(board, Mark.O)
-
-			expect(move).to.equal(7)
-		end)
-
-		it("doesn't choose wrong in ',XXXOOOX,'", function()
-			--[[
-				 1 | X | X
-				---|---|---
-				 X | O | O
-				---|---|---
-				 O | X | 9
-			]]
-			local board = Board.fromPattern(",XXXOOOX,")
-
-			local move = computer:getMove(board, Mark.O)
-
-			expect(move).to.equal(1)
-		end)
+				expect(move).to.equal(expected)
+			end)
+		end
 	end)
 end
 
