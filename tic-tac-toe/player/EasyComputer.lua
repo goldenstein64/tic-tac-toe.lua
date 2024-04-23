@@ -1,17 +1,13 @@
 local class = require("middleclass")
+local Computer = require("tic-tac-toe.player.Computer")
 
----@class tic-tac-toe.EasyComputer : middleclass.Object, tic-tac-toe.Player
+---@class tic-tac-toe.EasyComputer : tic-tac-toe.Computer
 ---@field class tic-tac-toe.EasyComputer.Class
-local EasyComputer = class("EasyComputer")
+local EasyComputer = class("EasyComputer", Computer)
 
----@class tic-tac-toe.EasyComputer.Class : tic-tac-toe.EasyComputer, middleclass.Class
+---@class tic-tac-toe.EasyComputer.Class : tic-tac-toe.EasyComputer, tic-tac-toe.Computer.Class
+---@field super tic-tac-toe.Computer
 ---@overload fun(rng: lrandom.Random): tic-tac-toe.EasyComputer
-local EasyComputerClass = EasyComputer.static --[[@as tic-tac-toe.EasyComputer.Class]]
-
----@param rng lrandom.Random
-function EasyComputer:initialize(rng)
-	self.rng = rng
-end
 
 ---@param board tic-tac-toe.Board
 ---@param mark tic-tac-toe.Mark
@@ -28,15 +24,6 @@ function EasyComputer:getMoves(board, mark)
 	end
 
 	return result
-end
-
----@param board tic-tac-toe.Board
----@param mark tic-tac-toe.Mark
----@return number
-function EasyComputer:getMove(board, mark)
-	local moves = self:getMoves(board, mark)
-	assert(#moves > 0, "no moves to take!")
-	return moves[self.rng:value(#moves)]
 end
 
 return EasyComputer --[[@as tic-tac-toe.EasyComputer.Class]]

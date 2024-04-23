@@ -1,5 +1,6 @@
 local class = require("middleclass")
 local Board = require("tic-tac-toe.data.Board")
+local Computer = require("tic-tac-toe.player.Computer")
 
 local WIN_PATTERN_LOOKUP = {
 	[1] = { 1, 4, 7 },
@@ -13,17 +14,13 @@ local WIN_PATTERN_LOOKUP = {
 	[9] = { 3, 6, 7 },
 }
 
----@class tic-tac-toe.MediumComputer : middleclass.Object, tic-tac-toe.Player
+---@class tic-tac-toe.MediumComputer : tic-tac-toe.Computer
 ---@field class tic-tac-toe.MediumComputer.Class
-local MediumComputer = class("MediumComputer")
+local MediumComputer = class("MediumComputer", Computer)
 
----@class tic-tac-toe.MediumComputer.Class : tic-tac-toe.MediumComputer, middleclass.Class
+---@class tic-tac-toe.MediumComputer.Class : tic-tac-toe.MediumComputer, tic-tac-toe.Computer.Class
+---@field super tic-tac-toe.Computer
 ---@overload fun(rng: lrandom.Random): tic-tac-toe.MediumComputer
-
----@param rng lrandom.Random
-function MediumComputer:initialize(rng)
-	self.rng = rng
-end
 
 ---@param board tic-tac-toe.Board
 ---@param mark tic-tac-toe.Mark
@@ -155,7 +152,8 @@ end
 ---@param board tic-tac-toe.Board
 ---@param mark tic-tac-toe.Mark
 ---@return number[]
-function MediumComputer.getMoves(board, mark)
+---@nodiscard
+function MediumComputer:getMoves(board, mark)
 	return getWinningMoves(board, mark)
 		or getBlockingMoves(board, mark)
 		or getTrappingMoves(board, mark)
@@ -163,15 +161,6 @@ function MediumComputer.getMoves(board, mark)
 		or getCornerMoves(board, mark)
 		or getSideMoves(board, mark)
 		or error("no moves to take!")
-end
-
----@param board tic-tac-toe.Board
----@param mark tic-tac-toe.Mark
----@return number
-function MediumComputer:getMove(board, mark)
-	local moves = MediumComputer.getMoves(board, mark)
-
-	return moves[self.rng:value(#moves)]
 end
 
 return MediumComputer --[[@as tic-tac-toe.MediumComputer.Class]]

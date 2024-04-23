@@ -1,6 +1,7 @@
 local class = require("middleclass")
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
+local Computer = require("tic-tac-toe.player.Computer")
 
 ---an enumeration of all positions in a board that are equal
 local equalities = {
@@ -17,6 +18,11 @@ local equalities = {
 	[11] = { 1, 9 },
 	[12] = { 2, 6 },
 }
+
+local EMPTY = {}
+for i = 1, 9 do
+	table.insert(EMPTY, i)
+end
 
 ---all the symmetries in a board
 ---
@@ -121,18 +127,13 @@ local function simpleMoves(board)
 	return result
 end
 
----@class tic-tac-toe.HardComputer : middleclass.Object, tic-tac-toe.Player
+---@class tic-tac-toe.HardComputer : tic-tac-toe.Computer
 ---@field class tic-tac-toe.HardComputer.Class
-local HardComputer = class("HardComputer")
+local HardComputer = class("HardComputer", Computer)
 
----@class tic-tac-toe.HardComputer.Class : tic-tac-toe.HardComputer, middleclass.Class
+---@class tic-tac-toe.HardComputer.Class : tic-tac-toe.HardComputer, tic-tac-toe.Computer.Class
+---@field super tic-tac-toe.Computer
 ---@overload fun(rng: lrandom.Random): tic-tac-toe.HardComputer
-local HardComputerClass = HardComputer.static --[[@as tic-tac-toe.HardComputer.Class]]
-
----@param rng lrandom.Random
-function HardComputer:initialize(rng)
-	self.rng = rng
-end
 
 ---returns all the valid moves a player can make. Some moves may be omitted if
 ---the board contains a symmetry.
@@ -218,7 +219,11 @@ end
 ---@param mark tic-tac-toe.Mark
 ---@return number[]
 ---@nodiscard
-function HardComputer.getMoves(board, mark)
+function HardComputer:getMoves(board, mark)
+	if board:empty() then
+		return EMPTY
+	end
+
 	local opponentMark = mark:other()
 
 	local bestScore = HardComputer.controls[mark]
@@ -236,19 +241,6 @@ function HardComputer.getMoves(board, mark)
 	end
 
 	return bestMoves
-end
-
----@param board tic-tac-toe.Board
----@param mark tic-tac-toe.Mark
----@return number
-function HardComputer:getMove(board, mark)
-	if board:empty() then
-		return self.rng:value(9)
-	else
-		local moves = HardComputer.getMoves(board, mark)
-		assert(#moves > 0, "no moves to take!")
-		return moves[math.random(#moves)]
-	end
 end
 
 return HardComputer --[[@as tic-tac-toe.HardComputer.Class]]
