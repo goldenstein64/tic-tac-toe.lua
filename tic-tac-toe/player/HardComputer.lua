@@ -144,18 +144,6 @@ function HardComputer.moves(board)
 	return symmetricMoves(board) or simpleMoves(board)
 end
 
----returns a copy of `board` with `mark` applied at `move`
----@param board tic-tac-toe.Board
----@param mark tic-tac-toe.Mark
----@param move integer
----@return tic-tac-toe.Board newBoard
----@nodiscard
-function HardComputer.resultOf(board, mark, move)
-	local newBoard = Board(board)
-	newBoard:setMark(move, mark)
-	return newBoard
-end
-
 ---returns a number indicating the final result of this `board`. It will be
 ---`nil` if the game is not finished.
 ---
@@ -208,8 +196,9 @@ function HardComputer.judge(board, mark)
 	local reconcile = HardComputer.reconcilers[mark]
 	local newMark = mark:other()
 	for _, move in ipairs(HardComputer.moves(board)) do
-		local newBoard = HardComputer.resultOf(board, mark, move)
-		value = reconcile(value, HardComputer.judge(newBoard, newMark))
+		board:setMark(move, mark)
+		value = reconcile(value, HardComputer.judge(board, newMark))
+		board:setMark(move, nil)
 	end
 
 	return value
@@ -230,8 +219,9 @@ function HardComputer:getMoves(board, mark)
 	local reconcile = HardComputer.reconcilers[mark]
 	local bestMoves = {}
 	for _, move in ipairs(simpleMoves(board)) do
-		local nextBoard = HardComputer.resultOf(board, mark, move)
-		local nextScore = HardComputer.judge(nextBoard, opponentMark)
+		board:setMark(move, mark)
+		local nextScore = HardComputer.judge(board, opponentMark)
+		board:setMark(move, nil)
 		if nextScore == bestScore then
 			table.insert(bestMoves, move)
 		elseif bestScore ~= reconcile(bestScore, nextScore) then

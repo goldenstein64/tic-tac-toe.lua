@@ -51,7 +51,7 @@ BoardClass.WIN_PATTERNS = {
 ---@param position number
 ---@param mark tic-tac-toe.Mark?
 function Board:setMark(position, mark)
-	assert(self:canMark(position), "This space is already filled!")
+	assert(self:canMark(position) or mark == nil, "This space is already filled!")
 
 	self.board[position] = mark
 end

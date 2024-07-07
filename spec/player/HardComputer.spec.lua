@@ -1,3 +1,5 @@
+local random = require("random")
+
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 local HardComputer = require("tic-tac-toe.player.HardComputer")
@@ -8,7 +10,7 @@ describe("HardComputer", function()
 	end)
 end)
 
-describe("Computer.terminal", function()
+describe("HardComputer.terminal", function()
 	it("returns 0 for a full board", function()
 		--[[
 			 O | X | X
@@ -81,47 +83,21 @@ describe("Computer.terminal", function()
 	end)
 end)
 
-describe("Computer.resultOf", function()
-	local marks = { Mark.X, Mark.O, nil }
-
-	---@type fun(amount: number): fun(): (integer, (tic-tac-toe.Mark?)[], number[])
-	local function generateBoard(amount)
-		return coroutine.wrap(function()
-			for i = 1, amount do
-				---@type (tic-tac-toe.Mark?)[], number[]
-				local expected, markPositions
-				repeat
-					expected = {}
-					markPositions = {}
-					for pos = 1, 9 do
-						local choice = math.random(3)
-						expected[pos] = marks[choice]
-						if choice == 3 then
-							table.insert(markPositions, pos)
-						end
-					end
-				until #markPositions > 0
-
-				coroutine.yield(i, expected, markPositions)
-			end
-		end)
-	end
-
-	for i, expected, markPositions in generateBoard(50) do
-		local testName = string.format("gets calculated correctly (%d)", i)
-		it(testName, function()
-			local board = Board()
-			board.board = table.move(expected, 1, 9, 1, {})
-
-			local chosenPos = markPositions[math.random(#markPositions)]
-			local chosenMark = marks[math.random(2)]
-			expected[chosenPos] = chosenMark
-
-			local newBoard = HardComputer.resultOf(board, chosenMark, chosenPos)
-
-			for j = 1, 9 do
-				expect(expected[j]).to.equal(newBoard.board[j])
-			end
-		end)
-	end
+describe("HardComputer:getMoves", function()
+	it("has no side effects", function()
+		local computer = HardComputer(random.new())
+		local board = Board.fromPattern("XOXO,,,,,")
+		local _ = computer:getMoves(board, Mark.X)
+		expect(board.board).to.look.like({
+			Mark.X,
+			Mark.O,
+			Mark.X,
+			Mark.O,
+			nil,
+			nil,
+			nil,
+			nil,
+			nil,
+		})
+	end)
 end)

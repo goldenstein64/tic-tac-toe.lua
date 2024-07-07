@@ -158,4 +158,12 @@ describe("Board:setMark", function()
 			expect(b:canMark(i)).to.be._false()
 		end
 	end)
+
+	it("accepts nil for `mark` arg", function()
+		local b = board(",,X,,,,,,")
+		expect(function()
+			b:setMark(3, nil)
+		end).not_to.throw()
+		expect(b.board[3]).to.equal(nil)
+	end)
 end)
