@@ -1,13 +1,14 @@
 local class = require("middleclass")
+local unpack = table.unpack or unpack
 
 ---@alias tic-tac-toe.ConsoleConnection.Formatter fun(...: any): string
 
 local BOARD_FORMAT = [[
-	 %s | %s | %s
-	---|---|---
-	 %s | %s | %s
-	---|---|---
-	 %s | %s | %s]]
+ %s | %s | %s
+---|---|---
+ %s | %s | %s
+---|---|---
+ %s | %s | %s]]
 
 ---@param board tic-tac-toe.Board
 ---@return string
@@ -16,7 +17,7 @@ local function boardFormat(board)
 	for i = 1, 9 do
 		strBoard[i] = tostring(board.board[i] or " ")
 	end
-	return BOARD_FORMAT:format(table.unpack(strBoard))
+	return BOARD_FORMAT:format(unpack(strBoard))
 end
 
 local messages = {
