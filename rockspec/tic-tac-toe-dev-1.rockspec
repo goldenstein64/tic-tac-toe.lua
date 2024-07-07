@@ -1,3 +1,4 @@
+rockspec_format = "3.0"
 package = "tic-tac-toe"
 version = "dev-1"
 source = {
@@ -14,6 +15,7 @@ dependencies = {
 }
 test_dependencies = {
 	"busted ~> 2.2",
+	"bustez ~> 0.1",
 }
 build = {
 	type = "builtin",

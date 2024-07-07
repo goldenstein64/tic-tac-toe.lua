@@ -1,3 +1,4 @@
+rockspec_format = "3.0"
 package = "tic-tac-toe-console"
 version = "dev-1"
 source = {
