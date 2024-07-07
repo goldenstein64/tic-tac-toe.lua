@@ -1,10 +1,8 @@
 {
 	"Lua.workspace.library": [
 		"$USERPROFILE/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/busted/module/library",
-		"${3rd}/luassert/library",
 		"$USERPROFILE/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/luassert/module/library",
 		"$LUA_ENVS/bustez/library",
-		"../pkg",
 		"../lua_modules/share/lua/5.1",
 		".."
 	],
