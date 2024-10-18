@@ -3,10 +3,12 @@
   "Lua.workspace.library": [
     "pkg",
     "lua_modules/share/lua/5.1",
-    "$LUA_ENVS/say/library",
-    "$USERPROFILE/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/penlight/module/library",
     "${3rd}/lfs/library",
     "./.vscode/types",
+    "$LUA_ENVS/say/library",
+    "$LUA_LS_ADDONS/penlight/module/library", // $LUA_LS_ADDONS points to $USERPROFILE/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addons
+    "$LUA_LS_ADDONS/luassert/module/library",
+    "$LUA_LS_ADDONS/busted/module/library",
   ],
   "Lua.workspace.ignoreDir": [
     ".vscode",
