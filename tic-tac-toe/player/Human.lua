@@ -1,11 +1,11 @@
 local class = require("middleclass")
 
----@class Human.Error
+---@class tic-tac-toe.Human.Error
 ---@field code tic-tac-toe.Message
 
-local ERR_NAN = { code = "human.err.NaN" } ---@type Human.Error
-local ERR_OUT_OF_RANGE = { code = "human.err.outOfRange" } ---@type Human.Error
-local ERR_OCCUPIED = { code = "human.err.occupied" } ---@type Human.Error
+local ERR_NAN = { code = "human.err.NaN" } ---@type tic-tac-toe.Human.Error
+local ERR_OUT_OF_RANGE = { code = "human.err.outOfRange" } ---@type tic-tac-toe.Human.Error
+local ERR_OCCUPIED = { code = "human.err.occupied" } ---@type tic-tac-toe.Human.Error
 
 local ERRORS = {
 	[ERR_NAN] = true,
@@ -53,7 +53,7 @@ function Human:getMove(board, mark)
 			---@cast res number
 			return res
 		elseif ERRORS[res] then
-			---@cast res Human.Error
+			---@cast res tic-tac-toe.Human.Error
 			self.conn:print(res.code)
 		else
 			error(res)
