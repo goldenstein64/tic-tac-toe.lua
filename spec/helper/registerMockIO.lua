@@ -54,5 +54,7 @@ Did not expect any of:
 )
 
 expect.map_args("print", { 2, 1, 3 })
+expect.map_args("prints", { 2, 1, 3 })
 
 luassert:register("assertion", "print", print, "assertion.print.positive", "assertion.print.negative")
+luassert:register("assertion", "prints", print, "assertion.print.positive", "assertion.print.negative")

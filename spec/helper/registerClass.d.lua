@@ -5,7 +5,7 @@ local luassert = {}
 
 ---assert that `instance` is an instance of `baseClass`.
 ---@param baseClass middleclass.Class
----@param instance middleclass.Object
+---@param instance any
 ---@param message? string
 ---@return luassert.internal
 function luassert.instance_of(baseClass, instance, message) end

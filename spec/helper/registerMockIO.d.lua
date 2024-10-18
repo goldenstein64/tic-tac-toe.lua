@@ -11,6 +11,7 @@ local luassert = {}
 function luassert.print(content, io, message) end
 
 luassert.does_print = luassert.print
+luassert.prints = luassert.print
 
 ---@class bustez.Expectation
 local expect = {}
@@ -21,4 +22,5 @@ local expect = {}
 ---@return bustez.Expectation
 function expect.print(content, message) end
 
+expect.prints = expect.print
 expect.to_print = expect.print
