@@ -11,7 +11,7 @@ describe("Human", function()
 end)
 
 describe("Human.getMove", function()
-	it("asks for a move from its IO object", function()
+	it("asks for a move from its connection", function()
 		local board = Board.fromPattern(",,,,,,,,,")
 		local conn = MockConnection()
 		local human = Human(conn)
