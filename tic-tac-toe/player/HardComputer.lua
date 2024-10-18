@@ -1,5 +1,4 @@
 local class = require("middleclass")
-local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 local Computer = require("tic-tac-toe.player.Computer")
 
