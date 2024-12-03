@@ -11,6 +11,18 @@ local Board = class("Board")
 ---@overload fun(board: tic-tac-toe.Board?): tic-tac-toe.Board
 local BoardClass = Board.static --[[@as tic-tac-toe.Board.Class]]
 
+---@type number[][]
+BoardClass.WIN_PATTERNS = {
+	[1] = { 1, 2, 3 },
+	[2] = { 4, 5, 6 },
+	[3] = { 7, 8, 9 },
+	[4] = { 1, 4, 7 },
+	[5] = { 2, 5, 8 },
+	[6] = { 3, 6, 9 },
+	[7] = { 1, 5, 9 },
+	[8] = { 3, 5, 7 },
+}
+
 ---@param board tic-tac-toe.Board?
 function Board:initialize(board)
 	---@type (tic-tac-toe.Mark?)[]
@@ -34,18 +46,6 @@ function BoardClass.fromPattern(pattern)
 	end
 	return result
 end
-
----@type number[][]
-BoardClass.WIN_PATTERNS = {
-	[1] = { 1, 2, 3 },
-	[2] = { 4, 5, 6 },
-	[3] = { 7, 8, 9 },
-	[4] = { 1, 4, 7 },
-	[5] = { 2, 5, 8 },
-	[6] = { 3, 6, 9 },
-	[7] = { 1, 5, 9 },
-	[8] = { 3, 5, 7 },
-}
 
 ---attempt to mark the given position with the given mark. Errors if it is
 ---unable to do so
