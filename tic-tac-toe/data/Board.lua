@@ -4,6 +4,7 @@ local Mark = require("tic-tac-toe.data.Mark")
 
 ---@class tic-tac-toe.Board : middleclass.Object
 ---@field class tic-tac-toe.Board.Class
+---@field board (tic-tac-toe.Mark?)[]
 local Board = class("Board")
 
 ---@class tic-tac-toe.Board.Class : tic-tac-toe.Board, middleclass.Class
@@ -118,6 +119,7 @@ function Board:empty()
 	return true
 end
 
+---@return string
 function Board:__tostring()
 	local strBoard = {}
 	for i = 1, 9 do
