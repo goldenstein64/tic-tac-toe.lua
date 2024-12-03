@@ -88,7 +88,7 @@ describe("HardComputer:getMoves", function()
 		local computer = HardComputer(random.new())
 		local board = Board.fromPattern("XOXO,,,,,")
 		local _ = computer:getMoves(board, Mark.X)
-		expect(board.board).to.look.like({
+		expect(board.data).to.look.like({
 			Mark.X,
 			Mark.O,
 			Mark.X,

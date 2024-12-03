@@ -4,7 +4,7 @@ local Mark = require("tic-tac-toe.data.Mark")
 
 ---@class tic-tac-toe.Board : middleclass.Object
 ---@field class tic-tac-toe.Board.Class
----@field board (tic-tac-toe.Mark?)[]
+---@field data (tic-tac-toe.Mark?)[]
 local Board = class("Board")
 
 ---@class tic-tac-toe.Board.Class : tic-tac-toe.Board, middleclass.Class
@@ -14,11 +14,11 @@ local BoardClass = Board.static --[[@as tic-tac-toe.Board.Class]]
 ---@param board tic-tac-toe.Board?
 function Board:initialize(board)
 	---@type (tic-tac-toe.Mark?)[]
-	self.board = {}
+	self.data = {}
 
 	if board then
 		for i = 1, 9 do
-			self.board[i] = board.board[i]
+			self.data[i] = board.data[i]
 		end
 	end
 end
@@ -54,7 +54,7 @@ BoardClass.WIN_PATTERNS = {
 function Board:setMark(position, mark)
 	assert(self:canMark(position) or mark == nil, "This space is already filled!")
 
-	self.board[position] = mark
+	self.data[position] = mark
 end
 
 ---can this position on the board be marked?
@@ -69,7 +69,7 @@ end
 ---@param mark tic-tac-toe.Mark?
 ---@return boolean
 function Board:isMarkedWith(position, mark)
-	return position >= 1 and position <= 9 and self.board[position] == mark
+	return position >= 1 and position <= 9 and self.data[position] == mark
 end
 
 ---did the player with this mark win?
@@ -79,7 +79,7 @@ function Board:won(mark)
 	for _, pattern in ipairs(BoardClass.WIN_PATTERNS) do
 		local isWon = true
 		for _, position in ipairs(pattern) do
-			if self.board[position] ~= mark then
+			if self.data[position] ~= mark then
 				isWon = false
 				break
 			end
@@ -97,7 +97,7 @@ end
 ---@return boolean
 function Board:full()
 	for i = 1, 9 do
-		local mark = self.board[i]
+		local mark = self.data[i]
 		if mark == nil then
 			return false
 		end
@@ -110,7 +110,7 @@ end
 ---@return boolean
 function Board:empty()
 	for i = 1, 9 do
-		local mark = self.board[i]
+		local mark = self.data[i]
 		if mark ~= nil then
 			return false
 		end
@@ -123,7 +123,7 @@ end
 function Board:__tostring()
 	local strBoard = {}
 	for i = 1, 9 do
-		strBoard[i] = tostring(self.board[i] or ",")
+		strBoard[i] = tostring(self.data[i] or ",")
 	end
 
 	return table.concat(strBoard)

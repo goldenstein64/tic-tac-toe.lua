@@ -15,7 +15,7 @@ local BOARD_FORMAT = [[
 local function boardFormat(board)
 	local strBoard = {} ---@type string[]
 	for i = 1, 9 do
-		strBoard[i] = tostring(board.board[i] or " ")
+		strBoard[i] = tostring(board.data[i] or " ")
 	end
 	return BOARD_FORMAT:format(unpack(strBoard))
 end

@@ -89,7 +89,7 @@ end
 local function getEqualitySet(board)
 	local result = {}
 
-	local data = board.board
+	local data = board.data
 
 	for i, equality in pairs(equalities) do
 		result[i] = data[equality[1]] == data[equality[2]] or nil
