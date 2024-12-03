@@ -48,10 +48,13 @@ end
 
 ---@class tic-tac-toe.ConsoleConnection : middleclass.Object, tic-tac-toe.Connection
 ---@field class tic-tac-toe.ConsoleConnection.Class
+---@field messages { [tic-tac-toe.Message]: tic-tac-toe.ConsoleConnection.Formatter }
+---@field inFile file*
+---@field outFile file*
 local ConsoleConnection = class("ConsoleConnection")
 
 ---@class tic-tac-toe.ConsoleConnection.Class : tic-tac-toe.ConsoleConnection, middleclass.Class
----@overload fun(): tic-tac-toe.ConsoleConnection
+---@overload fun(inFile?: file*, outFile?: file*): tic-tac-toe.ConsoleConnection
 local ConsoleConnectionClass = ConsoleConnection.static --[[@as tic-tac-toe.ConsoleConnection.Class]]
 
 ---@param inFile? file*
@@ -88,4 +91,4 @@ function ConsoleConnection:prompt(message, ...)
 	return self.inFile:read()
 end
 
-return ConsoleConnection --[[@as tic-tac-toe.ConsoleConnection.Class]]
+return ConsoleConnectionClass
