@@ -3,7 +3,6 @@ local MockConnection = require("spec.io.MockConnection")
 local random = require("random")
 local App = require("tic-tac-toe")
 local Mark = require("tic-tac-toe.data.Mark")
-local Board = require("tic-tac-toe.data.Board")
 local Human = require("tic-tac-toe.player.Human")
 local EasyComputer = require("tic-tac-toe.player.EasyComputer")
 local MediumComputer = require("tic-tac-toe.player.MediumComputer")
@@ -17,8 +16,11 @@ describe("App:promptPlayerOnce", function()
 
 		local playerClass = app:promptPlayerOnce(Mark.X)
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.msg.pickComputer")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
+
 		expect(playerClass).to.be.an.instance.of(HardComputer)
 	end)
 
@@ -29,8 +31,11 @@ describe("App:promptPlayerOnce", function()
 
 		local playerClass = app:promptPlayerOnce(Mark.X)
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.msg.pickComputer")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
+
 		expect(playerClass).to.be.an.instance.of(MediumComputer)
 	end)
 
@@ -41,8 +46,11 @@ describe("App:promptPlayerOnce", function()
 
 		local playerClass = app:promptPlayerOnce(Mark.X)
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.msg.pickComputer")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
+
 		expect(playerClass).to.be.an.instance.of(EasyComputer)
 	end)
 
@@ -53,10 +61,13 @@ describe("App:promptPlayerOnce", function()
 
 		local playerClass = app:promptPlayerOnce(Mark.X)
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.msg.pickComputer")
-		expect(conn).to.print("app.err.invalidComputer")
-		expect(playerClass).to.be._nil()
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+			{ message = "app.err.invalidComputer", "@" },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
+
+		expect(playerClass).to.be_nil()
 	end)
 
 	it("returns the Human class on input 'H'", function()
@@ -66,7 +77,10 @@ describe("App:promptPlayerOnce", function()
 
 		local player = app:promptPlayerOnce(Mark.X)
 
-		expect(conn).to.print("app.msg.pickPlayer")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
+
 		expect(player).to.be.an.instance.of(Human)
 	end)
 
@@ -77,9 +91,12 @@ describe("App:promptPlayerOnce", function()
 
 		local playerClass = app:promptPlayerOnce(Mark.X)
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.err.invalidPlayer")
-		expect(playerClass).to.be._nil()
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.err.invalidPlayer", "@" },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
+
+		expect(playerClass).to.be_nil()
 	end)
 end)
 
@@ -91,8 +108,17 @@ describe("App:choosePlayers", function()
 
 		local players = app:choosePlayers()
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.err.invalidPlayer")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.err.invalidPlayer", "@" },
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+			{ message = "app.msg.pickPlayer", Mark.O },
+			{ message = "app.err.invalidPlayer", "@" },
+			{ message = "app.msg.pickPlayer", Mark.O },
+			{ message = "app.err.invalidPlayer", "@" },
+			{ message = "app.msg.pickPlayer", Mark.O },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 
 		expect(players).to.be.a("table")
 		expect(players[1]).to.be.an.instance.of(HardComputer)
@@ -106,10 +132,20 @@ describe("App:choosePlayers", function()
 
 		local players = app:choosePlayers()
 
-		expect(conn).to.print("app.msg.pickPlayer")
-		expect(conn).to.print("app.msg.pickComputer")
-		expect(conn).to.print("app.err.invalidPlayer")
-		expect(conn).to.print("app.err.invalidComputer")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+			{ message = "app.err.invalidComputer", "@" },
+			{ message = "app.msg.pickPlayer", Mark.X },
+			{ message = "app.msg.pickComputer", Mark.X },
+			{ message = "app.msg.pickPlayer", Mark.O },
+			{ message = "app.err.invalidPlayer", "@" },
+			{ message = "app.msg.pickPlayer", Mark.O },
+			{ message = "app.msg.pickComputer", Mark.O },
+			{ message = "app.err.invalidComputer", "@" },
+			{ message = "app.msg.pickPlayer", Mark.O },
+			{ message = "app.msg.pickComputer", Mark.O },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 
 		expect(players).to.be.a("table")
 		expect(players[1]).to.be.an.instance.of(MediumComputer)
@@ -124,7 +160,9 @@ describe("App:displayWinner", function()
 
 		app:displayWinner(nil)
 
-		expect(conn).to.print("app.msg.tied")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.tied" },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("outputs the winner when given Mark.X as an argument", function()
@@ -133,7 +171,9 @@ describe("App:displayWinner", function()
 
 		app:displayWinner(Mark.X)
 
-		expect(conn).to.print("app.msg.playerWon")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.playerWon", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("outputs the winner when given Mark.O as an argument", function()
@@ -142,7 +182,9 @@ describe("App:displayWinner", function()
 
 		app:displayWinner(Mark.O)
 
-		expect(conn).to.print("app.msg.playerWon")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.playerWon", Mark.O },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 end)
 
@@ -154,12 +196,26 @@ describe("App:playGame", function()
 		-- a classic corner trap game
 		conn:mockInput("1", "2", "7", "4", "9", "5", "8")
 
-		local board = Board()
 		local winner = app:playGame({ Human(conn), Human(conn) })
 
 		expect(winner).to.equal(Mark.X)
-		expect(conn).to.print("human.msg.pickMove")
-		expect(conn).to.print("app.msg.game")
+		expect(conn.outputs).to.look.like({
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.O },
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.O },
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.O },
+			{ message = "app.msg.game", app.board },
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "app.msg.game", app.board },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("can run a game of tic~tac~toe between computers", function()

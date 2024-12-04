@@ -18,10 +18,10 @@ describe("Human.getMove", function()
 		conn:mockInput("2")
 
 		local move = human:getMove(board, Mark.X)
-		expect(conn).to.print("human.msg.pickMove")
-		expect(conn).to.never.print("human.err.NaN")
-		expect(conn).to.never.print("human.err.outOfRange")
-		expect(conn).to.never.print("human.err.occupied")
+
+		expect(conn.outputs).to.look.like({
+			{ message = "human.msg.pickMove", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 
 		expect(move).to.equal(2)
 	end)
@@ -34,11 +34,13 @@ describe("Human.getMove", function()
 
 		local move = human:getMove(board, Mark.X)
 
-		-- 3 and 2 should get ignored
-		expect(conn).to.print("human.msg.pickMove")
-		expect(conn).to.never.print("human.err.NaN")
-		expect(conn).to.never.print("human.err.outOfRange")
-		expect(conn).to.print("human.err.occupied")
+		expect(conn.outputs).to.look.like({
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "human.err.occupied", 3 },
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "human.err.occupied", 2 },
+			{ message = "human.msg.pickMove", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 
 		expect(move).to.equal(1)
 	end)
@@ -51,10 +53,11 @@ describe("Human.getMove", function()
 
 		local move = human:getMove(board, Mark.X)
 
-		expect(conn).to.print("human.msg.pickMove")
-		expect(conn).to.never.print("human.err.NaN")
-		expect(conn).to.print("human.err.outOfRange")
-		expect(conn).to.never.print("human.err.occupied")
+		expect(conn.outputs).to.look.like({
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "human.err.outOfRange", 0 },
+			{ message = "human.msg.pickMove", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 
 		expect(move).to.equal(1)
 	end)
@@ -67,11 +70,11 @@ describe("Human.getMove", function()
 
 		local move = human:getMove(board, Mark.X)
 
-		-- @ should get ignored
-		expect(conn).to.print("human.msg.pickMove")
-		expect(conn).to.print("human.err.NaN")
-		expect(conn).to.never.print("human.err.outOfRange")
-		expect(conn).to.never.print("human.err.occupied")
+		expect(conn.outputs).to.look.like({
+			{ message = "human.msg.pickMove", Mark.X },
+			{ message = "human.err.NaN", "@" },
+			{ message = "human.msg.pickMove", Mark.X },
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 
 		expect(move).to.equal(1)
 	end)

@@ -7,13 +7,17 @@ local MockIO = class("MockIO")
 ---@class tic-tac-toe.MockConnection.Class : middleclass.Class
 ---@overload fun(): tic-tac-toe.MockConnection
 
+---@class tic-tac-toe.MockConnection.Message
+---@field message tic-tac-toe.Message
+---@field [number] any
+
 function MockIO:initialize()
 	---a buffer of strings, consumed when `MockIO:prompt` is called
 	---@type string[]
 	self.inputs = {}
 
 	---a list of all the outputs this IO object generated
-	---@type string[]
+	---@type tic-tac-toe.MockConnection.Message[]
 	self.outputs = {}
 end
 
@@ -50,7 +54,7 @@ end
 ---@param ... any
 ---@return string
 function MockIO:prompt(message, ...)
-	table.insert(self.outputs, message)
+	table.insert(self.outputs, { message = message, ... })
 
 	assert(#self.inputs > 0, "input buffer exhausted!")
 	local input = table.remove(self.inputs, 1)
@@ -61,7 +65,7 @@ end
 ---@param message string
 ---@param ... any
 function MockIO:print(message, ...)
-	table.insert(self.outputs, message)
+	table.insert(self.outputs, { message = message, ... })
 end
 
 return MockIO --[[@as tic-tac-toe.MockConnection.Class]]
