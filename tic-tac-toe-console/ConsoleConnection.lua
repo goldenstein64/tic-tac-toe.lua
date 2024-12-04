@@ -32,9 +32,9 @@ local messages = {
 	["app.err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
 
 	["human.msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
-	["human.err.NaN"] = "This is not a number!",
-	["human.err.outOfRange"] = "This is not in the range of 1-9!",
-	["human.err.occupied"] = "This space cannot be filled!",
+	["human.err.NaN"] = "'%s' is not a valid number!",
+	["human.err.outOfRange"] = "Slot %d is not in the range of 1-9!",
+	["human.err.occupied"] = "Slot %d is occupied!",
 }
 
 for msg, formatter in pairs(messages) do
@@ -55,7 +55,7 @@ local ConsoleConnection = class("ConsoleConnection")
 
 ---@class tic-tac-toe.ConsoleConnection.Class : tic-tac-toe.ConsoleConnection, middleclass.Class
 ---@overload fun(inFile?: file*, outFile?: file*): tic-tac-toe.ConsoleConnection
-local ConsoleConnectionClass = ConsoleConnection.static --[[@as tic-tac-toe.ConsoleConnection.Class]]
+local ConsoleConnectionClass = ConsoleConnection --[[@as tic-tac-toe.ConsoleConnection.Class]]
 
 ---@param inFile? file*
 ---@param outFile? file*

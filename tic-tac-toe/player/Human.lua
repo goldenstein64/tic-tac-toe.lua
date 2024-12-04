@@ -1,24 +1,15 @@
 local class = require("middleclass")
 
----@class tic-tac-toe.Human.Error
----@field code tic-tac-toe.Message
-
-local ERR_NAN = { code = "human.err.NaN" } ---@type tic-tac-toe.Human.Error
-local ERR_OUT_OF_RANGE = { code = "human.err.outOfRange" } ---@type tic-tac-toe.Human.Error
-local ERR_OCCUPIED = { code = "human.err.occupied" } ---@type tic-tac-toe.Human.Error
-
-local ERRORS = {
-	[ERR_NAN] = true,
-	[ERR_OUT_OF_RANGE] = true,
-	[ERR_OCCUPIED] = true,
-}
-
 ---@class tic-tac-toe.Human : middleclass.Object, tic-tac-toe.Player
 ---@field conn tic-tac-toe.Connection
 local Human = class("Human")
 
 ---@class tic-tac-toe.Human.Class : tic-tac-toe.Human, middleclass.Class
 ---@overload fun(conn: tic-tac-toe.Connection): tic-tac-toe.Human
+
+---@class tic-tac-toe.Human.Err
+---@field code tic-tac-toe.Message
+---@field [number] any
 
 ---@param conn tic-tac-toe.Connection
 function Human:initialize(conn)
@@ -29,16 +20,21 @@ end
 ---prompts the user for a move from stdin
 ---@param board tic-tac-toe.Board
 ---@param mark tic-tac-toe.Mark
----@return number
+---@return number?, tic-tac-toe.Human.Err?
 ---@nodiscard
 function Human:promptMove(board, mark)
 	local posString = self.conn:prompt("human.msg.pickMove", mark)
 	local pos = tonumber(posString)
-	assert(pos, ERR_NAN)
-	assert(pos >= 1 and pos <= 9, ERR_OUT_OF_RANGE)
-	assert(board:canMark(pos), ERR_OCCUPIED)
 
-	return pos
+	if not pos then
+		return nil, { code = "human.err.NaN", posString }
+	elseif pos < 1 or pos > 9 then
+		return nil, { code = "human.err.outOfRange", pos }
+	elseif not board:canMark(pos) then
+		return nil, { code = "human.err.occupied", pos }
+	else
+		return pos
+	end
 end
 
 ---@param board tic-tac-toe.Board
@@ -47,16 +43,13 @@ end
 ---@nodiscard
 function Human:getMove(board, mark)
 	while true do
-		---@type boolean, unknown
-		local s, res = pcall(self.promptMove, self, board, mark)
-		if s then
-			---@cast res number
-			return res
-		elseif ERRORS[res] then
-			---@cast res tic-tac-toe.Human.Error
-			self.conn:print(res.code)
+		local value, err = self:promptMove(board, mark)
+		if value then
+			return value
+		elseif err then
+			self.conn:print(err.code, unpack(err))
 		else
-			error(res)
+			error(string.format("unknown result: (%s, %s)", tostring(value), tostring(err)))
 		end
 	end
 end
