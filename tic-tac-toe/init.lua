@@ -84,6 +84,7 @@ end
 ---@return tic-tac-toe.Mark?
 function App:playGame(players)
 	local i = 0
+	self.conn:print("app.msg.game", self.board)
 	while not self.board:full() do
 		i = i % #players + 1
 		local mark, player = Mark.all[i], players[i]
