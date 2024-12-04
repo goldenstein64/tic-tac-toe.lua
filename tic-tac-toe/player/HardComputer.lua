@@ -3,7 +3,7 @@ local Mark = require("tic-tac-toe.data.Mark")
 local Computer = require("tic-tac-toe.player.Computer")
 
 ---an enumeration of all positions in a board that are equal
-local equalities = {
+local EQUALITIES = {
 	[1] = { 1, 3 },
 	[2] = { 4, 6 },
 	[3] = { 7, 9 },
@@ -29,7 +29,7 @@ end
 ---  transformation
 ---
 ---- `image` lists how the scope of the board is limited by this symmetry
-local symmetries = {
+local SYMMETRIES = {
 	{ -- rotate 90
 		equalities = { 1, 2, 3, 7, 8, 9 },
 		image = { 1, 2, 5 },
@@ -91,7 +91,7 @@ local function getEqualitySet(board)
 
 	local data = board.data
 
-	for i, equality in pairs(equalities) do
+	for i, equality in pairs(EQUALITIES) do
 		result[i] = data[equality[1]] == data[equality[2]] or nil
 	end
 
@@ -104,7 +104,7 @@ end
 ---@return integer[]?
 local function symmetricMoves(board)
 	local equalitySet = getEqualitySet(board)
-	for _, symmetry in ipairs(symmetries) do
+	for _, symmetry in ipairs(SYMMETRIES) do
 		if symmetryMatches(equalitySet, symmetry.equalities) then
 			return filterImage(board, symmetry.image)
 		end
@@ -151,7 +151,7 @@ end
 ---- `0`: there was a tie
 ---- `nil`: the game is not finished
 ---@param board tic-tac-toe.Board
----@return number?
+---@return -1 | 0 | 1 | nil
 ---@nodiscard
 function HardComputer.terminal(board)
 	if board:won(Mark.X) then
@@ -168,13 +168,13 @@ end
 ---@alias Computer.Reconciler fun(a: number, b: number): number
 
 ---@type { [tic-tac-toe.Mark]: Computer.Reconciler }
-HardComputer.reconcilers = {
+HardComputer.RECONCILERS = {
 	[Mark.X] = math.max,
 	[Mark.O] = math.min,
 }
 
 ---@type { [tic-tac-toe.Mark]: number }
-HardComputer.controls = {
+HardComputer.CONTROLS = {
 	[Mark.X] = -1,
 	[Mark.O] = 1,
 }
@@ -191,8 +191,8 @@ function HardComputer.judge(board, mark)
 		return terminalValue
 	end
 
-	local value = HardComputer.controls[mark]
-	local reconcile = HardComputer.reconcilers[mark]
+	local value = HardComputer.CONTROLS[mark]
+	local reconcile = HardComputer.RECONCILERS[mark]
 	local newMark = mark:other()
 	for _, move in ipairs(HardComputer.moves(board)) do
 		board:setMark(move, mark)
@@ -214,8 +214,8 @@ function HardComputer:getMoves(board, mark)
 
 	local opponentMark = mark:other()
 
-	local bestScore = HardComputer.controls[mark]
-	local reconcile = HardComputer.reconcilers[mark]
+	local bestScore = HardComputer.CONTROLS[mark]
+	local reconcile = HardComputer.RECONCILERS[mark]
 	local bestMoves = {}
 	for _, move in ipairs(simpleMoves(board)) do
 		board:setMark(move, mark)
