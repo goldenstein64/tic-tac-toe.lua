@@ -8,7 +8,7 @@ local Human = class("Human")
 ---@overload fun(conn: tic-tac-toe.Connection): tic-tac-toe.Human
 
 ---@class tic-tac-toe.Human.Err
----@field code tic-tac-toe.Message
+---@field message tic-tac-toe.Message
 ---@field [number] any
 
 ---@param conn tic-tac-toe.Connection
@@ -27,11 +27,11 @@ function Human:promptMove(board, mark)
 	local pos = tonumber(posString)
 
 	if not pos then
-		return nil, { code = "human.err.NaN", posString }
+		return nil, { message = "human.err.NaN", posString }
 	elseif pos < 1 or pos > 9 then
-		return nil, { code = "human.err.outOfRange", pos }
+		return nil, { message = "human.err.outOfRange", pos }
 	elseif not board:canMark(pos) then
-		return nil, { code = "human.err.occupied", pos }
+		return nil, { message = "human.err.occupied", pos }
 	else
 		return pos
 	end
@@ -47,7 +47,7 @@ function Human:getMove(board, mark)
 		if value then
 			return value
 		elseif err then
-			self.conn:print(err.code, unpack(err))
+			self.conn:print(err.message, unpack(err))
 		else
 			error(string.format("unknown result: (%s, %s)", tostring(value), tostring(err)))
 		end
