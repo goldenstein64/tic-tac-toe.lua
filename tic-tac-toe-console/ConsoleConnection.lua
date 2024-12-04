@@ -27,8 +27,8 @@ local messages = {
 	["app.msg.playerWon"] = "Player %s won!",
 	["app.msg.tied"] = "There was a tie!",
 
-	["app.err.invalidPlayer"] = "This does not match 'H', 'C'!",
-	["app.err.invalidComputer"] = "This does not match 'E', 'M' or 'H'!",
+	["app.err.invalidPlayer"] = "'%s' does not match 'H', 'C'!",
+	["app.err.invalidComputer"] = "'%s' does not match 'E', 'M' or 'H'!",
 
 	["human.msg.pickMove"] = "Pick a move, Player %s [1-9]: ",
 	["human.err.NaN"] = "'%s' is not a valid number!",
@@ -64,9 +64,17 @@ function ConsoleConnection:initialize(inFile, outFile)
 	self.outFile = outFile or io.stdout
 end
 
----@param message tic-tac-toe.Message
----@param ... any
----@return string
+---@overload fun(self, message: "app.msg.pickPlayer", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "app.msg.pickComputer", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "app.msg.game", board: tic-tac-toe.Board): string
+---@overload fun(self, message: "app.msg.playerWon", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "app.msg.tied"): string
+---@overload fun(self, message: "app.err.invalidPlayer", input: string): string
+---@overload fun(self, message: "app.err.invalidComputer", input: string): string
+---@overload fun(self, message: "human.msg.pickMove", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "human.err.NaN", input: string): string
+---@overload fun(self, message: "human.err.outOfRange", choice: number): string
+---@overload fun(self, message: "human.err.occupied", choice: number): string
 function ConsoleConnection:format(message, ...)
 	local formatter = self.messages[message]
 	if formatter then
@@ -76,15 +84,33 @@ function ConsoleConnection:format(message, ...)
 	return message
 end
 
----@param message tic-tac-toe.Message
----@param ... any
+---@overload fun(self, message: "app.msg.pickPlayer", mark: tic-tac-toe.Mark)
+---@overload fun(self, message: "app.msg.pickComputer", mark: tic-tac-toe.Mark)
+---@overload fun(self, message: "app.msg.game", board: tic-tac-toe.Board)
+---@overload fun(self, message: "app.msg.playerWon", mark: tic-tac-toe.Mark)
+---@overload fun(self, message: "app.msg.tied")
+---@overload fun(self, message: "app.err.invalidPlayer", input: string)
+---@overload fun(self, message: "app.err.invalidComputer", input: string)
+---@overload fun(self, message: "human.msg.pickMove", mark: tic-tac-toe.Mark)
+---@overload fun(self, message: "human.err.NaN", input: string)
+---@overload fun(self, message: "human.err.outOfRange", choice: number)
+---@overload fun(self, message: "human.err.occupied", choice: number)
 function ConsoleConnection:print(message, ...)
 	self.outFile:write(self:format(message, ...))
 	self.outFile:write("\n")
 end
 
----@param message tic-tac-toe.Message
----@param ... any
+---@overload fun(self, message: "app.msg.pickPlayer", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "app.msg.pickComputer", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "app.msg.game", board: tic-tac-toe.Board): string
+---@overload fun(self, message: "app.msg.playerWon", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "app.msg.tied"): string
+---@overload fun(self, message: "app.err.invalidPlayer", input: string): string
+---@overload fun(self, message: "app.err.invalidComputer", input: string): string
+---@overload fun(self, message: "human.msg.pickMove", mark: tic-tac-toe.Mark): string
+---@overload fun(self, message: "human.err.NaN", input: string): string
+---@overload fun(self, message: "human.err.outOfRange", choice: number): string
+---@overload fun(self, message: "human.err.occupied", choice: number): string
 function ConsoleConnection:prompt(message, ...)
 	self.outFile:write(self:format(message, ...))
 	return self.inFile:read()

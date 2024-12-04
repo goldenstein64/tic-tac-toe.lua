@@ -39,7 +39,7 @@ function App:promptComputerOnce(mark)
 	elseif chosenComputer == "H" then
 		return HardComputer(random.new())
 	else
-		self.conn:print("app.err.invalidComputer")
+		self.conn:print("app.err.invalidComputer", chosenComputer)
 		return nil
 	end
 end
@@ -53,7 +53,7 @@ function App:promptPlayerOnce(mark)
 	elseif chosenPlayer == "C" then
 		return self:promptComputerOnce(mark)
 	else
-		self.conn:print("app.err.invalidPlayer")
+		self.conn:print("app.err.invalidPlayer", chosenPlayer)
 		return nil
 	end
 end
