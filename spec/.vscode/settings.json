@@ -7,11 +7,11 @@
 		".."
 	],
 	"Lua.workspace.ignoreDir": [
-    ".vscode",
+    	".vscode",
 		"../.vscode",
-    "../rockspec",
+    	"../rockspec",
 		"../lua_modules/lib/luarocks"
-  ],
+  	],
 	"Lua.workspace.checkThirdParty": false,
 	"[lua]": {
 		"editor.formatOnSave": true
