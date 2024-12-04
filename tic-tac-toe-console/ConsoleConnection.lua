@@ -21,7 +21,6 @@ local function boardFormat(board)
 end
 
 local messages = {
-	["app.msg.greeting"] = "This program runs a tic-tac-toe game.",
 	["app.msg.pickPlayer"] = "Will player %s be a human or computer? [H/C]: ",
 	["app.msg.pickComputer"] = "What is computer %s's difficulty? [E/M/H]: ",
 	["app.msg.game"] = boardFormat,

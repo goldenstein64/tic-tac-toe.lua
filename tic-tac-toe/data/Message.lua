@@ -1,5 +1,4 @@
 ---@alias tic-tac-toe.Message
----| "app.msg.greeting"
 ---| "app.msg.pickPlayer"
 ---| "app.msg.pickComputer"
 ---| "app.msg.game"
