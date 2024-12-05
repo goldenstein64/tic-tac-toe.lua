@@ -1,23 +1,36 @@
 local class = require("middleclass")
 
+local function reverse(array)
+	for i = 1, #array / 2 do
+		local j = #array - i + 1
+		array[i], array[j] = array[j], array[i]
+	end
+end
+
 ---@class tic-tac-toe.MockConnection : middleclass.Object, tic-tac-toe.Connection
+---a buffer of strings, consumed when `MockIO:prompt` is called
+---@field inputs string[]
+---a list of all the outputs this IO object generated
+---@field outputs tic-tac-toe.MockConnection.Message[]
 ---@field class tic-tac-toe.MockConnection.Class
 local MockIO = class("MockIO")
 
 ---@class tic-tac-toe.MockConnection.Class : middleclass.Class
----@overload fun(): tic-tac-toe.MockConnection
+---@overload fun(inputs?: string[]): tic-tac-toe.MockConnection
 
 ---@class tic-tac-toe.MockConnection.Message
 ---@field message tic-tac-toe.Message
 ---@field [number] any
 
-function MockIO:initialize()
-	---a buffer of strings, consumed when `MockIO:prompt` is called
-	---@type string[]
-	self.inputs = {}
+---@param inputs? string[]
+function MockIO:initialize(inputs)
+	if inputs then
+		reverse(inputs)
+		self.inputs = inputs
+	else
+		self.inputs = {}
+	end
 
-	---a list of all the outputs this IO object generated
-	---@type tic-tac-toe.MockConnection.Message[]
 	self.outputs = {}
 end
 
@@ -32,16 +45,19 @@ Example:
 ```lua
 local exampleIO = MockIO()
 
-exampleIO:mockInput("first", "second", "third")
+exampleIO:mockInput("first", "second", "third", "^C")
 
 print(exampleIO:prompt("")) --> "first"
 print(exampleIO:prompt("")) --> "second"
 print(exampleIO:prompt("")) --> "third"
+print(exampleIO:prompt("")) --> Error: Keyboard interrupt!
 ```
 ]]
 ---@param ... string
 function MockIO:mockInput(...)
-	self.inputs = { ... }
+	local inputs = { ... }
+	reverse(inputs)
+	self.inputs = inputs
 end
 
 ---clears all recorded inputs and outputs
@@ -50,19 +66,19 @@ function MockIO:mockReset()
 	self.outputs = {}
 end
 
----@param message string
+---@param message tic-tac-toe.Message
 ---@param ... any
 ---@return string
 function MockIO:prompt(message, ...)
 	table.insert(self.outputs, { message = message, ... })
 
 	assert(#self.inputs > 0, "input buffer exhausted!")
-	local input = table.remove(self.inputs, 1)
+	local input = table.remove(self.inputs)
 	assert(input ~= "^C", "Keyboard interrupt!")
 	return input
 end
 
----@param message string
+---@param message tic-tac-toe.Message
 ---@param ... any
 function MockIO:print(message, ...)
 	table.insert(self.outputs, { message = message, ... })
