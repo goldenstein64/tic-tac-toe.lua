@@ -8,6 +8,7 @@ local Human = require("tic-tac-toe.player.Human")
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 
+---@return lrandom.Random
 local function newRandom()
 	return random.new(math.random(-2 ^ 53, 2 ^ 53))
 end
@@ -74,7 +75,7 @@ function App:promptPlayer(mark)
 	return player
 end
 
----@return tic-tac-toe.Player[])
+---@return tic-tac-toe.Player[]
 function App:choosePlayers()
 	---@type tic-tac-toe.Player[]
 	local players = {}
