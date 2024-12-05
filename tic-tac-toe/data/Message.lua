@@ -14,7 +14,7 @@
 ---| "human.err.occupied" -- (choice: number)
 
 ---@class tic-tac-toe.Connection
-local Connection
+local Connection = {}
 
 ---@overload fun(self, msg: "app.msg.pickPlayer", mark: tic-tac-toe.Mark)
 ---@overload fun(self, msg: "app.msg.pickComputer", mark: tic-tac-toe.Mark)
@@ -26,8 +26,7 @@ local Connection
 ---@overload fun(self, msg: "human.msg.pickMove", mark: tic-tac-toe.Mark)
 ---@overload fun(self, msg: "human.err.NaN", input: string)
 ---@overload fun(self, msg: "human.err.outOfRange", choice: number)
----@param msg "human.err.occupied"
----@param choice number
+---@overload fun(self, msg: "human.err.occupied", choice: number)
 function Connection:print(msg, choice) end
 
 ---@overload fun(self, msg: "app.msg.pickPlayer", mark: tic-tac-toe.Mark): string
