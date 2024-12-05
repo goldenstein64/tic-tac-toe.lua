@@ -11,6 +11,7 @@ local Human = class("Human")
 ---@field message tic-tac-toe.Message
 ---@field [number] any
 
+---@protected
 ---@param conn tic-tac-toe.Connection
 function Human:initialize(conn)
 	self.conn = conn

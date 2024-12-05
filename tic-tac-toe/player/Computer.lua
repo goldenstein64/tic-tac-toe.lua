@@ -7,6 +7,7 @@ local Computer = class("Computer")
 ---@class tic-tac-toe.Computer.Class: middleclass.Class
 ---@overload fun(rng: lrandom.Random): tic-tac-toe.Computer
 
+---@protected
 ---@param rng lrandom.Random
 function Computer:initialize(rng)
 	self.rng = rng

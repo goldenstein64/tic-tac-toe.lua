@@ -8,6 +8,7 @@ local Mark = class("Mark")
 ---@overload fun(ascii: string): tic-tac-toe.Mark
 local MarkClass = Mark --[[@as tic-tac-toe.Mark.Class]]
 
+---@protected
 ---@param ascii string
 function Mark:initialize(ascii)
 	self.ascii = ascii

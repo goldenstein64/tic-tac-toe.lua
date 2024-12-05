@@ -56,6 +56,7 @@ local ConsoleConnection = class("ConsoleConnection")
 ---@overload fun(inFile?: file*, outFile?: file*): tic-tac-toe.ConsoleConnection
 local ConsoleConnectionClass = ConsoleConnection --[[@as tic-tac-toe.ConsoleConnection.Class]]
 
+---@protected
 ---@param inFile? file*
 ---@param outFile? file*
 function ConsoleConnection:initialize(inFile, outFile)

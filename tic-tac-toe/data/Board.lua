@@ -23,6 +23,7 @@ BoardClass.WIN_PATTERNS = {
 	[8] = { 3, 5, 7 },
 }
 
+---@protected
 ---@param board tic-tac-toe.Board?
 function Board:initialize(board)
 	---@type (tic-tac-toe.Mark?)[]

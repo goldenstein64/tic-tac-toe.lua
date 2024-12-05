@@ -25,6 +25,7 @@ local App = class("App")
 ---@overload fun(conn: tic-tac-toe.Connection, pattern?: string): tic-tac-toe.App
 local AppClass = App --[[@as tic-tac-toe.App.Class]]
 
+---@protected
 ---@param conn tic-tac-toe.Connection
 ---@param pattern? string
 function App:initialize(conn, pattern)
