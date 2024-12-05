@@ -100,13 +100,13 @@ describe("App:promptPlayerOnce", function()
 	end)
 end)
 
-describe("App:choosePlayers", function()
+describe("App:promptPlayers", function()
 	it("retries invalid inputs for players", function()
 		local conn = MockConnection()
 		local app = App(conn)
 		conn:mockInput("@", "C", "H", "@", "@", "H")
 
-		local players = app:choosePlayers()
+		local players = app:promptPlayers()
 
 		expect(conn.outputs).to.look.like({
 			{ message = "app.msg.pickPlayer", Mark.X },
@@ -130,7 +130,7 @@ describe("App:choosePlayers", function()
 		local app = App(conn)
 		conn:mockInput("C", "@", "C", "M", "@", "C", "@", "C", "E")
 
-		local players = app:choosePlayers()
+		local players = app:promptPlayers()
 
 		expect(conn.outputs).to.look.like({
 			{ message = "app.msg.pickPlayer", Mark.X },

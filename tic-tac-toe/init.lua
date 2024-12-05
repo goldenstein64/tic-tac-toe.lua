@@ -76,7 +76,7 @@ function App:promptPlayer(mark)
 end
 
 ---@return tic-tac-toe.Player[]
-function App:choosePlayers()
+function App:promptPlayers()
 	---@type tic-tac-toe.Player[]
 	local players = {}
 	for i, mark in ipairs(Mark.all) do

@@ -6,6 +6,6 @@ local App = require("tic-tac-toe")
 local conn = ConsoleConnection()
 local app = App(conn)
 
-local players = app:choosePlayers()
+local players = app:promptPlayers()
 local winner = app:playGame(players)
 app:displayWinner(winner)
