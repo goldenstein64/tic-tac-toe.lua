@@ -86,24 +86,36 @@ function App:choosePlayers()
 	return players
 end
 
+---@param player tic-tac-toe.Player
+---@param mark tic-tac-toe.Mark
+---@return boolean ended, tic-tac-toe.Mark? winner
+function App:playTurn(player, mark)
+	local move = player:getMove(self.board, mark)
+	self.board:setMark(move, mark)
+	self.conn:print("app.msg.game", self.board)
+
+	if self.board:won(mark) then
+		return true, mark
+	elseif self.board:full() then
+		return true, nil
+	end
+
+	return false, nil
+end
+
 ---@param players tic-tac-toe.Player[]
 ---@return tic-tac-toe.Mark?
 function App:playGame(players)
 	local i = 0
 	self.conn:print("app.msg.game", self.board)
-	while not self.board:full() do
-		i = i % #players + 1
-		local mark, player = Mark.all[i], players[i]
-		local move = player:getMove(self.board, mark)
-		self.board:setMark(move, mark)
-		self.conn:print("app.msg.game", self.board)
 
-		if self.board:won(mark) then
-			return mark
+	while true do
+		i = i % #players + 1
+		local ended, winner = self:playTurn(players[i], Mark.all[i])
+		if ended then
+			return winner
 		end
 	end
-
-	return nil
 end
 
 function App:__tostring()
