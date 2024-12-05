@@ -8,6 +8,10 @@ local Human = require("tic-tac-toe.player.Human")
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 
+local function newRandom()
+	return random.new(math.random(-2 ^ 53, 2 ^ 53))
+end
+
 ---@class tic-tac-toe.Player
 ---@field getMove fun(self: any, board: tic-tac-toe.Board, mark: tic-tac-toe.Mark): integer
 
@@ -33,11 +37,11 @@ end
 function App:promptComputerOnce(mark)
 	local chosenComputer = self.conn:prompt("app.msg.pickComputer", mark)
 	if chosenComputer == "E" then
-		return EasyComputer(random.new())
+		return EasyComputer(newRandom())
 	elseif chosenComputer == "M" then
-		return MediumComputer(random.new())
+		return MediumComputer(newRandom())
 	elseif chosenComputer == "H" then
-		return HardComputer(random.new())
+		return HardComputer(newRandom())
 	else
 		self.conn:print("app.err.invalidComputer", chosenComputer)
 		return nil
