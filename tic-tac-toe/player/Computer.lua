@@ -2,6 +2,7 @@ local class = require("middleclass")
 
 ---@class tic-tac-toe.Computer : middleclass.Object, tic-tac-toe.Player
 ---@field class tic-tac-toe.Computer.Class
+---@field rng lrandom.Random
 local Computer = class("Computer")
 
 ---@class tic-tac-toe.Computer.Class: middleclass.Class
