@@ -1,6 +1,7 @@
 local class = require("middleclass")
 
 ---@class tic-tac-toe.Human : middleclass.Object, tic-tac-toe.Player
+---@field class tic-tac-toe.Human.Class
 ---@field conn tic-tac-toe.Connection
 local Human = class("Human")
 
@@ -17,13 +18,13 @@ function Human:initialize(conn)
 	self.conn = conn
 end
 
----@private
 ---prompts the user for a move from stdin
+---@param self tic-tac-toe.Human
 ---@param board tic-tac-toe.Board
 ---@param mark tic-tac-toe.Mark
 ---@return number?, tic-tac-toe.Human.Err?
 ---@nodiscard
-function Human:promptMove(board, mark)
+local function promptMove(self, board, mark)
 	local posString = self.conn:prompt("human.msg.pickMove", mark)
 	local pos = tonumber(posString)
 
@@ -44,7 +45,7 @@ end
 ---@nodiscard
 function Human:getMove(board, mark)
 	while true do
-		local value, err = self:promptMove(board, mark)
+		local value, err = promptMove(self, board, mark)
 		if value then
 			return value
 		elseif err then
