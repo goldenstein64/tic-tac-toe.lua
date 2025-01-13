@@ -1,3 +1,7 @@
+local random = require("random")
+
+local MediumComputer = require("tic-tac-toe.player.MediumComputer")
+local HardComputer = require("tic-tac-toe.player.HardComputer")
 local Board = require("tic-tac-toe.data.Board")
 local Mark = require("tic-tac-toe.data.Mark")
 
@@ -13,36 +17,34 @@ local testTactics = {
 	{ "matches ',XXXOOOX,'", ",XXXOOOX,", Mark.O, { 1 } },
 }
 
----@param computerGen fun(): tic-tac-toe.Computer
----@param name string
-local function testCommonTactics(computerGen, name)
-	local computer ---@type tic-tac-toe.Computer
-	before_each(function()
-		computer = computerGen()
-	end)
+local testSubjects = {
+	{
+		name = "MediumComputer",
+		gen = function()
+			return MediumComputer(random.new())
+		end,
+	},
+	{
+		name = "HardComputer",
+		gen = function()
+			return HardComputer(random.new())
+		end,
+	},
+}
 
+for _, subject in ipairs(testSubjects) do
+	local name, genComputer = subject.name, subject.gen
 	describe(METHOD_FORMAT:format(name), function()
 		for _, tactic in ipairs(testTactics) do
-			---@type string, string, tic-tac-toe.Mark, integer
-			local testName, pattern, mark, expected = table.unpack(tactic, 1, 4)
+			---@type string, string, tic-tac-toe.Mark, number[]
+			local testName, pattern, mark, expected = table.unpack(tactic, 1, 4) ---@diagnostic disable-line:assign-type-mismatch
 			it(testName, function()
 				local board = Board.fromPattern(pattern)
 
-				local move = computer:getMoves(board, mark)
+				local move = genComputer():getMoves(board, mark)
 
 				expect(move).to.look.like(expected)
 			end)
 		end
 	end)
 end
-
-local random = require("random")
-local MediumComputer = require("tic-tac-toe.player.MediumComputer")
-local HardComputer = require("tic-tac-toe.player.HardComputer")
-
-testCommonTactics(function()
-	return MediumComputer(random.new())
-end, "MediumComputer")
-testCommonTactics(function()
-	return HardComputer(random.new())
-end, "HardComputer")
