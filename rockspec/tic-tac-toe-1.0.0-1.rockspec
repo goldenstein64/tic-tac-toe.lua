@@ -1,12 +1,14 @@
 rockspec_format = "3.0"
 package = "tic-tac-toe"
-version = "dev-1"
+version = "1.0.0-1"
 source = {
-	url = "*** please add URL for source tarball, zip or repository here ***",
+	url = "git+https://github.com/goldenstein64/tic-tac-toe-lua.git",
+	tag = "v1.0.0",
 }
 description = {
-	homepage = "*** please enter a project homepage ***",
-	license = "*** please specify a license ***",
+	homepage = "https://github.com/goldenstein64/tic-tac-toe-lua",
+	issues_url = "https://github.com/goldenstein64/tic-tac-toe-lua/issues",
+	license = "MIT",
 }
 dependencies = {
 	"lua ~> 5.1",
@@ -29,6 +31,7 @@ build = {
 		["tic-tac-toe.player.EasyComputer"] = "tic-tac-toe/player/EasyComputer.lua",
 		["tic-tac-toe.player.MediumComputer"] = "tic-tac-toe/player/MediumComputer.lua",
 		["tic-tac-toe.player.HardComputer"] = "tic-tac-toe/player/HardComputer.lua",
+		["tic-tac-toe.player.Computer"] = "tic-tac-toe/player/Computer.lua",
 		["tic-tac-toe.player.Human"] = "tic-tac-toe/player/Human.lua",
 	},
 }

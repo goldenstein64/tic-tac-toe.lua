@@ -1,16 +1,18 @@
 rockspec_format = "3.0"
 package = "tic-tac-toe-console"
-version = "dev-1"
+version = "1.0.0-1"
 source = {
-	url = "*** please add URL for source tarball, zip or repository here ***",
+	url = "git+https://github.com/goldenstein64/tic-tac-toe-lua.git",
+	dir = "tic-tac-toe-console",
 }
 description = {
-	homepage = "*** please enter a project homepage ***",
-	license = "*** please specify a license ***",
+	homepage = "https://github.com/goldenstein64/tic-tac-toe-lua",
+	issues_url = "https://github.com/goldenstein64/tic-tac-toe-lua/issues",
+	license = "MIT",
 }
 dependencies = {
 	"lua ~> 5.1",
-	"tic-tac-toe == dev-1",
+	"tic-tac-toe ~> 1.0",
 	"middleclass ~> 4.1",
 }
 build = {
