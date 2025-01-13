@@ -16,12 +16,52 @@ end
 ---@class tic-tac-toe.Player
 ---@field getMove fun(self: any, board: tic-tac-toe.Board, mark: tic-tac-toe.Mark): integer
 
+---implements some common elements of an application that runs tic-tac-toe
+---
+---Usage:
+---
+---```lua
+------@type tic-tac-toe.Connection
+---local connection = -- your connection
+---
+------@type tic-tac-toe.App
+---local app = App(connection)
+---
+------@type tic-tac-toe.Player[]
+---local players = app:promptPlayers()
+---
+------@type Mark?
+---local winner = app:playGame(players)
+---
+---app:displayWinner(winner)
+---```
+---
 ---@class tic-tac-toe.App : middleclass.Object
 ---@field class tic-tac-toe.App.Class
 ---@field conn tic-tac-toe.Connection
 ---@field board tic-tac-toe.Board
 local App = class("App")
 
+---some common elements of an application that runs tic-tac-toe
+---
+---Usage:
+---
+---```lua
+------@type tic-tac-toe.Connection
+---local connection = -- your connection
+---
+------@type tic-tac-toe.App
+---local app = App(connection)
+---
+------@type tic-tac-toe.Player[]
+---local players = app:promptPlayers()
+---
+------@type Mark?
+---local winner = app:playGame(players)
+---
+---app:displayWinner(winner)
+---```
+---
 ---@class tic-tac-toe.App.Class : tic-tac-toe.App, middleclass.Class
 ---@overload fun(conn: tic-tac-toe.Connection, pattern?: string): tic-tac-toe.App
 local AppClass = App --[[@as tic-tac-toe.App.Class]]

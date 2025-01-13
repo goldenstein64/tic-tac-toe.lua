@@ -1,3 +1,5 @@
+---a console application of tic-tac-toe
+
 math.randomseed(os.time() / math.exp(1), os.time() / math.pi)
 
 local ConsoleConnection = require("tic-tac-toe-console.ConsoleConnection")

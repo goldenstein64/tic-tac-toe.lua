@@ -2,6 +2,8 @@ local class = require("middleclass")
 local Board = require("tic-tac-toe.data.Board")
 local Computer = require("tic-tac-toe.player.Computer")
 
+---a mapping from board slots to a list of indexes in `Board.WIN_PATTERNS`. It
+---should be treated as immutable.
 local WIN_PATTERN_LOOKUP = {
 	[1] = { 1, 4, 7 },
 	[2] = { 1, 5 },
@@ -14,10 +16,28 @@ local WIN_PATTERN_LOOKUP = {
 	[9] = { 3, 6, 7 },
 }
 
+---a `Computer` that picks moves using a priority list. It checks for possible
+---moves in this order:
+---
+---1. winning moves in 1 turn
+---2. losing moves in 1 turn (blocking moves)
+---3. winning moves in 2 turns (trapping moves)
+---4. the center of the board
+---5. the corners of the board
+---6. the sides of the board
 ---@class tic-tac-toe.MediumComputer : tic-tac-toe.Computer
 ---@field class tic-tac-toe.MediumComputer.Class
 local MediumComputer = class("MediumComputer", Computer)
 
+---a `Computer` that picks moves using a priority list. It checks for possible
+---moves in this order:
+---
+---1. winning moves in 1 turn
+---2. losing moves in 1 turn (blocking moves)
+---3. winning moves in 2 turns (trapping moves)
+---4. the center of the board
+---5. the corners of the board
+---6. the sides of the board
 ---@class tic-tac-toe.MediumComputer.Class : tic-tac-toe.MediumComputer, tic-tac-toe.Computer.Class
 ---@field super tic-tac-toe.Computer
 ---@overload fun(rng: lrandom.Random): tic-tac-toe.MediumComputer

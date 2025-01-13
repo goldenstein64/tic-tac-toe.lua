@@ -1,10 +1,12 @@
 local class = require("middleclass")
 local Computer = require("tic-tac-toe.player.Computer")
 
+---a `Computer` that picks moves at random. It is the simplest of all computers.
 ---@class tic-tac-toe.EasyComputer : tic-tac-toe.Computer
 ---@field class tic-tac-toe.EasyComputer.Class
 local EasyComputer = class("EasyComputer", Computer)
 
+---a `Computer` that picks moves at random. It is the simplest of all computers.
 ---@class tic-tac-toe.EasyComputer.Class : tic-tac-toe.EasyComputer, tic-tac-toe.Computer.Class
 ---@field super tic-tac-toe.Computer
 ---@overload fun(rng: lrandom.Random): tic-tac-toe.EasyComputer
