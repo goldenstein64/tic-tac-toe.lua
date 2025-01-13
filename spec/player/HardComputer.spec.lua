@@ -34,7 +34,7 @@ describe("HardComputer.terminal", function()
 			---|---|---
 			 X | 8 | 9
 		]]
-		local board = Board.fromPattern("X,,XOOX,,")
+		local board = Board.fromPattern("X``XOOX``")
 
 		local value = HardComputer.terminal(board)
 
@@ -62,7 +62,7 @@ describe("HardComputer.terminal", function()
 			OXX
 			O-X
 		]]
-		local board = Board.fromPattern("O,,OXXO,X")
+		local board = Board.fromPattern("O``OXXO`X")
 
 		local value = HardComputer.terminal(board)
 
@@ -86,7 +86,7 @@ end)
 describe("HardComputer:getMoves", function()
 	it("has no side effects", function()
 		local computer = HardComputer(random.new())
-		local board = Board.fromPattern("XOXO,,,,,")
+		local board = Board.fromPattern("XOXO`````")
 		local _ = computer:getMoves(board, Mark.X)
 		expect(board.data).to.look.like({
 			Mark.X,

@@ -124,7 +124,7 @@ end
 function Board:__tostring()
 	local strBoard = {}
 	for i = 1, 9 do
-		strBoard[i] = tostring(self.data[i] or ",")
+		strBoard[i] = tostring(self.data[i] or "`")
 	end
 
 	return table.concat(strBoard)

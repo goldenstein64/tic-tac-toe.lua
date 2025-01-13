@@ -222,7 +222,7 @@ describe("App:playTurn", function()
 		-- O X X
 		-- - O O
 		-- O X X
-		local app = App(conn, "OXX,OOOXX")
+		local app = App(conn, "OXX`OOOXX")
 
 		conn:mockInput("4")
 
@@ -240,7 +240,7 @@ describe("App:playTurn", function()
 		-- X - X
 		-- O - -
 		-- - - O
-		local app = App(conn, "X,XO,,,,O")
+		local app = App(conn, "X`XO````O")
 
 		conn:mockInput("2")
 
@@ -258,7 +258,7 @@ describe("App:playTurn", function()
 		-- X - X
 		-- O - O
 		-- X - -
-		local app = App(conn, "X,XO,O,X,")
+		local app = App(conn, "X`XO`O`X`")
 
 		conn:mockInput("5")
 
@@ -276,7 +276,7 @@ describe("App:playTurn", function()
 		-- X O X
 		-- O O X
 		-- O X -
-		local app = App(conn, "XOXOOXOX,")
+		local app = App(conn, "XOXOOXOX`")
 
 		conn:mockInput("9")
 
@@ -296,7 +296,7 @@ describe("App:playTurn", function()
 		-- X X O
 		-- X O O
 		-- - X X
-		local app = App(conn, "XXOXOO,XX")
+		local app = App(conn, "XXOXOO`XX")
 
 		conn:mockInput("7")
 

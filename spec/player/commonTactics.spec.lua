@@ -8,13 +8,13 @@ local Mark = require("tic-tac-toe.data.Mark")
 local METHOD_FORMAT = "%s:getMove"
 
 local testTactics = {
-	{ "detects winning moves for X", ",XX,OO,,,", Mark.X, { 1 } },
-	{ "detects winning moves for O", ",OO,XX,,X", Mark.O, { 1 } },
-	{ "detects blocking moves for X", "O,,O,X,X,", Mark.X, { 7 } },
-	{ "detects blocking moves for O", ",O,X,,XXO", Mark.O, { 1 } },
-	{ "detects trapping moves for X", ",X,O,X,O,", Mark.X, { 3 } },
-	{ "detects trapping moves for O", ",X,OXX,O,", Mark.O, { 7 } },
-	{ "matches ',XXXOOOX,'", ",XXXOOOX,", Mark.O, { 1 } },
+	{ "detects winning moves for X", "`XX`OO```", Mark.X, { 1 } },
+	{ "detects winning moves for O", "`OO`XX``X", Mark.O, { 1 } },
+	{ "detects blocking moves for X", "O``O`X`X`", Mark.X, { 7 } },
+	{ "detects blocking moves for O", "`O`X``XXO", Mark.O, { 1 } },
+	{ "detects trapping moves for X", "`X`O`X`O`", Mark.X, { 3 } },
+	{ "detects trapping moves for O", "`X`OXX`O`", Mark.O, { 7 } },
+	{ "matches ',XXXOOOX`'", ",XXXOOOX`", Mark.O, { 1 } },
 }
 
 local testSubjects = {

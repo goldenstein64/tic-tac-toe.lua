@@ -6,14 +6,14 @@ local board = Board.fromPattern
 describe("Board:won", function()
 	it("can detect all legal matches", function()
 		local winPatterns = {
-			"XXX,,,,,,",
-			",,,XXX,,,",
-			",,,,,,XXX",
-			"X,,X,,X,,",
-			",X,,X,,X,",
-			",,X,,X,,X",
-			"X,,,X,,,X",
-			",,X,X,X,,",
+			"XXX``````",
+			"```XXX```",
+			"``````XXX",
+			"X``X``X``",
+			"`X``X``X`",
+			"``X``X``X",
+			"X```X```X",
+			"``X`X`X``",
 		}
 
 		for _, pattern in ipairs(winPatterns) do
@@ -64,15 +64,15 @@ end)
 
 describe("Board:empty", function()
 	it("can detect when a board is empty", function()
-		expect(board(",,,,,,,,,"):empty()).to.be._true()
+		expect(board("`````````"):empty()).to.be._true()
 	end)
 
 	it("can detect when a board is not empty", function()
-		expect(board("XO,XO,XO,"):empty()).to.be._false()
-		expect(board("XXXXXXXX,"):empty()).to.be._false()
-		expect(board(",XXXXXXXX"):empty()).to.be._false()
-		expect(board("X,,,,,,,,"):empty()).to.be._false()
-		expect(board(",,,,,,,,X"):empty()).to.be._false()
+		expect(board("XO`XO`XO`"):empty()).to.be._false()
+		expect(board("XXXXXXXX`"):empty()).to.be._false()
+		expect(board("`XXXXXXXX"):empty()).to.be._false()
+		expect(board("X````````"):empty()).to.be._false()
+		expect(board("````````X"):empty()).to.be._false()
 	end)
 end)
 
@@ -84,17 +84,17 @@ describe("Board:full", function()
 	end)
 
 	it("can detect when a board is not full", function()
-		expect(board("XO,XO,XO,"):full()).to.be._false()
-		expect(board("XXXXXXXX,"):full()).to.be._false()
-		expect(board(",XXXXXXXX"):full()).to.be._false()
-		expect(board("X,,,,,,,,"):full()).to.be._false()
-		expect(board(",,,,,,,,X"):full()).to.be._false()
+		expect(board("XO`XO`XO`"):full()).to.be._false()
+		expect(board("XXXXXXXX`"):full()).to.be._false()
+		expect(board("`XXXXXXXX"):full()).to.be._false()
+		expect(board("X````````"):full()).to.be._false()
+		expect(board("````````X"):full()).to.be._false()
 	end)
 end)
 
 describe("Board:isMarkedWith", function()
 	it("returns false for bad positions", function()
-		local b = board(",,,,,,,,,")
+		local b = board("`````````")
 
 		expect(b:isMarkedWith(0, nil)).to.be._false()
 		expect(b:isMarkedWith(1, nil)).to.be._true()
@@ -105,7 +105,7 @@ describe("Board:isMarkedWith", function()
 	end)
 
 	it("returns whether positions have the given mark", function()
-		local b = board("XO,XO,XO,")
+		local b = board("XO`XO`XO`")
 
 		expect(b:isMarkedWith(1, Mark.X)).to.be._true()
 		expect(b:isMarkedWith(1, Mark.O)).to.be._false()
@@ -123,7 +123,7 @@ end)
 
 describe("Board:canMark", function()
 	it("returns whether a position has no mark", function()
-		local b = board("XO,XO,XO,")
+		local b = board("XO`XO`XO`")
 
 		expect(b:canMark(1)).to.be._false()
 		expect(b:canMark(2)).to.be._false()
@@ -139,7 +139,7 @@ end)
 
 describe("Board:setMark", function()
 	it("throws when attempting to set an occupied position", function()
-		local b = board(",,X,,,,,,")
+		local b = board("``X``````")
 
 		expect(function()
 			b:setMark(3, Mark.O)
@@ -152,7 +152,7 @@ describe("Board:setMark", function()
 
 	it("changes the state of the board at each position", function()
 		for i = 1, 9 do
-			local b = board(",,,,,,,,,")
+			local b = board("`````````")
 			expect(b:canMark(i)).to.be._true()
 			b:setMark(i, Mark.X)
 			expect(b:canMark(i)).to.be._false()
@@ -160,7 +160,7 @@ describe("Board:setMark", function()
 	end)
 
 	it("accepts nil for `mark` arg", function()
-		local b = board(",,X,,,,,,")
+		local b = board("``X``````")
 		expect(function()
 			b:setMark(3, nil)
 		end).not_to.throw()
