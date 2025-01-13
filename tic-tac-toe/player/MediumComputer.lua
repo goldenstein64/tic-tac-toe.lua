@@ -51,7 +51,7 @@ local function getWinningMoves(board, mark)
 
 	for _, pattern in ipairs(Board.WIN_PATTERNS) do
 		local markCount = 0
-		local emptyIndex ---@type number?
+		local emptyIndex = nil ---@type number?
 		for _, pos in ipairs(pattern) do
 			if board:isMarkedWith(pos, mark) then
 				markCount = markCount + 1
@@ -82,6 +82,58 @@ local function getBlockingMoves(board, mark)
 	return getWinningMoves(board, mark:other())
 end
 
+---@generic T
+---@param list T[]
+---@param value T
+---@return T[]
+---@nodiscard
+local function withoutValue(list, value)
+	local result = {}
+	for _, v in ipairs(list) do
+		if v ~= value then
+			table.insert(result, v)
+		end
+	end
+	return result
+end
+
+---@param board tic-tac-toe.Board
+---@param positions number[]
+---@param mark? tic-tac-toe.Mark
+---@return boolean
+---@nodiscard
+local function isAnyMarkedWith(board, positions, mark)
+	for _, pos in ipairs(positions) do
+		if board:isMarkedWith(pos, mark) then
+			return true
+		end
+	end
+
+	return false
+end
+
+---@param board tic-tac-toe.Board
+---@param mark tic-tac-toe.Mark
+---@param pos number
+---@return boolean
+---@nodiscard
+local function canPosTrap(board, mark, pos)
+	if not board:canMark(pos) then
+		return false
+	end
+
+	local trapCount = 0
+	for _, i in ipairs(WIN_PATTERN_LOOKUP[pos]) do
+		local positions = withoutValue(Board.WIN_PATTERNS[i], pos)
+
+		if isAnyMarkedWith(board, positions, mark) and isAnyMarkedWith(board, positions, nil) then
+			trapCount = trapCount + 1
+		end
+	end
+
+	return trapCount > 1
+end
+
 ---@param board tic-tac-toe.Board
 ---@param mark tic-tac-toe.Mark
 ---@return number[]?
@@ -89,41 +141,9 @@ end
 local function getTrappingMoves(board, mark)
 	local result = {}
 	for pos = 1, 9 do
-		if not board:canMark(pos) then
-			goto continue
-		end
-
-		local patternIndex = WIN_PATTERN_LOOKUP[pos]
-		local trapCount = 0
-		for _, i in ipairs(patternIndex) do
-			local pattern = Board.WIN_PATTERNS[i]
-
-			local hasMark = false
-			local hasEmpty = false
-			for _, subPos in ipairs(pattern) do
-				if subPos == pos then
-					goto continue2
-				end
-
-				if board:isMarkedWith(subPos, mark) then
-					hasMark = true
-				elseif board:canMark(subPos) then
-					hasEmpty = true
-				else
-					goto continue2
-				end
-				::continue2::
-			end
-
-			if hasMark and hasEmpty then
-				trapCount = trapCount + 1
-			end
-		end
-
-		if trapCount > 1 then
+		if canPosTrap(board, mark, pos) then
 			table.insert(result, pos)
 		end
-		::continue::
 	end
 
 	return #result > 0 and result or nil
