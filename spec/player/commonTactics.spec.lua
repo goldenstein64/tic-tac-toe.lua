@@ -14,7 +14,7 @@ local testTactics = {
 	{ "detects blocking moves for O", "`O`X``XXO", Mark.O, { 1 } },
 	{ "detects trapping moves for X", "`X`O`X`O`", Mark.X, { 3 } },
 	{ "detects trapping moves for O", "`X`OXX`O`", Mark.O, { 7 } },
-	{ "matches ',XXXOOOX`'", ",XXXOOOX`", Mark.O, { 1 } },
+	{ "matches '`XXXOOOX`'", "`XXXOOOX`", Mark.O, { 1 } },
 }
 
 local testSubjects = {
