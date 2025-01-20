@@ -132,7 +132,7 @@ end
 function App:playTurn(player, mark)
 	local move = player:getMove(self.board, mark)
 	self.board:setMark(move, mark)
-	self.conn:print("app.msg.game", self.board)
+	self.conn:print("app.msg.game", tostring(self.board))
 
 	if self.board:won(mark) then
 		return true, mark
@@ -147,7 +147,7 @@ end
 ---@return tic-tac-toe.Mark?
 function App:playGame(players)
 	local i = 0
-	self.conn:print("app.msg.game", self.board)
+	self.conn:print("app.msg.game", tostring(self.board))
 
 	while true do
 		i = i % #players + 1

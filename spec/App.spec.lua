@@ -201,7 +201,7 @@ describe("App:playTurn", function()
 		expect(app.board:isMarkedWith(1, Mark.X)).to.be_true()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "X````````" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
@@ -209,11 +209,13 @@ describe("App:playTurn", function()
 		local conn = MockConnection()
 		local app = App(conn)
 
+		-- this computer ends up playing 5, FYI
 		local ended, winner = app:playTurn(EasyComputer(random.new(0)), Mark.X)
 		expect(ended).to.be_false()
 		expect(winner).to.be_nil()
+		expect(app.board:isMarkedWith(5, Mark.X)).to.be_true()
 		expect(conn.outputs).to.look.like({
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "````X````" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
@@ -231,7 +233,7 @@ describe("App:playTurn", function()
 		expect(winner).to.be_nil()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "OXXXOOOXX" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
@@ -249,7 +251,7 @@ describe("App:playTurn", function()
 		expect(winner).to.equal(Mark.X)
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XXXO````O" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
@@ -267,7 +269,7 @@ describe("App:playTurn", function()
 		expect(winner).to.equal(Mark.O)
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.O },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "X`XOOO`X`" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
@@ -285,7 +287,7 @@ describe("App:playTurn", function()
 		expect(winner).to.equal(Mark.X)
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XOXOOXOXX" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
@@ -305,7 +307,7 @@ describe("App:playTurn", function()
 		expect(winner).to.equal(Mark.O)
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.O },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XXOXOOOXX" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 end)
@@ -322,21 +324,21 @@ describe("App:playGame", function()
 
 		expect(winner).to.equal(Mark.X)
 		expect(conn.outputs).to.look.like({
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "`````````" },
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "X````````" },
 			{ message = "human.msg.pickMove", Mark.O },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XO```````" },
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XO````X``" },
 			{ message = "human.msg.pickMove", Mark.O },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XO`O``X``" },
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XO`O``X`X" },
 			{ message = "human.msg.pickMove", Mark.O },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XO`OO`X`X" },
 			{ message = "human.msg.pickMove", Mark.X },
-			{ message = "app.msg.game", app.board },
+			{ message = "app.msg.game", "XO`OO`XXX" },
 		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 

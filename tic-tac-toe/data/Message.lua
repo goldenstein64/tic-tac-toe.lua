@@ -3,7 +3,7 @@
 ---@alias tic-tac-toe.Message
 ---| "app.msg.pickPlayer" -- (Mark)
 ---| "app.msg.pickComputer" -- (Mark)
----| "app.msg.game" -- (Board)
+---| "app.msg.game" -- (board: string)
 ---| "app.msg.playerWon" -- (Mark)
 ---| "app.msg.tied"
 ---| "app.err.invalidPlayer" -- (input: string)
@@ -18,7 +18,7 @@ local Connection = {}
 
 ---@overload fun(self, msg: "app.msg.pickPlayer", mark: tic-tac-toe.Mark)
 ---@overload fun(self, msg: "app.msg.pickComputer", mark: tic-tac-toe.Mark)
----@overload fun(self, msg: "app.msg.game", board: tic-tac-toe.Board)
+---@overload fun(self, msg: "app.msg.game", board: string)
 ---@overload fun(self, msg: "app.msg.playerWon", mark: tic-tac-toe.Mark)
 ---@overload fun(self, msg: "app.msg.tied")
 ---@overload fun(self, msg: "app.err.invalidPlayer", input: string)
@@ -31,7 +31,7 @@ function Connection:print(msg, choice) end
 
 ---@overload fun(self, msg: "app.msg.pickPlayer", mark: tic-tac-toe.Mark): string
 ---@overload fun(self, msg: "app.msg.pickComputer", mark: tic-tac-toe.Mark): string
----@overload fun(self, msg: "app.msg.game", board: tic-tac-toe.Board): string
+---@overload fun(self, msg: "app.msg.game", board: string): string
 ---@overload fun(self, msg: "app.msg.playerWon", mark: tic-tac-toe.Mark): string
 ---@overload fun(self, msg: "app.msg.tied"): string
 ---@overload fun(self, msg: "app.err.invalidPlayer", input: string): string
