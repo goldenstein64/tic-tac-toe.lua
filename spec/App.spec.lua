@@ -202,7 +202,7 @@ describe("App:playTurn", function()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("can run one turn of tic~tac~toe with a computer", function()
@@ -214,7 +214,7 @@ describe("App:playTurn", function()
 		expect(winner).to.be_nil()
 		expect(conn.outputs).to.look.like({
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("returns true, nil after a full board and tie", function()
@@ -232,7 +232,7 @@ describe("App:playTurn", function()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("returns true, X after X wins", function()
@@ -250,7 +250,7 @@ describe("App:playTurn", function()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("returns true, O after O wins", function()
@@ -268,7 +268,7 @@ describe("App:playTurn", function()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.O },
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	it("returns true, X after X wins on a full board", function()
@@ -286,7 +286,7 @@ describe("App:playTurn", function()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.X },
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 
 	-- this will never happen in a real game, but it's still good to check for
@@ -306,7 +306,7 @@ describe("App:playTurn", function()
 		expect(conn.outputs).to.look.like({
 			{ message = "human.msg.pickMove", Mark.O },
 			{ message = "app.msg.game", app.board },
-		})
+		} --[[@as tic-tac-toe.MockConnection.Message[] ]])
 	end)
 end)
 
