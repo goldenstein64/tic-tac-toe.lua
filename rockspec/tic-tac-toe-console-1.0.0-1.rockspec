@@ -11,7 +11,7 @@ description = {
 	license = "MIT",
 }
 dependencies = {
-	"lua ~> 5.1",
+	"lua >= 5.1",
 	"tic-tac-toe ~> 1.0",
 	"middleclass ~> 4.1",
 }

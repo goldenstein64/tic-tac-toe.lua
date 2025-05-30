@@ -11,7 +11,7 @@ description = {
 	license = "MIT",
 }
 dependencies = {
-	"lua ~> 5.1",
+	"lua >= 5.1",
 	"lrandom == 20180729-1",
 	"middleclass ~> 4.1",
 }
