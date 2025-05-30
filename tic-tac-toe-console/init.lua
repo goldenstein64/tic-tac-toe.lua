@@ -7,7 +7,7 @@ else
 end
 
 local ConsoleConnection = require("tic-tac-toe-console.ConsoleConnection")
-local App = require("tic-tac-toe.init")
+local App = require("tic-tac-toe")
 
 local conn = ConsoleConnection()
 local app = App(conn)
