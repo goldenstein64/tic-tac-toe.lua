@@ -13,7 +13,7 @@ end
 ---a list of all the outputs this IO object generated
 ---@field outputs tic-tac-toe.MockConnection.Message[]
 ---@field class tic-tac-toe.MockConnection.Class
-local MockIO = class("MockIO")
+local MockIO = class("MockConnection")
 
 ---@class tic-tac-toe.MockConnection.Class : middleclass.Class
 ---@overload fun(inputs?: string[]): tic-tac-toe.MockConnection
