@@ -82,71 +82,74 @@ local function getBlockingMoves(board, mark)
 	return getWinningMoves(board, mark:other())
 end
 
----@generic T
----@param list T[]
----@param value T
----@return T[]
----@nodiscard
-local function withoutValue(list, value)
-	local result = {}
-	for _, v in ipairs(list) do
-		if v ~= value then
-			table.insert(result, v)
+local getTrappingMoves
+do
+	---@generic T
+	---@param list T[]
+	---@param value T
+	---@return T[]
+	---@nodiscard
+	local function withoutValue(list, value)
+		local result = {}
+		for _, v in ipairs(list) do
+			if v ~= value then
+				table.insert(result, v)
+			end
 		end
-	end
-	return result
-end
-
----@param board tic-tac-toe.Board
----@param positions number[]
----@param mark? tic-tac-toe.Mark
----@return boolean
----@nodiscard
-local function isAnyMarkedWith(board, positions, mark)
-	for _, pos in ipairs(positions) do
-		if board:isMarkedWith(pos, mark) then
-			return true
-		end
+		return result
 	end
 
-	return false
-end
+	---@param board tic-tac-toe.Board
+	---@param positions number[]
+	---@param mark? tic-tac-toe.Mark
+	---@return boolean
+	---@nodiscard
+	local function isAnyMarkedWith(board, positions, mark)
+		for _, pos in ipairs(positions) do
+			if board:isMarkedWith(pos, mark) then
+				return true
+			end
+		end
 
----@param board tic-tac-toe.Board
----@param mark tic-tac-toe.Mark
----@param pos number
----@return boolean
----@nodiscard
-local function canPosTrap(board, mark, pos)
-	if not board:canMark(pos) then
 		return false
 	end
 
-	local trapCount = 0
-	for _, i in ipairs(WIN_PATTERN_LOOKUP[pos]) do
-		local positions = withoutValue(Board.WIN_PATTERNS[i], pos)
-
-		if isAnyMarkedWith(board, positions, mark) and isAnyMarkedWith(board, positions, nil) then
-			trapCount = trapCount + 1
+	---@param board tic-tac-toe.Board
+	---@param mark tic-tac-toe.Mark
+	---@param pos number
+	---@return boolean
+	---@nodiscard
+	local function canPosTrap(board, pos, mark)
+		if not board:canMark(pos) then
+			return false
 		end
+
+		local trapCount = 0
+		for _, i in ipairs(WIN_PATTERN_LOOKUP[pos]) do
+			local positions = withoutValue(Board.WIN_PATTERNS[i], pos)
+
+			if isAnyMarkedWith(board, positions, mark) and isAnyMarkedWith(board, positions, nil) then
+				trapCount = trapCount + 1
+			end
+		end
+
+		return trapCount > 1
 	end
 
-	return trapCount > 1
-end
-
----@param board tic-tac-toe.Board
----@param mark tic-tac-toe.Mark
----@return number[]?
----@nodiscard
-local function getTrappingMoves(board, mark)
-	local result = {}
-	for pos = 1, 9 do
-		if canPosTrap(board, mark, pos) then
-			table.insert(result, pos)
+	---@param board tic-tac-toe.Board
+	---@param mark tic-tac-toe.Mark
+	---@return number[]?
+	---@nodiscard
+	function getTrappingMoves(board, mark)
+		local result = {}
+		for pos = 1, 9 do
+			if canPosTrap(board, pos, mark) then
+				table.insert(result, pos)
+			end
 		end
-	end
 
-	return #result > 0 and result or nil
+		return #result > 0 and result or nil
+	end
 end
 
 ---@param board tic-tac-toe.Board
